@@ -46,8 +46,8 @@ g<g<''>>
 g<g<g<''>>>
 e<g<g<''>> 'a'> e<g<g<''>> 'b'> e<g<g<''>> 'c'>
 e<g<''> 'a'> 'a' e<g<''> 'b'> 'b' e<g<''> 'c'> 'c'
-e<'' 'a'> 'a' 'a' e<'' 'b'> 'b' 'b' e<'' 'c'> 'c' 'c'
-'' 'a' 'a' '' 'b' 'b' '' 'c' 'c'
+e<'' 'a'> 'aa' e<'' 'b'> 'bb' e<'' 'c'> 'cc'
+'aabbcc'
 ```
 
 This can trivially be extended to a language with any number of equally-sized sequences of letters.
