@@ -15,7 +15,7 @@ Which with `name-list` as our start symbol will recognise e.g. `[ alice alice al
 
 The interesting part here is the symbol `repeat<name>`, which is a parametric symbol named `repeat`, parameterized with the argument `name`. This is then matched against the pattern on the left-hand side of the `repeat<T>` rule, which instantiates the parameter `T` with the argument `name` and constructs the production `'' | name repeat<name>`.
 
-We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language a^n b^n c^n d^n:
+We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language a<sup>n</sup>b<sup>n</sup>c<sup>n</sup>d<sup>n</sup>:
 
 ```
 s             = g<''>
