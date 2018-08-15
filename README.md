@@ -15,16 +15,15 @@ Which with `name-list` as our start symbol will recognise e.g. `[ alice alice al
 
 The interesting part here is the symbol `repeat<name>`, which is a parametric symbol named `repeat`, parameterized with the argument `name`. This is then matched against the pattern on the left-hand side of the `repeat<T>` rule, which instantiates the parameter `T` with the argument `name` and constructs the production `'' | name repeat<name>`.
 
-We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language { a<sup>n</sup>b<sup>n</sup>c<sup>n</sup>d<sup>n</sup> : n ≥ 1 }:
+We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language { a<sup>n</sup>b<sup>n</sup>c<sup>n</sup> : n ≥ 1 }:
 
 ```
 s             = g<''>
 g<T>          = g<g<T>>
-              | a<T> b<T> c<T> d<T>
+              | a<T> b<T> c<T>
 a<g<T>>       = 'a' a<T>
 b<g<T>>       = 'b' a<T>
 c<g<T>>       = 'c' a<T>
-d<g<T>>       = 'd' a<T>
 _<''>         = ''                  # note, this also matches directly against the g<''> production of s!
 ```
 
@@ -33,7 +32,22 @@ Which could also be refactored as follows:
 ```
 s             = g<''>
 g<T>          = g<g<T>>
-              | e<T 'a'> e<T 'b'> e<T 'c'> e<T 'd'>
+              | e<T 'a'> e<T 'b'> e<T 'c'>
 e<g<T> U>     = e<T U> U
 e<'' _>       = ''
 ```
+
+This matches the phrase `aabbcc` with the following sequence of derivations:
+
+```
+s
+g<''>
+g<g<''>>
+g<g<g<''>>>
+e<g<g<''>> 'a'> e<g<g<''>> 'b'> e<g<g<''>> 'c'>
+e<g<''> 'a'> 'a' e<g<''> 'b'> 'b' e<g<''> 'c'> 'c'
+e<'' 'a'> 'a' 'a' e<'' 'b'> 'b' 'b' e<'' 'c'> 'c' 'c'
+'' 'a' 'a' '' 'b' 'b' '' 'c' 'c'
+```
+
+This can trivially be extended to a language with any number of equally-sized sequences of letters.
