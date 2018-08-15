@@ -13,7 +13,7 @@ name          = 'alice' | 'bob' | 'carol' | 'dan'
 
 Which with `name-list` as our start symbol will recognise e.g. `[ alice alice alice ]`, `[ bob ]`, or `[ bob carol dan ]`, but not `[ craig ]` or `dave`.
 
-The interesting part here is the symbol `repeat<name>`, which is a parametric symbol named `repeat` with the parameter `name`. This is then matched to the left-hand side of the `repeat<T>` rule, which instantiates the parameter `T` with the argument `name` and constructs the production `'' | name repeat<name>`.
+The interesting part here is the symbol `repeat<name>`, which is a parametric symbol named `repeat`, parameterized with the argument `name`. This is then matched against the pattern on the left-hand side of the `repeat<T>` rule, which instantiates the parameter `T` with the argument `name` and constructs the production `'' | name repeat<name>`.
 
 We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language a^n b^n c^n d^n:
 
