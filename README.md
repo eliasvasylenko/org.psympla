@@ -1,4 +1,4 @@
-# psympl
+# Psympl
 Psympl, pronounced as "simple", is a parser generator for context sensitive grammars. The name comes from **p**arametric **sy**mbol **m**eta**p**attern **l**inguistics, which sounds complicated, but once demystified is quite straightforward to understand for users already familiar with typical generative grammars and production rules.
 
 "Parametric symbol" refers to the fact that symbols may be parameterized with other symbols. And if we describe a production rule as the expansion of a symbol into a *pattern* of symbols, then "*meta*pattern" refers to the concept of constructing our production rules by pattern-matching against a parameterized symbol.
