@@ -1,19 +1,22 @@
-# Psympl
-Psympl, pronounced "simple", is a parser generator for context sensitive grammars. The name comes from **p**arametric **sy**mbol **m**eta**p**attern **l**anguage, which sounds complicated, but once demystified is quite straightforward to understand for users already familiar with typical generative grammars and production rules.
+# Psympla Parser
+Psympla, pronounced "simpler", is an efficient parser generator for context sensitive grammars. It is able to generate parsers and deparsers for grammars of **p**arametric **sy**mbol **m**eta**p**attern **la**nguages. These are grammars with the following features:
 
-"Parametric symbol" refers to the fact that symbols may be parameterized with other symbols. And if we describe a production rule as the expansion of a symbol into a *pattern* of symbols, then "*meta*pattern" refers to the concept of constructing our production rules by pattern-matching against a parameterized symbol.
+- Symbols are parametric, allowing us to encode context.
+- Rules are applied to symbols via pattern matching, allowing us to extract features of context.
+- Time complexity for parsing context-free grammars is equivalent to the Earley algorithm (with a few optimisations).
+- Grammar definition is decoupled from user code and data structures, with no intermediate AST step.
 
-This is easier to understand with an example, using a recognisable variation on BNF notation:
+Take the following example for a grammar of a list of known people's names, using a variation on typical BNF style notation:
 
 ```
-name-list     = '[' repeat<name> ']'
-repeat<T>     = '' | T repeat<T>
-name          = 'alice' | 'bob' | 'carol' | 'dan'
+person-list     = '[' repeat<person> ']'
+repeat<T>       = '' | T repeat<T>
+person          = 'alice' | 'bob' | 'carol' | 'dan'
 ```
 
-Where `name-list` is our start symbol, and assuming a lexing step to separate tokens by whitespace. This will recognise e.g. `[ alice alice alice ]`, `[ bob ]`, or `[ bob carol dan ]`, but not `[ craig ]` or `dave`.
+Here `person-list` is our start symbol, and we assume a lexer step to separate tokens by whitespace. This will recognise e.g. `[ alice alice alice ]`, `[ bob ]`, or `[ bob carol dan ]`, but not `[ craig ]` or `dave`.
 
-The interesting part here is the symbol `repeat<name>`, which is a parametric symbol named `repeat`, parameterized with the argument `name`. This is then matched against the pattern on the left-hand side of the `repeat<T>` rule, which instantiates the parameter `T` with the argument `name` and constructs the production `'' | name repeat<name>`.
+The interesting part here is the symbol `repeat<name>`, which is a parametric symbol named `repeat`, parameterized with the argument `person`. This is then matched against the pattern on the left-hand side of the `repeat<T>` rule, which instantiates the parameter `T` with the argument `person` and constructs the production `'' | name repeat<person>`.
 
 We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language { a<sup>n</sup>b<sup>n</sup>c<sup>n</sup> : n ≥ 1 }:
 
@@ -27,7 +30,7 @@ c<g<T>>       = 'c' a<T>
 _<''>         = ''                  # note, this also matches directly against the g<''> production of s!
 ```
 
-Which could also be refactored as follows:
+Which could also be refactored as follows, with each production numbered:
 
 1. `s             = g<''>`
 2. `g<T>          = g<g<T>>`
