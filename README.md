@@ -42,6 +42,7 @@ Which could also be refactored as follows, with each production numbered:
 
 This matches the phrase `aabbcc` with the following sequence of derivations:
 
+```
 start:   s
 apply 1: g<''>
 apply 2: g<g<''>>
@@ -50,5 +51,6 @@ apply 3: e<g<g<''>> 'a'> e<g<g<''>> 'b'> e<g<g<''>> 'c'>
 apply 4: e<g<''> 'a'> 'a' e<g<''> 'b'> 'b' e<g<''> 'c'> 'c'
 apply 4: e<'' 'a'> 'aa' e<'' 'b'> 'bb' e<'' 'c'> 'cc'
 apply 5: 'aabbcc'
+```
 
 This can trivially be extended to a language with any number of equally-sized sequences of letters.
