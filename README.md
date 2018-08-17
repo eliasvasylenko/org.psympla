@@ -32,21 +32,23 @@ _<''>         = ''                  # note, this also matches directly against t
 
 Which could also be refactored as follows, with each production numbered:
 
-1. `s             = g<''>`
-2. `g<T>          = g<g<T>>`
-3. `              | e<T 'a'> e<T 'b'> e<T 'c'>`
-4. `e<g<T> U>     = e<T U> U`
-5. `e<'' _>       = ''`
+```
+1:  s             = g<''>
+2:  g<T>          = g<g<T>>
+3:                | e<T 'a'> e<T 'b'> e<T 'c'>
+4:  e<g<T> U>     = e<T U> U
+5:  e<'' _>       = ''
+```
 
 This matches the phrase `aabbcc` with the following sequence of derivations:
 
-start: `s`
-apply 1: `g<''>`
-apply 2: `g<g<''>>`
-apply 2: `g<g<g<''>>>`
-apply 3: `e<g<g<''>> 'a'> e<g<g<''>> 'b'> e<g<g<''>> 'c'>`
-apply 4: `e<g<''> 'a'> 'a' e<g<''> 'b'> 'b' e<g<''> 'c'> 'c'`
-apply 4: `e<'' 'a'> 'aa' e<'' 'b'> 'bb' e<'' 'c'> 'cc'`
-apply 5: `'aabbcc'`
+start:   s
+apply 1: g<''>
+apply 2: g<g<''>>
+apply 2: g<g<g<''>>>
+apply 3: e<g<g<''>> 'a'> e<g<g<''>> 'b'> e<g<g<''>> 'c'>
+apply 4: e<g<''> 'a'> 'a' e<g<''> 'b'> 'b' e<g<''> 'c'> 'c'
+apply 4: e<'' 'a'> 'aa' e<'' 'b'> 'bb' e<'' 'c'> 'cc'
+apply 5: 'aabbcc'
 
 This can trivially be extended to a language with any number of equally-sized sequences of letters.
