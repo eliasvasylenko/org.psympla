@@ -9,9 +9,9 @@ Psympla, pronounced "simpler", is an efficient parser generator for context sens
 Take the following example for a grammar of a list of known people's names, using a variation on typical BNF style notation:
 
 ```
-person-list     = '[' repeat<person> ']'
-repeat<T>       = '' | T repeat<T>
-person          = 'alice' | 'bob' | 'carol' | 'dan'
+person-list    ->  '[' repeat<person> ']'
+repeat<T>      ->  '' | T repeat<T>
+person         ->  'alice' | 'bob' | 'carol' | 'dan'
 ```
 
 Here `person-list` is our start symbol, and we assume a lexer step to separate tokens by whitespace. This will recognise e.g. `[ alice alice alice ]`, `[ bob ]`, or `[ bob carol dan ]`, but not `[ craig ]` or `dave`.
@@ -21,23 +21,23 @@ The interesting part here is the symbol `repeat<name>`, which is a parametric sy
 We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language { a<sup>n</sup>b<sup>n</sup>c<sup>n</sup> : n ≥ 1 }:
 
 ```
-s             = g<''>
-g<T>          = g<g<T>>
-              | a<T> b<T> c<T>
-a<g<T>>       = 'a' a<T>
-b<g<T>>       = 'b' a<T>
-c<g<T>>       = 'c' a<T>
-_<''>         = ''                  # note, this also matches directly against the g<''> production of s!
+s            ->  g<''>
+g<T>         ->  g<g<T>>
+              |  a<T> b<T> c<T>
+a<g<T>>      ->  'a' a<T>
+b<g<T>>      ->  'b' a<T>
+c<g<T>>      ->  'c' a<T>
+_<''>        ->  ''                  # note, this also matches directly against the g<''> production of s!
 ```
 
 Which could also be refactored as follows, with each production numbered:
 
 ```
-1:  s             = g<''>
-2:  g<T>          = g<g<T>>
-3:                | e<T 'a'> e<T 'b'> e<T 'c'>
-4:  e<g<T> U>     = e<T U> U
-5:  e<'' _>       = ''
+1:  s            ->  g<''>
+2:  g<T>         ->  g<g<T>>
+3:                |  e<T 'a'> e<T 'b'> e<T 'c'>
+4:  e<g<T> U>    ->  e<T U> U
+5:  e<'' _>      ->  ''
 ```
 
 This matches the phrase `aabbcc` with the following sequence of derivations:
