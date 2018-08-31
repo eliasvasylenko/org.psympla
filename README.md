@@ -21,24 +21,14 @@ The interesting part here is the symbol `repeat<name>`, which is a parametric sy
 We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language { a<sup>n</sup>b<sup>n</sup>c<sup>n</sup> : n ≥ 1 }:
 
 ```
-s            ->  g<''>
-g<T>         ->  g<g<T>>
-              |  a<T> b<T> c<T>
-a<g<T>>      ->  'a' a<T>
-b<g<T>>      ->  'b' a<T>
-c<g<T>>      ->  'c' a<T>
-_<''>        ->  ''                  # note, this also matches directly against the g<''> production of s!
+1:  s             ->  g<g>
+2:  g<T>          ->  g<g<T>>
+3:                 |  e<'a' T> e<'b' T> e<'c' T>
+4:  e<C g<T>>     ->  e<C T> C
+5:  e<C g>        ->  C
 ```
 
-Which could also be refactored as follows, with each production numbered:
-
-```
-1:  s            ->  g<''>
-2:  g<T>         ->  g<g<T>>
-3:                |  e<T 'a'> e<T 'b'> e<T 'c'>
-4:  e<g<T> U>    ->  e<T U> U
-5:  e<'' _>      ->  ''
-```
+Where each production numbered.
 
 This matches the phrase `aabbcc` with the following sequence of derivations:
 
