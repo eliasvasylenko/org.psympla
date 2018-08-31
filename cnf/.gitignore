@@ -1,0 +1,6 @@
+/bin/
+/generated/
+/cache/
+/release/
+!/local/**/*.jar
+/ext/local.bnd

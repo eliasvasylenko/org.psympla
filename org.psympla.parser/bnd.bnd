@@ -1,0 +1,12 @@
+Bundle-Name: Psympla :: Parser Generator
+Bundle-Description: \
+	Parser and deparser generator for SMeGs.
+
+Export-Package: \
+	uk.co.strangeskies.modabi.parser
+
+-buildpath: \
+	org.psympla.grammar;version=snapshot
+
+-includeresource: \
+	OSGI-INF/l10n=l10n

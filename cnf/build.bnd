@@ -1,0 +1,96 @@
+########################
+## BND BUILD SETTINGS ##
+########################
+## Java Compiler Options
+javac.source:		10
+javac.target:		10
+javac.compliance:	10
+javac.debug:		on
+
+Git-Descriptor:		${system-allow-fail;git describe --dirty --always}
+Git-SHA:			${system-allow-fail;git rev-list -1 HEAD}
+-diffignore: Git-Descriptor,Git-SHA
+
+## Bnd Options
+-sources: true
+
+-include: ${workspace}/copyright.properties
+copyright.work.name		=	${project.name}
+copyright.year			=	${tstamp;yyyy}
+copyright				=	Copyright (c) ${copyright.holder.name} (2014, ${copyright.year}). All Rights Reserved.
+
+# Maven info. The maven artifactId defaults to Bundle-SymbolicName
+-groupid:	org.psympla
+-pom:		version=${versionmask;===s;${@version}}-SNAPSHOT
+
+psympla-version: 0.0.0
+psympla-version-ceiling: 1.0.0
+
+Bundle-Version:		${psympla-version}.${tstamp}
+
+Bundle-Vendor:		Strange Skies http://strangeskies.co.uk/
+Bundle-Copyright:	${copyright}
+Bundle-License:\
+	LGPL;\
+	link					=	http://www.gnu.org/licenses/
+Bundle-DocURL:		https://github.com/StrangeSkies/org.psympla/wiki
+Bundle-SCM:\
+	url						=	https://github.com/strangeskies/org.psympla, \
+	connection				=	scm:git:https://github.com/strangeskies/org.psympla.git, \
+	developerConnection		=	scm:git:git@github.com:strangeskies/org.psympla.git
+Bundle-Developers:\
+    eliasvasylenko;\
+        email				=	eliasvasylenko@gmail.com; \
+        name				=	"Elias N Vasylenko"; \
+        organization		=	"Strange Skies"; \
+        organizationUrl		=	http://strangeskies.co.uk; \
+        roles				=	"architect,developer"
+
+-dsannotations: *
+-dsannotations-options: inherit
+
+## To enable baselining, uncomment the following lines:
+# -baseline: *
+
+-buildrepo: Maven Local
+-releaserepo: JFrog OSS
+
+-plugin.Local:\
+\
+	aQute.bnd.deployer.repository.LocalIndexedRepo;\
+		name				=	"Local Index";\
+		pretty				=	true;\
+		local				=	${build}/local
+
+-plugin.Build:\
+\
+	aQute.bnd.repository.maven.provider.MavenBndRepository;\
+		name				=	"Maven Local"
+
+-plugin.Release:\
+\
+	aQute.bnd.repository.maven.provider.MavenBndRepository;\
+		name				=	"JFrog OSS";\
+		snapshotUrl			=	http://oss.jfrog.org/oss-snapshot-local
+
+# Run requirement groups:
+runreq.base=\
+	bnd.identity; osgi.enroute.logger.simple.provider
+
+## Build path groups:
+-buildpath.base=\
+	osgi.enroute.base.api
+
+-testpath.base=\
+	org.jmockit:jmockit,\
+	osgi.enroute.junit.wrapper,\
+	osgi.enroute.hamcrest.wrapper,\
+	org.hamcrest:java-hamcrest,\
+	org.assertj.core
+
+## Run requirement groups:
+runreq.base:\
+	bnd.identity; osgi.enroute.logger.simple.provider
+
+## Fix warnings
+-fixupmessages.res: "Bndtools: Found source folder 'res' that is not on bnd's source path 'src'"
