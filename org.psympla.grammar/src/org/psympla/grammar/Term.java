@@ -1,10 +1,10 @@
 package org.psympla.grammar;
 
-public class Expression implements LexicalItem<Expression> {
+public class Term implements LexicalItem<Term> {
   private final Symbol symbol;
   private final Sequence parameters;
 
-  public Expression(Symbol name, Sequence sequence) {
+  public Term(Symbol name, Sequence sequence) {
     this.symbol = name;
     this.parameters = sequence;
   }

@@ -41,14 +41,18 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class Grammar {
-  private final List<Rule> productions;
+  private final List<Rule> rules;
   private final Set<Pattern<Symbol>> terminals;
 
   protected Grammar(
       Collection<? extends Rule> rules,
       Collection<? extends Pattern<Symbol>> terminals) {
-    this.productions = new ArrayList<>(rules);
-    this.terminals = new LinkedHashSet<>(terminals);
+    this(new ArrayList<>(rules), new LinkedHashSet<>(terminals));
+  }
+
+  private Grammar(List<Rule> rules, LinkedHashSet<Pattern<Symbol>> terminals) {
+    this.rules = rules;
+    this.terminals = terminals;
   }
 
   public Grammar withRule(Rule rule) {
@@ -60,30 +64,30 @@ public class Grammar {
   }
 
   public Grammar withProductions(Collection<? extends Rule> rules) {
-    var productionRules = new ArrayList<Rule>(this.productions.size() + rules.size());
-    productionRules.addAll(this.productions);
-    rules.forEach(productionRules::add);
-    return new Grammar(productionRules, terminals);
+    var newRules = new ArrayList<Rule>(this.rules.size() + rules.size());
+    newRules.addAll(this.rules);
+    rules.forEach(newRules::add);
+    return new Grammar(newRules, terminals);
   }
 
-  public Grammar withTerminal(Pattern<Symbol> symbol) {
-    return withTerminals(symbol);
+  public Grammar withTerminal(Pattern<Symbol> terminals) {
+    return withTerminals(terminals);
   }
 
   @SafeVarargs
-  public final Grammar withTerminals(Pattern<Symbol>... symbols) {
-    return withTerminals(Arrays.asList(symbols));
+  public final Grammar withTerminals(Pattern<Symbol>... terminals) {
+    return withTerminals(Arrays.asList(terminals));
   }
 
-  public Grammar withTerminals(Collection<? extends Pattern<Symbol>> symbols) {
-    var terminals = new LinkedHashSet<Pattern<Symbol>>(this.terminals.size() + symbols.size());
-    terminals.addAll(this.terminals);
-    symbols.forEach(terminals::add);
-    return new Grammar(productions, terminals);
+  public Grammar withTerminals(Collection<? extends Pattern<Symbol>> terminals) {
+    var newTerminals = new LinkedHashSet<Pattern<Symbol>>(this.terminals.size() + terminals.size());
+    newTerminals.addAll(this.terminals);
+    terminals.forEach(newTerminals::add);
+    return new Grammar(rules, newTerminals);
   }
 
   public Stream<Rule> getProductions() {
-    return productions.stream();
+    return rules.stream();
   }
 
   public Stream<Pattern<Symbol>> getTerminals() {

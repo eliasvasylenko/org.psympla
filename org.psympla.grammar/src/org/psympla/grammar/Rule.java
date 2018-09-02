@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Rule {
-  private final Pattern<Expression> pattern;
-  private final List<Pattern<Expression>> production;
+  private final Pattern<Term> pattern;
+  private final List<Pattern<Term>> production;
 
   public Rule(
       Symbol symbol,
       Sequence parameters,
-      Collection<? extends Pattern<Expression>> production) {
-    this.pattern = new Expression(symbol, parameters);
+      Collection<? extends Pattern<Term>> production) {
+    this.pattern = new Term(symbol, parameters);
     this.production = new ArrayList<>(production);
   }
 
-  public Pattern<Expression> pattern() {
+  public Pattern<Term> pattern() {
     return pattern;
   }
 
-  public Stream<Pattern<Expression>> production() {
+  public Stream<Pattern<Term>> production() {
     return production.stream();
   }
 }

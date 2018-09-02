@@ -1,11 +1,15 @@
 package org.psympla.lexicon;
 
-import java.util.stream.Stream;
+import org.psympla.grammar.Term;
 
-import org.psympla.grammar.Expression;
+public class Token {
+  private final Term term;
 
-public interface Token<C> {
-  Expression symbol();
+  public Token(Term term) {
+    this.term = term;
+  }
 
-  Stream<C> characters();
+  public Term term() {
+    return term;
+  }
 }
