@@ -1,7 +1,8 @@
-Bundle-Name: Psympla :: Grammar
+Bundle-Name: Psympla :: Lexicon
 
 Export-Package: \
-	org.psympla.grammar
+	org.psympla.lexicon,\
+	org.psympla.lexicon.scanning
 
 -buildpath: \
 	org.psympla.symbol;version=snapshot

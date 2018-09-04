@@ -30,59 +30,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.psympla.grammar;
+package org.psympla.parser;
 
-import static java.util.Collections.singleton;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-
+import org.psympla.language.Language;
 import org.psympla.symbol.Symbol;
 
-public class Grammar {
-  private final List<Rule> rules;
-  private final Set<Symbol> terminals;
+public interface Parser<T, C> {
+  Language<C> language();
 
-  protected Grammar(Collection<? extends Rule> rules, Collection<? extends Symbol> terminals) {
-    this(new ArrayList<>(rules), new LinkedHashSet<>(terminals));
-  }
+  Symbol symbol();
 
-  private Grammar(List<Rule> rules, LinkedHashSet<Symbol> terminals) {
-    this.rules = rules;
-    this.terminals = terminals;
-  }
+  <U> Parser<T, C> with(Class<U> type, U value);
 
-  public Grammar withRule(Rule rule) {
-    return withRules(singleton(rule));
-  }
+  T parse(String string);
 
-  public Grammar withRules(Collection<? extends Rule> rules) {
-    var newRules = new ArrayList<Rule>(this.rules.size() + rules.size());
-    newRules.addAll(this.rules);
-    rules.forEach(newRules::add);
-    return new Grammar(newRules, terminals);
-  }
-
-  public Grammar withTerminal(Symbol terminal) {
-    return withTerminals(singleton(terminal));
-  }
-
-  public Grammar withTerminals(Collection<? extends Symbol> terminals) {
-    var newTerminals = new LinkedHashSet<Symbol>(this.terminals.size() + terminals.size());
-    newTerminals.addAll(this.terminals);
-    terminals.forEach(newTerminals::add);
-    return new Grammar(rules, newTerminals);
-  }
-
-  public Stream<Rule> getRules() {
-    return rules.stream();
-  }
-
-  public Stream<Symbol> getTerminals() {
-    return terminals.stream();
-  }
+  String compose(T object);
 }

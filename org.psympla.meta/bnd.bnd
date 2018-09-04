@@ -1,11 +1,9 @@
-Bundle-Name: Psympla :: Parser Generator
+Bundle-Name: Strange Skies :: Text
 Bundle-Description: \
-	Parser and deparser generator for SMeGs.
+	Common Java utilities for dealing with text.
 
 Export-Package: \
-	org.psympla.language,\
-	org.psympla.parser,\
-	org.psympla.semantics
+	org.psympla.grammar.meta
 
 -buildpath: \
 	org.psympla.grammar;version=snapshot,\

@@ -1,0 +1,7 @@
+Bundle-Name: Psympla :: Symbol
+
+Export-Package: \
+	org.psympla.symbol
+
+-includeresource: \
+	OSGI-INF/l10n=l10n
