@@ -9,8 +9,8 @@ Psympla, pronounced "simpler", is an efficient parser generator for context sens
 Take the following example for a grammar of a list of known people's names, using a variation on typical BNF style notation:
 
 ```
-person-list    ->  '[' repeat<person> ']'
-repeat<T>      ->  '' | T repeat<T>
+person-list    ->  '[' repeat(person) ']'
+repeat(T)      ->  '' | T repeat(T)
 person         ->  'alice' | 'bob' | 'carol' | 'dan'
 ```
 
@@ -21,11 +21,9 @@ The interesting part here is the symbol `repeat<name>`, which is a parametric sy
 We may also employ more sophisticated structural pattern matching to extract nested features of parameterized symbols, as in the following example of a grammer for the typical context sensitive language { a<sup>n</sup>b<sup>n</sup>c<sup>n</sup> : n ≥ 1 }:
 
 ```
-1:  s             ->  g<g>
-2:  g<T>          ->  g<g<T>>
-3:                 |  e<'a' T> e<'b' T> e<'c' T>
-4:  e<C g<T>>     ->  e<C T> C
-5:  e<C g>        ->  C
+1:  start              ->  repeat('a' I) repeat('b' I) repeat('c' I)
+2:  repeat(T I>0)      ->  repeat(T I--) T
+3:  repeat(T 0)        ->  empty
 ```
 
 Where each production numbered.
@@ -33,14 +31,11 @@ Where each production numbered.
 This matches the phrase `aabbcc` with the following sequence of derivations:
 
 ```
-start:   s
-apply 1: g<''>
-apply 2: g<g<''>>
-apply 2: g<g<g<''>>>
-apply 3: e<g<g<''>> 'a'> e<g<g<''>> 'b'> e<g<g<''>> 'c'>
-apply 4: e<g<''> 'a'> 'a' e<g<''> 'b'> 'b' e<g<''> 'c'> 'c'
-apply 4: e<'' 'a'> 'aa' e<'' 'b'> 'bb' e<'' 'c'> 'cc'
-apply 5: 'aabbcc'
+initial:   start
+apply 1: repeat('a' 2) repeat('b' 2) repeat('c' 2)
+apply 2: repeat('a' 1) 'a' repeat('b' 1) 'b' repeat('c' 1) 'c'
+apply 2: repeat('a' 0) 'aa' repeat('b' 0) 'bb' repeat('c' 0) 'cc'
+apply 3: 'aabbcc'
 ```
 
-This can trivially be extended to a language with any number of equally-sized sequences of letters.
+This can trivially be extended to a language with any number of equally-sized sequences of letters by appending more terms to the start rule.
