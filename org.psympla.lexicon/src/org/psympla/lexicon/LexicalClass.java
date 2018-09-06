@@ -9,4 +9,6 @@ public interface LexicalClass<C> {
   Symbol symbol();
 
   Stream<Lexeme<C>> scan(List<C> characters);
+
+  Lexeme<C> print(Token token);
 }

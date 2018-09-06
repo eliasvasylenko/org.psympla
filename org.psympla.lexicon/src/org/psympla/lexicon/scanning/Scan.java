@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Token;
-import org.psympla.symbol.SymbolicExpression;
+import org.psympla.symbol.Cell;
 
 /**
  * A scan is the unit of output of a {@link Scanner}, which defines the behavior
@@ -20,9 +20,9 @@ import org.psympla.symbol.SymbolicExpression;
 public interface Scan {
   int length();
 
-  SymbolicExpression evaluate();
+  Cell evaluate();
 
-  static Scan forParameters(int length, SymbolicExpression parameters) {
+  static Scan forParameters(int length, Cell parameters) {
     return new Scan() {
       @Override
       public int length() {
@@ -30,13 +30,13 @@ public interface Scan {
       }
 
       @Override
-      public SymbolicExpression evaluate() {
+      public Cell evaluate() {
         return parameters;
       }
     };
   }
 
-  static Scan forEvaluation(int length, Supplier<SymbolicExpression> parameters) {
+  static Scan forEvaluation(int length, Supplier<Cell> parameters) {
     return new Scan() {
       @Override
       public int length() {
@@ -44,7 +44,7 @@ public interface Scan {
       }
 
       @Override
-      public SymbolicExpression evaluate() {
+      public Cell evaluate() {
         return parameters.get();
       }
     };

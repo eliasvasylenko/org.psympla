@@ -3,8 +3,6 @@ Bundle-Description: \
 	Parser and deparser generator for SMeGs.
 
 Export-Package: \
-	org.psympla.language,\
-	org.psympla.parser,\
 	org.psympla.semantics
 
 -buildpath: \

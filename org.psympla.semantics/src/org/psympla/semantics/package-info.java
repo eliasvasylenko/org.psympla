@@ -30,14 +30,5 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+@org.osgi.annotation.versioning.Version("1.0.0")
 package org.psympla.semantics;
-
-import java.util.Collection;
-
-public interface SignifiersOut extends Context {
-  <T> SignifiersOut put(Signifier<T> signifier, T value);
-
-  <T> SignifiersOut putAll(Signifier<T> signifier, @SuppressWarnings("unchecked") T... values);
-
-  <T> SignifiersOut putAll(Signifier<T> signifier, Collection<? extends T> values);
-}

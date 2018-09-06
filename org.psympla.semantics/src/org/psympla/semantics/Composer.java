@@ -30,19 +30,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.psympla.parser;
+package org.psympla.semantics;
 
-import org.psympla.language.Language;
-import org.psympla.symbol.Symbol;
+import java.util.Collection;
 
-public interface Parser<T, C> {
-  Language<C> language();
+public interface Composer extends Context {
+  <T> Composer put(Sign<T> signifier, T value);
 
-  Symbol symbol();
+  <T> Composer putAll(Sign<T> signifier, @SuppressWarnings("unchecked") T... values);
 
-  <U> Parser<T, C> with(Class<U> type, U value);
-
-  T parse(String string);
-
-  String compose(T object);
+  <T> Composer putAll(Sign<T> signifier, Collection<? extends T> values);
 }

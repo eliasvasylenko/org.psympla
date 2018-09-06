@@ -3,6 +3,7 @@ package org.psympla.lexicon.scanning;
 import java.util.List;
 
 import org.psympla.lexicon.Lexeme;
+import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Token;
 
 public class ScanningLexeme<C> implements Lexeme<C> {
@@ -15,6 +16,11 @@ public class ScanningLexeme<C> implements Lexeme<C> {
     this.lexicalClass = lexicalClass;
     this.characters = characters.subList(0, scan.length());
     this.scan = scan;
+  }
+
+  @Override
+  public LexicalClass<C> lexicalClass() {
+    return lexicalClass;
   }
 
   @Override
