@@ -1,6 +1,6 @@
 package org.psympla.semantics;
 
-import org.psympla.symbol.Cell;
+import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Pattern;
 import org.psympla.symbol.Symbol;
 
@@ -17,9 +17,9 @@ import org.psympla.symbol.Symbol;
  */
 public class Sign<T> {
   private final Symbol name;
-  private final Pattern<Cell> value;
+  private final Pattern<? extends LexicalItem<?>> value;
 
-  public Sign(Symbol name, Pattern<Cell> value) {
+  public Sign(Symbol name, Pattern<? extends LexicalItem<?>> value) {
     this.name = name;
     this.value = value;
   }
@@ -28,7 +28,7 @@ public class Sign<T> {
     return name;
   }
 
-  public Pattern<Cell> valuePattern() {
+  public Pattern<? extends LexicalItem<?>> valuePattern() {
     return value;
   }
 }

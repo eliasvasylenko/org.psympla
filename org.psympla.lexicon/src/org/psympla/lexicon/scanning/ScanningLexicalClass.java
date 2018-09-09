@@ -1,12 +1,10 @@
 package org.psympla.lexicon.scanning;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
+import org.psympla.lexicon.Sequence;
 import org.psympla.lexicon.Token;
 import org.psympla.symbol.Symbol;
 
@@ -25,13 +23,13 @@ public class ScanningLexicalClass<C> implements LexicalClass<C> {
   }
 
   @Override
-  public Stream<Lexeme<C>> scan(List<C> characters) {
+  public Stream<Lexeme<C>> scan(Sequence<C> characters) {
     return scanner.scan(characters).map(scan -> new ScanningLexeme<C>(this, characters, scan));
   }
 
   @Override
   public Lexeme<C> print(Token token) {
-    List<C> characters = scanner.print(token.value()).collect(toList());
+    Sequence<C> characters = scanner.print(token.value());
     return new PrintingLexeme<>(this, characters, token);
   }
 }

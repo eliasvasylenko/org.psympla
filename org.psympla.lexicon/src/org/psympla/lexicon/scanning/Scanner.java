@@ -1,10 +1,10 @@
 package org.psympla.lexicon.scanning;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
+import org.psympla.lexicon.Sequence;
 import org.psympla.symbol.Cell;
 
 /**
@@ -22,7 +22,7 @@ import org.psympla.symbol.Cell;
  * @param <C>
  */
 public interface Scanner<C> {
-  Stream<Scan> scan(List<C> characters);
+  Stream<Scan> scan(Sequence<C> characters);
 
-  Stream<C> print(Cell cell);
+  Sequence<C> print(Cell cell);
 }

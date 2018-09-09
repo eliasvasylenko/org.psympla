@@ -32,12 +32,19 @@
  */
 package org.psympla.semantics;
 
-import java.util.Collection;
+import java.util.stream.Stream;
 
-public interface Composer extends Context {
-  <T> Composer put(Sign<T> signifier, T value);
+/**
+ * This represents the decomposition of a message into its component signifiers.
+ * 
+ * @author Elias N Vasylenko
+ */
+public interface Decomposition extends Context {
+  <T> T get(Sign<T> signifier);
 
-  <T> Composer putAll(Sign<T> signifier, @SuppressWarnings("unchecked") T... values);
+  <T> T get(Sign<T> signifier, int index);
 
-  <T> Composer putAll(Sign<T> signifier, Collection<? extends T> values);
+  <T> Stream<T> getRemaining(Sign<T> signifier);
+
+  <T> Stream<T> getAll(Sign<T> signifier);
 }

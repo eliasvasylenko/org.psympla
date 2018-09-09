@@ -13,7 +13,7 @@ import org.psympla.symbol.Cell;
 public interface Denotation<T> {
   Sign<T> sign();
 
-  T decode(Decomposer production, Cell parameters);
+  T decode(Decomposition production, Cell parameters);
 
-  Cell encode(Composer production, T domainObject);
+  Cell encode(Composition production, T information);
 }

@@ -1,11 +1,9 @@
 package org.psympla.lexicon;
 
-import java.util.List;
-
 public interface Lexeme<C> {
   LexicalClass<C> lexicalClass();
 
-  List<C> characters();
+  Sequence<C> characters();
 
   Token evaluate();
 }

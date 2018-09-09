@@ -32,7 +32,7 @@ public class Lexicon<C> {
     this.lexicalClasses = lexicalClasses;
   }
 
-  public Stream<Lexeme<C>> scan(Symbol symbol, List<C> characters) {
+  public Stream<Lexeme<C>> scan(Symbol symbol, Sequence<C> characters) {
     return lexicalClasses
         .stream()
         .filter(lexicalClass -> lexicalClass.symbol().equals(symbol))

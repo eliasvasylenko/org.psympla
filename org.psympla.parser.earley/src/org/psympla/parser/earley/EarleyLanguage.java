@@ -1,17 +1,22 @@
 package org.psympla.parser.earley;
 
-import java.util.List;
-
 import org.psympla.grammar.Grammar;
 import org.psympla.language.Language;
 import org.psympla.lexicon.Lexicon;
+import org.psympla.lexicon.Sequence;
 import org.psympla.semantics.Context;
 import org.psympla.semantics.Semantics;
 import org.psympla.semantics.Sign;
 
 public class EarleyLanguage<C> implements Language<C> {
+  private final Lexicon<C> lexicon;
+  private final Grammar grammar;
+  private final Semantics semantics;
+
   public EarleyLanguage(Lexicon<C> lexicon, Grammar grammar, Semantics semantics) {
-    // TODO Auto-generated constructor stub
+    this.lexicon = lexicon;
+    this.grammar = grammar;
+    this.semantics = semantics;
   }
 
   @Override
@@ -21,13 +26,13 @@ public class EarleyLanguage<C> implements Language<C> {
   }
 
   @Override
-  public <T> T decode(Sign<T> sign, List<C> encoding, Context context) {
+  public <T> T decode(Sign<T> sign, Sequence<C> encoding, Context context) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public <T> List<C> encode(Sign<T> sign, T information, Context context) {
+  public <T> Sequence<C> encode(Sign<T> sign, T information, Context context) {
     // TODO Auto-generated method stub
     return null;
   }
