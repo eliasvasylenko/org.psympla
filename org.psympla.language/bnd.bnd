@@ -1,0 +1,14 @@
+Bundle-Name: Psympla :: Parser Generator
+Bundle-Description: \
+	Parser and deparser generator for SMeGs.
+
+Export-Package: \
+	org.psympla.language
+
+-buildpath: \
+	org.psympla.grammar;version=snapshot,\
+	org.psympla.lexicon;version=snapshot,\
+	org.psympla.semantics;version=snapshot
+
+-includeresource: \
+	OSGI-INF/l10n=l10n
