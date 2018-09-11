@@ -17,12 +17,8 @@ public class EarleyLanguage<C> implements Language<C> {
     this.lexicon = lexicon;
     this.grammar = grammar;
     this.semantics = semantics;
-  }
 
-  @Override
-  public Language<C> language() {
-    // TODO Auto-generated method stub
-    return null;
+    ;
   }
 
   @Override

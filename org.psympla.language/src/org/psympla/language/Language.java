@@ -5,8 +5,6 @@ import org.psympla.semantics.Context;
 import org.psympla.semantics.Sign;
 
 public interface Language<C> {
-  Language<C> language();
-
   default <T> T decode(Sign<T> sign, Sequence<C> encoding) {
     return decode(sign, encoding, Context.empty());
   }

@@ -10,7 +10,7 @@ import org.psympla.semantics.Semantics;
 @Component
 public class EarleyLanguageEngine<C> implements LanguageEngine<C> {
   @Override
-  public Language<C> interpret(Lexicon<C> lexicon, Grammar grammar, Semantics semantics) {
+  public Language<C> generate(Lexicon<C> lexicon, Grammar grammar, Semantics semantics) {
     return new EarleyLanguage<>(lexicon, grammar, semantics);
   }
 }

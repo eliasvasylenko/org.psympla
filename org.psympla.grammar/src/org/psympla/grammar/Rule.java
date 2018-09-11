@@ -1,31 +1,34 @@
 package org.psympla.grammar;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Stream;
-
+import org.psympla.symbol.Cell;
+import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Pattern;
 import org.psympla.symbol.Symbol;
-import org.psympla.symbol.Cell;
 
 public class Rule {
-  private final Pattern<Cell> pattern;
-  private final List<Pattern<Cell>> production;
+  private final Symbol symbol;
+  private final Pattern<? extends LexicalItem<?>> parameter;
+  private final Production production;
 
-  public Rule(
-      Symbol symbol,
-      Pattern<Cell> parameters,
-      Collection<? extends Pattern<Cell>> production) {
-    this.pattern = Cell.pattern(symbol, parameters);
-    this.production = new ArrayList<>(production);
+  public Rule(Symbol symbol, Pattern<? extends LexicalItem<?>> parameter, Production production) {
+    this.symbol = symbol;
+    this.parameter = parameter;
+    this.production = production;
+  }
+
+  public Symbol symbol() {
+    return symbol;
+  }
+
+  public Pattern<? extends LexicalItem<?>> parameter() {
+    return parameter;
   }
 
   public Pattern<Cell> pattern() {
-    return pattern;
+    return Cell.pattern(parameter, symbol);
   }
 
-  public Stream<Pattern<Cell>> production() {
-    return production.stream();
+  public Production production() {
+    return production;
   }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.psympla.parser.earley</name>
+	<name>org.psympla.language.earley</name>
 	<comment></comment>
 	<projects>
 	</projects>
