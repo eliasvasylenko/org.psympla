@@ -16,6 +16,10 @@ public class Rule {
     this.production = production;
   }
 
+  public Rule(Symbol symbol, Production production) {
+    this(symbol, Cell.empty(), production);
+  }
+
   public Symbol symbol() {
     return symbol;
   }

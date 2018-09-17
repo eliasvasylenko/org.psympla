@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Sequence;
-import org.psympla.symbol.Cell;
 
 /**
  * A scanner accepts a list of characters and outputs a set of {@link Scan
@@ -23,6 +22,4 @@ import org.psympla.symbol.Cell;
  */
 public interface Scanner<C> {
   Stream<Scan> scan(Sequence<C> characters);
-
-  Sequence<C> print(Cell cell);
 }

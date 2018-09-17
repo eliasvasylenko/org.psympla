@@ -1,5 +1,6 @@
 package org.psympla.lexicon;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
@@ -22,6 +23,13 @@ import org.psympla.symbol.Symbol;
  * @param <C>
  */
 public class Lexicon<C> {
+  private static final Lexicon<Object> EMPTY = new Lexicon<>(emptyList());
+
+  @SuppressWarnings("unchecked")
+  public static final <C> Lexicon<C> empty() {
+    return (Lexicon<C>) EMPTY;
+  }
+
   private final List<LexicalClass<C>> lexicalClasses;
 
   protected Lexicon(Collection<? extends LexicalClass<C>> lexicalClasses) {
@@ -49,5 +57,9 @@ public class Lexicon<C> {
     newLexicalClasses.addAll(this.lexicalClasses);
     lexicalClasses.forEach(newLexicalClasses::add);
     return new Lexicon<>(newLexicalClasses);
+  }
+
+  public Stream<LexicalClass<C>> getLexicalClasses() {
+    return lexicalClasses.stream();
   }
 }

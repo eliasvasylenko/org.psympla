@@ -1,7 +1,5 @@
 package org.psympla.semantics;
 
-import org.psympla.symbol.LexicalItem;
-import org.psympla.symbol.Pattern;
 import org.psympla.symbol.Symbol;
 
 /**
@@ -17,18 +15,16 @@ import org.psympla.symbol.Symbol;
  */
 public class Sign<T> {
   private final Symbol name;
-  private final Pattern<? extends LexicalItem<?>> value;
 
-  public Sign(Symbol name, Pattern<? extends LexicalItem<?>> value) {
+  public Sign(Symbol name) {
     this.name = name;
-    this.value = value;
+  }
+
+  public Sign(String namespace, String id) {
+    this.name = new Symbol(namespace, id);
   }
 
   public Symbol name() {
     return name;
-  }
-
-  public Pattern<? extends LexicalItem<?>> valuePattern() {
-    return value;
   }
 }

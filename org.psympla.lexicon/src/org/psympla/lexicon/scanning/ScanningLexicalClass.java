@@ -11,10 +11,12 @@ import org.psympla.symbol.Symbol;
 public class ScanningLexicalClass<C> implements LexicalClass<C> {
   private final Symbol symbol;
   private final Scanner<C> scanner;
+  private final Printer<C> printer;
 
-  protected ScanningLexicalClass(Symbol symbol, Scanner<C> scanner) {
+  public ScanningLexicalClass(Symbol symbol, Scanner<C> scanner, Printer<C> printer) {
     this.symbol = symbol;
     this.scanner = scanner;
+    this.printer = printer;
   }
 
   @Override
@@ -29,7 +31,7 @@ public class ScanningLexicalClass<C> implements LexicalClass<C> {
 
   @Override
   public Lexeme<C> print(Token token) {
-    Sequence<C> characters = scanner.print(token.value());
+    Sequence<C> characters = printer.print(token.value());
     return new PrintingLexeme<>(this, characters, token);
   }
 }

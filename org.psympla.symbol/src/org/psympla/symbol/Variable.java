@@ -1,13 +1,12 @@
 package org.psympla.symbol;
 
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Variable<T extends LexicalItem<T>> implements Pattern<T> {
   private final String name;
 
-  public Variable(String name, Supplier<? extends T> anonymous) {
+  public Variable(String name) {
     this.name = name;
   }
 

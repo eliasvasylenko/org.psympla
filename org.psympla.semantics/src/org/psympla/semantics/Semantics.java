@@ -1,5 +1,6 @@
 package org.psympla.semantics;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
@@ -7,6 +8,12 @@ import java.util.Collection;
 import java.util.List;
 
 public class Semantics {
+  private static final Semantics EMPTY = new Semantics(emptyList());
+
+  public static final Semantics empty() {
+    return EMPTY;
+  }
+
   private final List<Denotation<?>> denotations;
 
   protected Semantics(Collection<? extends Denotation<?>> denotations) {

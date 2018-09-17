@@ -41,11 +41,11 @@ public class Cell implements LexicalItem<Cell> {
     return null;
   }
 
-  static Cell cons(LexicalItem<?> car, LexicalItem<?> cdr) {
+  public static Cell cons(LexicalItem<?> car, LexicalItem<?> cdr) {
     return EMPTY;
   }
 
-  static Cell empty() {
+  public static Cell empty() {
     return EMPTY;
   }
 

@@ -1,13 +1,13 @@
 package org.psympla.lexicon;
 
+import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Symbol;
-import org.psympla.symbol.Cell;
 
 public class Token {
   private final Symbol name;
-  private final Cell value;
+  private final LexicalItem<?> value;
 
-  public Token(Symbol name, Cell value) {
+  public Token(Symbol name, LexicalItem<?> value) {
     this.name = name;
     this.value = value;
   }
@@ -16,7 +16,7 @@ public class Token {
     return name;
   }
 
-  public Cell value() {
+  public LexicalItem<?> value() {
     return value;
   }
 }

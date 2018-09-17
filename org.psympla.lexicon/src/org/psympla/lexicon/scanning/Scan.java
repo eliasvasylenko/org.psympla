@@ -1,11 +1,11 @@
 package org.psympla.lexicon.scanning;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Token;
-import org.psympla.symbol.Cell;
+import org.psympla.symbol.LexicalItem;
 
 /**
  * A scan is the unit of output of a {@link Scanner}, which defines the behavior
@@ -20,9 +20,9 @@ import org.psympla.symbol.Cell;
 public interface Scan {
   int length();
 
-  Cell evaluate();
+  LexicalItem<?> evaluate();
 
-  static Scan forParameters(int length, Cell parameters) {
+  static Scan forParameter(int length, LexicalItem<?> parameter) {
     return new Scan() {
       @Override
       public int length() {
@@ -30,13 +30,13 @@ public interface Scan {
       }
 
       @Override
-      public Cell evaluate() {
-        return parameters;
+      public LexicalItem<?> evaluate() {
+        return parameter;
       }
     };
   }
 
-  static Scan forEvaluation(int length, Supplier<Cell> parameters) {
+  static Scan forEvaluation(int length, Function<Integer, LexicalItem<?>> parameter) {
     return new Scan() {
       @Override
       public int length() {
@@ -44,8 +44,8 @@ public interface Scan {
       }
 
       @Override
-      public Cell evaluate() {
-        return parameters.get();
+      public LexicalItem<?> evaluate() {
+        return parameter.apply(length);
       }
     };
   }

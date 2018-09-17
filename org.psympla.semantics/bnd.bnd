@@ -1,6 +1,6 @@
-Bundle-Name: Psympla :: Parser Generator
+Bundle-Name: Psympla :: Semantics
 Bundle-Description: \
-	Parser and deparser generator for SMeGs.
+	API for defining semantic relations between grammars and information
 
 Export-Package: \
 	org.psympla.semantics
@@ -9,6 +9,3 @@ Export-Package: \
 	org.psympla.grammar;version=snapshot,\
 	org.psympla.lexicon;version=snapshot,\
 	org.psympla.symbol;version=snapshot
-
--includeresource: \
-	OSGI-INF/l10n=l10n

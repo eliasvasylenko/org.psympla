@@ -8,9 +8,9 @@ import org.psympla.lexicon.Lexicon;
 import org.psympla.semantics.Semantics;
 
 @Component
-public class EarleyLanguageEngine<C> implements LanguageEngine<C> {
+public class EarleyLanguageEngine implements LanguageEngine {
   @Override
-  public Language<C> generate(Lexicon<C> lexicon, Grammar grammar, Semantics semantics) {
+  public <C> Language<C> generate(Lexicon<C> lexicon, Grammar grammar, Semantics semantics) {
     return new EarleyLanguage<>(lexicon, grammar, semantics);
   }
 }

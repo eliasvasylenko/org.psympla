@@ -1,6 +1,6 @@
-Bundle-Name: Psympla :: Parser Generator
+Bundle-Name: Psympla :: Language :: Earley
 Bundle-Description: \
-	Parser and deparser generator for SMeGs.
+	Implementation for processing languages based on the Earley algorithm
 
 Export-Package: org.psympla.parser.earley
 
@@ -10,6 +10,3 @@ Export-Package: org.psympla.parser.earley
 	org.psympla.lexicon;version=snapshot,\
 	org.psympla.semantics;version=snapshot,\
 	org.psympla.symbol;version=snapshot
-
--includeresource: \
-	OSGI-INF/l10n=l10n

@@ -1,11 +1,10 @@
 Bundle-Name: Psympla :: Lexicon
 
 Export-Package: \
+	org.psympla.text,\
+	org.psympla.text.scanning,\
 	org.psympla.lexicon,\
 	org.psympla.lexicon.scanning
 
 -buildpath: \
 	org.psympla.symbol;version=snapshot
-
--includeresource: \
-	OSGI-INF/l10n=l10n

@@ -1,7 +1,5 @@
 package org.psympla.semantics;
 
-import org.psympla.symbol.Cell;
-
 /**
  * A denotation specifies the relationship between a signifier and the
  * information it represents.
@@ -10,10 +8,28 @@ import org.psympla.symbol.Cell;
  *
  * @param <T>
  */
-public interface Denotation<T> {
-  Sign<T> sign();
+public class Denotation<T> implements Encoder<T>, Decoder<T> {
+  private final Sign<T> sign;
+  private final Encoder<T> encoder;
+  private final Decoder<T> decoder;
 
-  T decode(Decomposition production, Cell parameters);
+  public Denotation(Sign<T> sign, Encoder<T> encoder, Decoder<T> decoder) {
+    this.sign = sign;
+    this.encoder = encoder;
+    this.decoder = decoder;
+  }
 
-  Cell encode(Composition production, T information);
+  public Sign<T> sign() {
+    return sign;
+  }
+
+  @Override
+  public void encode(EncodeState<T> encodeState, T information) {
+    encoder.encode(encodeState, information);
+  }
+
+  @Override
+  public T decode(DecodeState decodeState) {
+    return decoder.decode(decodeState);
+  }
 }

@@ -32,6 +32,8 @@
  */
 package org.psympla.grammar;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
@@ -44,6 +46,12 @@ import java.util.stream.Stream;
 import org.psympla.symbol.Symbol;
 
 public class Grammar {
+  private static final Grammar EMPTY = new Grammar(emptyList(), emptySet());
+
+  public static final Grammar empty() {
+    return EMPTY;
+  }
+
   private final List<Rule> rules;
   private final Set<Symbol> terminals;
 
@@ -51,7 +59,7 @@ public class Grammar {
     this(new ArrayList<>(rules), new LinkedHashSet<>(terminals));
   }
 
-  private Grammar(List<Rule> rules, LinkedHashSet<Symbol> terminals) {
+  private Grammar(List<Rule> rules, Set<Symbol> terminals) {
     this.rules = rules;
     this.terminals = terminals;
   }
