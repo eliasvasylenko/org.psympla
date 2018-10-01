@@ -31,5 +31,9 @@ public interface Pattern<T extends LexicalItem<T>> {
    * @param symbol
    * @return
    */
-  Optional<Instantiations> destructure(T symbol);
+  Optional<Instantiations> destructure(T item);
+
+  Pattern<T> partiallyConstruct(PartialInstantiations instantiations);
+
+  Optional<Instantiations> partiallyDestructure(Pattern<T> pattern);
 }

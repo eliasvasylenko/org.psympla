@@ -19,7 +19,22 @@ public interface LexicalItem<T extends LexicalItem<T>> extends Pattern<T> {
   }
 
   @Override
+  default Pattern<T> partiallyConstruct(PartialInstantiations instantiations) {
+    return this;
+  }
+
+  @Override
+  default Optional<Instantiations> partiallyDestructure(Pattern<T> pattern) {
+    if (equals(pattern)) {
+      return Optional.of(Instantiations.empty());
+    }
+    return Optional.empty();
+  }
+
+  @Override
   default Stream<Variable<?>> getVariables() {
     return Stream.empty();
   }
+
+  boolean isAtomic();
 }

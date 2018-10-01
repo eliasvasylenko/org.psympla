@@ -1,33 +1,56 @@
 package org.psympla.example.expression;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Collection;
 
 import org.psympla.semantics.Denotation;
+import org.psympla.semantics.Meaning;
 import org.psympla.semantics.Semantics;
 import org.psympla.semantics.Sign;
-import org.psympla.symbol.Cell;
+import org.psympla.symbol.TextItem;
+import org.psympla.symbol.Variable;
 
 public class ExpressionSemantics extends Semantics {
-  public static final Sign<Expression> EXPRESSION_SIGN = new Sign<>(ExpressionGrammar.EXPRESSION);
-  public static final Sign<Addition> ADD_SIGN = new Sign<>(ExpressionGrammar.ADD);
-  public static final Sign<Subtraction> SUBTRACT_SIGN = new Sign<>(ExpressionGrammar.SUBTRACT);
+  public static final Sign<Expression> EXPRESSION = new Sign<>(ExpressionGrammar.EXPRESSION);
 
   public ExpressionSemantics(ExpressionGrammar grammar, ExpressionLexicon lexicon) {
-    super(
-        asList(
+    super(denotations(grammar, lexicon));
+  }
 
-            new Denotation<>(
-                EXPRESSION_SIGN,
-                (encoder, information) -> Cell.empty(),
-                decoder -> decoder.get(ADD_SIGN)),
+  private static Collection<? extends Denotation<?>> denotations(
+      ExpressionGrammar grammar,
+      ExpressionLexicon lexicon) {
+    var varName = Variable.named("T").typed(TextItem.class);
 
-            new Denotation<>(
-                EXPRESSION_SIGN,
-                // TODO filter the following so we only match information of the class
-                (encoder, information) -> encoder.put(SUBTRACT_SIGN, (Subtraction) information),
-                // TODO filter the following so we only match encodings containing the sign
-                decoder -> decoder.get(SUBTRACT_SIGN))
+    return asList(
 
-        ));
+        new Denotation<>(
+            new Meaning<>(EXPRESSION, Var.class, lexicon.variable().instance(varName)),
+            (e, i) -> e.putInstantiation(varName, new TextItem(i.name())),
+            d -> new Var(d.getInstantiate(varName).toString())),
+
+        new Denotation<>(
+            new Meaning<>(EXPRESSION, Multiplication.class, lexicon.operator().instance("*")),
+            (e, i) -> i.factors().forEach(a -> e.put(EXPRESSION, a)),
+            d -> new Multiplication(d.getAll(EXPRESSION).collect(toList()))),
+
+        new Denotation<>(
+            new Meaning<>(EXPRESSION, Division.class, lexicon.operator().instance("/")),
+            (e, i) -> e.putAll(EXPRESSION, i.dividend(), i.divisor()),
+            d -> new Division(d.get(EXPRESSION), d.get(EXPRESSION))),
+
+        new Denotation<>(
+            new Meaning<>(EXPRESSION, Addition.class, lexicon.operator().instance("+")),
+            (e, i) -> i.addends().forEach(a -> e.put(EXPRESSION, a)),
+            d -> new Addition(d.getAll(EXPRESSION).collect(toList()))),
+
+        new Denotation<>(
+            new Meaning<>(EXPRESSION, Subtraction.class, lexicon.operator().instance("-")),
+            (e, i) -> e.putAll(EXPRESSION, i.minuend(), i.subtrahend()),
+            d -> new Subtraction(d.get(EXPRESSION), d.get(EXPRESSION)))
+
+    );
   }
 }

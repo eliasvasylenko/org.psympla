@@ -1,7 +1,9 @@
 package org.psympla.grammar;
 
 import org.psympla.symbol.Cell;
+import org.psympla.symbol.CellPattern;
 import org.psympla.symbol.LexicalItem;
+import org.psympla.symbol.Nil;
 import org.psympla.symbol.Pattern;
 import org.psympla.symbol.Symbol;
 
@@ -17,7 +19,7 @@ public class Rule {
   }
 
   public Rule(Symbol symbol, Production production) {
-    this(symbol, Cell.empty(), production);
+    this(symbol, Nil.instance(), production);
   }
 
   public Symbol symbol() {
@@ -29,7 +31,7 @@ public class Rule {
   }
 
   public Pattern<Cell> pattern() {
-    return Cell.pattern(parameter, symbol);
+    return new CellPattern(parameter, symbol);
   }
 
   public Production production() {

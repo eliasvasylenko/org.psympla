@@ -7,7 +7,7 @@ import java.util.Objects;
  * 
  * @author Elias N Vasylenko
  */
-public class Symbol implements LexicalItem<Symbol> {
+public class Symbol implements Atom<Symbol> {
   private final String namespace;
   private final String id;
 

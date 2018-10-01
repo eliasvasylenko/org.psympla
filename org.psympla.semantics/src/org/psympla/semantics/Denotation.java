@@ -8,28 +8,26 @@ package org.psympla.semantics;
  *
  * @param <T>
  */
-public class Denotation<T> implements Encoder<T>, Decoder<T> {
-  private final Sign<T> sign;
+public class Denotation<T> {
+  private final Meaning<T> meaning;
   private final Encoder<T> encoder;
   private final Decoder<T> decoder;
 
-  public Denotation(Sign<T> sign, Encoder<T> encoder, Decoder<T> decoder) {
-    this.sign = sign;
+  public Denotation(Meaning<T> meaning, Encoder<T> encoder, Decoder<T> decoder) {
+    this.meaning = meaning;
     this.encoder = encoder;
     this.decoder = decoder;
   }
 
-  public Sign<T> sign() {
-    return sign;
+  public Meaning<T> meaning() {
+    return meaning;
   }
 
-  @Override
-  public void encode(EncodeState<T> encodeState, T information) {
-    encoder.encode(encodeState, information);
+  public Encoder<T> encoder() {
+    return encoder;
   }
 
-  @Override
-  public T decode(DecodeState decodeState) {
-    return decoder.decode(decodeState);
+  public Decoder<T> decoder() {
+    return decoder;
   }
 }

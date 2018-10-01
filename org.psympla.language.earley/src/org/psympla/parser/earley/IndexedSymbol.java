@@ -10,7 +10,6 @@ import org.psympla.symbol.Symbol;
 public class IndexedSymbol {
   private final Symbol symbol;
   private final List<Rule> rules = new ArrayList<>();
-  private boolean terminal = false;
 
   IndexedSymbol(Symbol symbol) {
     this.symbol = symbol;
@@ -20,19 +19,11 @@ public class IndexedSymbol {
     rules.add(rule);
   }
 
-  void setTerminal() {
-    terminal = true;
-  }
-
   public Symbol getSymbol() {
     return symbol;
   }
 
   public List<Rule> getRules() {
     return Collections.unmodifiableList(rules);
-  }
-
-  public boolean isTerminal() {
-    return terminal;
   }
 }

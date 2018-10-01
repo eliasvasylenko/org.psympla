@@ -2,6 +2,7 @@ package org.psympla.parser.earley;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.grammar.Rule;
@@ -15,18 +16,18 @@ public class IndexedGrammar {
     this.grammar = grammar;
 
     grammar.getRules().forEach(this::addRule);
-    grammar.getTerminals().forEach(this::addTerminal);
   }
 
   private void addRule(Rule rule) {
-    getSymbol(rule.symbol()).addRule(rule);
+    symbols.computeIfAbsent(rule.symbol(), IndexedSymbol::new).addRule(rule);
   }
 
-  private void addTerminal(Symbol terminal) {
-    getSymbol(terminal).setTerminal();
+  public IndexedSymbol getSymbol(Symbol symbol) {
+    var indexed = symbols.get(symbol);
+    return indexed == null ? new IndexedSymbol(symbol) : indexed;
   }
 
-  IndexedSymbol getSymbol(Symbol symbol) {
-    return symbols.computeIfAbsent(symbol, IndexedSymbol::new);
+  public Stream<Symbol> symbols() {
+    return symbols.keySet().stream();
   }
 }

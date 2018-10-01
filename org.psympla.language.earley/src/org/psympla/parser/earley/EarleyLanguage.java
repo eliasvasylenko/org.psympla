@@ -18,7 +18,7 @@ public class EarleyLanguage<C> implements Language<C> {
     this.grammar = grammar;
     this.semantics = semantics;
 
-    ;
+    var productions = new ProductionPossibilityMap(grammar, lexicon);
   }
 
   @Override

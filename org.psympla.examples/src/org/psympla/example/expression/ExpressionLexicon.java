@@ -19,7 +19,7 @@ public class ExpressionLexicon extends Lexicon<CodePoint> {
     this(new Regex<>(VARIABLE, "[A-Za-z]"), new Regex<>(OPERATOR, "[+-*/()]"));
   }
 
-  public ExpressionLexicon(Regex<CodePoint> variable, Regex<CodePoint> operator) {
+  private ExpressionLexicon(Regex<CodePoint> variable, Regex<CodePoint> operator) {
     super(asList(variable, operator));
     this.variable = variable;
     this.operator = operator;

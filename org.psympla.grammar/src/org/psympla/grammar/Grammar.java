@@ -33,35 +33,28 @@
 package org.psympla.grammar;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
-import org.psympla.symbol.Symbol;
-
 public class Grammar {
-  private static final Grammar EMPTY = new Grammar(emptyList(), emptySet());
+  private static final Grammar EMPTY = new Grammar(emptyList());
 
   public static final Grammar empty() {
     return EMPTY;
   }
 
   private final List<Rule> rules;
-  private final Set<Symbol> terminals;
 
-  protected Grammar(Collection<? extends Rule> rules, Collection<? extends Symbol> terminals) {
-    this(new ArrayList<>(rules), new LinkedHashSet<>(terminals));
+  protected Grammar(Collection<? extends Rule> rules) {
+    this(new ArrayList<>(rules));
   }
 
-  private Grammar(List<Rule> rules, Set<Symbol> terminals) {
+  private Grammar(List<Rule> rules) {
     this.rules = rules;
-    this.terminals = terminals;
   }
 
   public Grammar withRule(Rule rule) {
@@ -72,25 +65,10 @@ public class Grammar {
     var newRules = new ArrayList<Rule>(this.rules.size() + rules.size());
     newRules.addAll(this.rules);
     rules.forEach(newRules::add);
-    return new Grammar(newRules, terminals);
-  }
-
-  public Grammar withTerminal(Symbol terminal) {
-    return withTerminals(singleton(terminal));
-  }
-
-  public Grammar withTerminals(Collection<? extends Symbol> terminals) {
-    var newTerminals = new LinkedHashSet<Symbol>(this.terminals.size() + terminals.size());
-    newTerminals.addAll(this.terminals);
-    terminals.forEach(newTerminals::add);
-    return new Grammar(rules, newTerminals);
+    return new Grammar(newRules);
   }
 
   public Stream<Rule> getRules() {
     return rules.stream();
-  }
-
-  public Stream<Symbol> getTerminals() {
-    return terminals.stream();
   }
 }
