@@ -4,5 +4,5 @@ import org.psympla.lexicon.Sequence;
 import org.psympla.symbol.LexicalItem;
 
 public interface Printer<C> {
-  Sequence<C> print(LexicalItem<?> parameter);
+  Sequence<C> print(LexicalItem parameter);
 }

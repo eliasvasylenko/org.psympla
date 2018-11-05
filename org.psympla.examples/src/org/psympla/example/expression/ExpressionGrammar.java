@@ -2,15 +2,16 @@ package org.psympla.example.expression;
 
 import static java.util.Arrays.asList;
 import static org.psympla.example.expression.ExpressionLexicon.NAMESPACE;
+import static org.psympla.pattern.Patterns.term;
 
 import java.util.List;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.grammar.Production;
 import org.psympla.grammar.Rule;
+import org.psympla.pattern.Variable;
 import org.psympla.symbol.Symbol;
 import org.psympla.symbol.TextItem;
-import org.psympla.symbol.Variable;
 
 public class ExpressionGrammar extends Grammar {
   public static final Symbol EXPRESSION = new Symbol(NAMESPACE, "expression");
@@ -28,25 +29,25 @@ public class ExpressionGrammar extends Grammar {
 
         new Rule(
             EXPRESSION,
-            new Production(EXPRESSION, lexicon.operator().instance("*"), EXPRESSION)),
+            new Production(term(EXPRESSION), lexicon.operator().instance("*"), term(EXPRESSION))),
 
         new Rule(
             EXPRESSION,
-            new Production(EXPRESSION, lexicon.operator().instance("/"), EXPRESSION)),
+            new Production(term(EXPRESSION), lexicon.operator().instance("/"), term(EXPRESSION))),
 
         new Rule(
             EXPRESSION,
-            new Production(EXPRESSION, lexicon.operator().instance("+"), EXPRESSION)),
+            new Production(term(EXPRESSION), lexicon.operator().instance("+"), term(EXPRESSION))),
 
         new Rule(
             EXPRESSION,
-            new Production(EXPRESSION, lexicon.operator().instance("-"), EXPRESSION)),
+            new Production(term(EXPRESSION), lexicon.operator().instance("-"), term(EXPRESSION))),
 
         new Rule(
             EXPRESSION,
             new Production(
                 lexicon.operator().instance("("),
-                EXPRESSION,
+                term(EXPRESSION),
                 lexicon.operator().instance(")")))
 
     );

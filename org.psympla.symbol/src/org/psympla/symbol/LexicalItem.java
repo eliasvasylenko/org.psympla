@@ -1,40 +1,7 @@
 package org.psympla.symbol;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
-public interface LexicalItem<T extends LexicalItem<T>> extends Pattern<T> {
-  @SuppressWarnings("unchecked")
-  @Override
-  default T construct(Instantiations instantiations) {
-    return (T) this;
+public interface LexicalItem {
+  default Cell consOnto(LexicalItem item) {
+    return new Cell(this, item);
   }
-
-  @Override
-  default Optional<Instantiations> destructure(T symbol) {
-    if (equals(symbol)) {
-      return Optional.of(Instantiations.empty());
-    }
-    return Optional.empty();
-  }
-
-  @Override
-  default Pattern<T> partiallyConstruct(PartialInstantiations instantiations) {
-    return this;
-  }
-
-  @Override
-  default Optional<Instantiations> partiallyDestructure(Pattern<T> pattern) {
-    if (equals(pattern)) {
-      return Optional.of(Instantiations.empty());
-    }
-    return Optional.empty();
-  }
-
-  @Override
-  default Stream<Variable<?>> getVariables() {
-    return Stream.empty();
-  }
-
-  boolean isAtomic();
 }

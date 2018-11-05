@@ -8,4 +8,5 @@ Export-Package: \
 -buildpath: \
 	org.psympla.grammar;version=snapshot,\
 	org.psympla.lexicon;version=snapshot,\
+	org.psympla.pattern;version=snapshot,\
 	org.psympla.symbol;version=snapshot

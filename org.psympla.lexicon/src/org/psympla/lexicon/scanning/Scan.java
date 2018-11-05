@@ -20,9 +20,9 @@ import org.psympla.symbol.LexicalItem;
 public interface Scan {
   int length();
 
-  LexicalItem<?> evaluate();
+  LexicalItem evaluate();
 
-  static Scan forParameter(int length, LexicalItem<?> parameter) {
+  static Scan forParameter(int length, LexicalItem parameter) {
     return new Scan() {
       @Override
       public int length() {
@@ -30,13 +30,13 @@ public interface Scan {
       }
 
       @Override
-      public LexicalItem<?> evaluate() {
+      public LexicalItem evaluate() {
         return parameter;
       }
     };
   }
 
-  static Scan forEvaluation(int length, Function<Integer, LexicalItem<?>> parameter) {
+  static Scan forEvaluation(int length, Function<Integer, LexicalItem> parameter) {
     return new Scan() {
       @Override
       public int length() {
@@ -44,7 +44,7 @@ public interface Scan {
       }
 
       @Override
-      public LexicalItem<?> evaluate() {
+      public LexicalItem evaluate() {
         return parameter.apply(length);
       }
     };

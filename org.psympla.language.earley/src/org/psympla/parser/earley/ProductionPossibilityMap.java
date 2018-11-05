@@ -2,6 +2,7 @@ package org.psympla.parser.earley;
 
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.concat;
+import static org.psympla.pattern.Patterns.literal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,21 +16,20 @@ import org.psympla.grammar.Grammar;
 import org.psympla.grammar.Rule;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Lexicon;
-import org.psympla.symbol.LexicalItem;
+import org.psympla.pattern.Pattern;
+import org.psympla.pattern.Variable;
 import org.psympla.symbol.Nil;
-import org.psympla.symbol.Pattern;
 import org.psympla.symbol.Symbol;
-import org.psympla.symbol.Variable;
 
 public class ProductionPossibilityMap {
   public static class LhsItem {
     private final Symbol symbol;
-    private final Pattern<? extends LexicalItem<?>> pattern;
+    private final Pattern<?> pattern;
     private final Map<Variable<?>, Set<Symbol>> mentionedSymbols = new HashMap<>();
     private final List<RhsItem> outgoingEdges = new ArrayList<>();
     private final List<RhsItem> incomingEdges = new ArrayList<>();
 
-    public LhsItem(Symbol symbol, Pattern<? extends LexicalItem<?>> pattern) {
+    public LhsItem(Symbol symbol, Pattern<?> pattern) {
       this.symbol = symbol;
       this.pattern = pattern;
     }
@@ -56,7 +56,7 @@ public class ProductionPossibilityMap {
     concat(
         indexedGrammar.symbols(),
         lexicon.getLexicalClasses().map(LexicalClass::symbol).distinct())
-            .map(s -> new LhsItem(s, Nil.instance()))
+            .map(s -> new LhsItem(s, literal(Nil.instance())))
             .collect(toSet())
             .forEach(this::addVertex);
 

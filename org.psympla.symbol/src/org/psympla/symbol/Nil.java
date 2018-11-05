@@ -2,7 +2,7 @@ package org.psympla.symbol;
 
 import java.util.stream.Stream;
 
-public class Nil implements Sequence<Nil>, Atom<Nil> {
+public class Nil implements Sequence, Atom<Void> {
   private static final Nil INSTANCE = new Nil();
 
   private Nil() {}
@@ -12,13 +12,8 @@ public class Nil implements Sequence<Nil>, Atom<Nil> {
   }
 
   @Override
-  public Stream<LexicalItem<?>> elements() {
+  public Stream<LexicalItem> elements() {
     return Stream.empty();
-  }
-
-  @Override
-  public LexicalItem<?> terminator() {
-    return this;
   }
 
   @Override

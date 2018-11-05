@@ -10,5 +10,6 @@ Export-Package: \
 	org.psympla.language;version=snapshot,\
 	org.psympla.language.earley;version=snapshot,\
 	org.psympla.lexicon;version=snapshot,\
+	org.psympla.pattern;version=snapshot,\
 	org.psympla.semantics;version=snapshot,\
 	org.psympla.symbol;version=snapshot

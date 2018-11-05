@@ -16,6 +16,11 @@ public class Symbol implements Atom<Symbol> {
     this.id = id;
   }
 
+  @Override
+  public Term consOnto(LexicalItem item) {
+    return new Term(this, item);
+  }
+
   /**
    * The namespace of the symbol. In practice users may choose a string
    * representation of some domain specific concept of scope such as a Java
@@ -26,14 +31,14 @@ public class Symbol implements Atom<Symbol> {
    * 
    * @return a string representation of the symbol's namespace
    */
-  public String getNamespace() {
+  public String namespace() {
     return namespace;
   }
 
   /**
    * @return the id of the symbol
    */
-  public String getId() {
+  public String id() {
     return id;
   }
 

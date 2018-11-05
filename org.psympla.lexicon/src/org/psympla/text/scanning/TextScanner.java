@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 import org.psympla.lexicon.Sequence;
 import org.psympla.lexicon.scanning.Scan;
 import org.psympla.lexicon.scanning.Scanner;
-import org.psympla.symbol.TextItem;
+import org.psympla.symbol.Value;
 import org.psympla.text.Text;
 import org.psympla.text.TextUnit;
 
@@ -22,6 +22,6 @@ public class TextScanner<C extends TextUnit> implements Scanner<C> {
   public Stream<Scan> scan(Sequence<C> characters) {
     return scan
         .apply(new Text<>(characters))
-        .mapToObj(i -> Scan.forParameter(i, new TextItem(characters.subSequence(i).toString())));
+        .mapToObj(i -> Scan.forParameter(i, new Value<String>(characters.subSequence(i).toString())));
   }
 }

@@ -7,8 +7,8 @@ import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Symbol;
 import org.psympla.text.TextUnit;
 
-public class Literal<C extends TextUnit> extends ScanningLexicalClass<C> {
-  public Literal(Symbol symbol, String literal) {
+public class TextLiteral<C extends TextUnit> extends ScanningLexicalClass<C> {
+  public TextLiteral(Symbol symbol, String literal) {
     super(
         symbol,
         new TextScanner<>(

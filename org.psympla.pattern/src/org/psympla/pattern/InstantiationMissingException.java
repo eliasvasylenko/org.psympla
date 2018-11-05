@@ -1,4 +1,5 @@
-package org.psympla.symbol;
+
+package org.psympla.pattern;
 
 public class InstantiationMissingException extends RuntimeException {
   private static final long serialVersionUID = 1L;

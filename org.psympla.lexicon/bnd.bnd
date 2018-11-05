@@ -7,4 +7,5 @@ Export-Package: \
 	org.psympla.lexicon.scanning
 
 -buildpath: \
-	org.psympla.symbol;version=snapshot
+	org.psympla.symbol;version=snapshot,\
+	org.psympla.pattern;version=snapshot

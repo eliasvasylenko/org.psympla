@@ -3,22 +3,22 @@ package org.psympla.parser.earley;
 import java.util.Optional;
 
 import org.psympla.grammar.Rule;
-import org.psympla.symbol.Instantiations;
+import org.psympla.pattern.Pattern;
+import org.psympla.pattern.Substitution;
 import org.psympla.symbol.LexicalItem;
-import org.psympla.symbol.Pattern;
 
 public class EarleyItem {
   private final Rule rule;
   private final int position;
-  private final Instantiations instantiations;
+  private final Substitution instantiations;
 
-  public EarleyItem(Rule rule, int position, Instantiations instantiations) {
+  public EarleyItem(Rule rule, int position, Substitution instantiations) {
     this.rule = rule;
     this.position = position;
     this.instantiations = instantiations;
   }
 
-  public Optional<Pattern<? extends LexicalItem<?>>> nextItem() {
+  public Optional<Pattern<? extends LexicalItem>> nextItem() {
     if (isComplete()) {
       return Optional.empty();
     } else {
@@ -38,7 +38,7 @@ public class EarleyItem {
     return rule;
   }
 
-  public Instantiations instantiations() {
+  public Substitution instantiations() {
     return instantiations;
   }
 }

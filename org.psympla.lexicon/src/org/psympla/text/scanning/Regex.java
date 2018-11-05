@@ -1,12 +1,15 @@
 package org.psympla.text.scanning;
 
+import static org.psympla.pattern.Patterns.literal;
+import static org.psympla.pattern.Patterns.term;
+
 import org.psympla.lexicon.scanning.ScanningLexicalClass;
-import org.psympla.symbol.Cell;
-import org.psympla.symbol.CellPattern;
+import org.psympla.pattern.Pattern;
+import org.psympla.pattern.Variable;
 import org.psympla.symbol.LexicalItem;
-import org.psympla.symbol.Pattern;
 import org.psympla.symbol.Symbol;
-import org.psympla.symbol.TextItem;
+import org.psympla.symbol.Term;
+import org.psympla.symbol.Value;
 import org.psympla.text.TextUnit;
 
 public class Regex<C extends TextUnit> extends ScanningLexicalClass<C> {
@@ -17,13 +20,11 @@ public class Regex<C extends TextUnit> extends ScanningLexicalClass<C> {
         new TextPrinter<>(LexicalItem::toString));
   }
 
-  public Cell instance(String text) {
-    // TODO validate against pattern
-    return Cell.cons(symbol(), new TextItem(text));
+  public Pattern<Term> instance(String text) {
+    return literal(symbol().consOnto(new Value<>(text)));
   }
 
-  public Pattern<Cell> instance(Pattern<TextItem> variable) {
-    // TODO validate against pattern
-    return new CellPattern(symbol(), variable);
+  public Pattern<Term> instance(Variable<Value<String>> variable) {
+    return term(symbol(), variable);
   }
 }

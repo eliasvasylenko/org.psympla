@@ -5,9 +5,9 @@ import org.psympla.symbol.Symbol;
 
 public class Token {
   private final Symbol name;
-  private final LexicalItem<?> value;
+  private final LexicalItem value;
 
-  public Token(Symbol name, LexicalItem<?> value) {
+  public Token(Symbol name, LexicalItem value) {
     this.name = name;
     this.value = value;
   }
@@ -16,7 +16,7 @@ public class Token {
     return name;
   }
 
-  public LexicalItem<?> value() {
+  public LexicalItem value() {
     return value;
   }
 }

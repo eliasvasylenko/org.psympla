@@ -1,16 +1,15 @@
 package org.psympla.example.expression;
 
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 
 import java.util.Collection;
 
+import org.psympla.pattern.Variable;
 import org.psympla.semantics.Denotation;
 import org.psympla.semantics.Meaning;
 import org.psympla.semantics.Semantics;
 import org.psympla.semantics.Sign;
 import org.psympla.symbol.TextItem;
-import org.psympla.symbol.Variable;
 
 public class ExpressionSemantics extends Semantics {
   public static final Sign<Expression> EXPRESSION = new Sign<>(ExpressionGrammar.EXPRESSION);

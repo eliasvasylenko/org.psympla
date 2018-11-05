@@ -8,5 +8,6 @@ Export-Package: org.psympla.parser.earley
 	org.psympla.grammar;version=snapshot,\
 	org.psympla.language;version=snapshot,\
 	org.psympla.lexicon;version=snapshot,\
+	org.psympla.pattern;version=snapshot,\
 	org.psympla.semantics;version=snapshot,\
 	org.psympla.symbol;version=snapshot
