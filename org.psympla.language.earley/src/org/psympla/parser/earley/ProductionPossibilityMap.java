@@ -64,6 +64,6 @@ public class ProductionPossibilityMap {
   }
 
   void addVertex(LhsItem vertex) {
-    vertices.add(vertex);
+    //vertices.add(vertex);
   }
 }
