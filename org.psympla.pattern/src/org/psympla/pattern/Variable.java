@@ -1,9 +1,23 @@
 package org.psympla.pattern;
 
+import java.util.List;
+
 import org.psympla.symbol.LexicalItem;
 
+/**
+ * Variables are identified by name.
+ * <p>
+ * Multiple instances of {@link Variable} which share the same name may appear
+ * within the same scope, but ultimately they must be instantiated to the same
+ * value.
+ * 
+ * @author Elias N Vasylenko
+ *
+ * @param <T>
+ */
 public class Variable<T extends LexicalItem> implements Pattern<T> {
   private final String name;
+  private final List<Constraint> constraints;
 
   private Variable(String name) {
     this.name = name;
@@ -25,10 +39,5 @@ public class Variable<T extends LexicalItem> implements Pattern<T> {
   @Override
   public String toString() {
     return getClass().getSimpleName() + "(" + getName() + ")";
-  }
-
-  @Override
-  public T instantiate() {
-    throw new InstantiationMissingException(this);
   }
 }
