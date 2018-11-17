@@ -18,9 +18,4 @@ public class CellPattern implements Pattern<Cell> {
   public Pattern<?> cdr() {
     return cdr;
   }
-
-  @Override
-  public Cell instantiate() {
-    return null;
-  }
 }

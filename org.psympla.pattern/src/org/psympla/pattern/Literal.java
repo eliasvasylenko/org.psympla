@@ -9,8 +9,7 @@ class Literal<T extends LexicalItem> implements Pattern<T> {
     this.lexicalItem = lexicalItem;
   }
 
-  @Override
-  public T instantiate() {
+  public T getLexicalItem() {
     return lexicalItem;
   }
 }
