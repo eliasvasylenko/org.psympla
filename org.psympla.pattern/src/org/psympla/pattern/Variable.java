@@ -1,7 +1,5 @@
 package org.psympla.pattern;
 
-import java.util.List;
-
 import org.psympla.symbol.LexicalItem;
 
 /**
@@ -17,19 +15,19 @@ import org.psympla.symbol.LexicalItem;
  */
 public class Variable<T extends LexicalItem> implements Pattern<T> {
   private final String name;
-  private final List<Constraint> constraints;
 
   private Variable(String name) {
     this.name = name;
   }
 
-  public static Variable<?> named(String name) {
+  public static Variable<?> variable(String name) {
     return new Variable<>(name);
   }
 
-  public <U extends LexicalItem> Variable<U> typed(Class<U> type) {
-    // TODO Auto-generated method stub
-    return null;
+  public static <T extends LexicalItem> Variable<T> variable(
+      String name,
+      Constraint<T> constraint) {
+    return new Variable<>(name);
   }
 
   public String getName() {

@@ -1,5 +1,7 @@
 package org.psympla.pattern;
 
-public class Constraint {
+import org.psympla.symbol.LexicalItem;
+
+public class Constraint<T extends LexicalItem> {
 
 }

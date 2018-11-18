@@ -18,7 +18,7 @@ public final class Patterns {
   }
 
   public static Pattern<Term> term(Symbol car, Pattern<?> cdr) {
-    return () -> car.consOnto(cdr.instantiate());
+    return new CellPattern(literal(car), cdr);
   }
 
   public static Pattern<Term> term(Pattern<Symbol> car, Pattern<?> cdr) {
