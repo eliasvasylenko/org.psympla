@@ -10,7 +10,13 @@ public final class Patterns {
   private Patterns() {}
 
   public static <T extends LexicalItem> Pattern<T> literal(T lexicalItem) {
-    return new Literal<>(lexicalItem);
+    return new Pattern<>(new LiteralShape(lexicalItem), Constraints.empty());
+  }
+
+  public static Pattern<Cell> cell(Pattern<?> car, Pattern<?> cdr) {
+    return new Pattern<>(
+        Shape.cell(car.shape(), cdr.shape()),
+        Constraints.merge(car.constraints(), cdr.constraints()));
   }
 
   public static Pattern<Term> term(Symbol car) {
@@ -18,14 +24,12 @@ public final class Patterns {
   }
 
   public static Pattern<Term> term(Symbol car, Pattern<?> cdr) {
-    return new CellPattern(literal(car), cdr);
+    return new Pattern<Term>(Shape.cell(Shape.literal(car), cdr.shape()), cdr.constraints());
   }
 
   public static Pattern<Term> term(Pattern<Symbol> car, Pattern<?> cdr) {
-    return () -> car.instantiate().consOnto(cdr.instantiate());
-  }
-
-  public static Pattern<Cell> cell(Pattern<?> car, Pattern<?> cdr) {
-    return null;
+    return new Pattern<>(
+        Shape.cell(car.shape(), cdr.shape()),
+        Constraints.merge(car.constraints(), cdr.constraints()));
   }
 }

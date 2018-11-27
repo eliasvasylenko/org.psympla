@@ -2,8 +2,20 @@ package org.psympla.pattern;
 
 import org.psympla.symbol.LexicalItem;
 
-public interface Pattern<T extends LexicalItem> {
-  default CellPattern consOnto(Pattern<?> item) {
-    return new CellPattern(this, item);
+public class Pattern<T extends LexicalItem> {
+  private final Shape shape;
+  private final Constraints constraints;
+
+  public Pattern(Shape shape, Constraints constraints) {
+    this.shape = shape;
+    this.constraints = constraints;
+  }
+
+  public Shape shape() {
+    return shape;
+  }
+
+  public Constraints constraints() {
+    return constraints;
   }
 }
