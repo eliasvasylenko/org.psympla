@@ -2,9 +2,9 @@
 ## BND BUILD SETTINGS ##
 ########################
 ## Java Compiler Options
-javac.source:		10
-javac.target:		10
-javac.compliance:	10
+javac.source:		11
+javac.target:		11
+javac.compliance:	11
 javac.debug:		on
 
 Git-Descriptor:		${system-allow-fail;git describe --dirty --always}

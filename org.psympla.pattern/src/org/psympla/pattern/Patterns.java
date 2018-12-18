@@ -18,11 +18,11 @@ public final class Patterns {
   }
 
   public static Pattern<Term> term(Symbol car, Pattern<?> cdr) {
-    return new CellPattern(literal(car), cdr);
+    return null;// TODO new CellPattern(literal(car), cdr);
   }
 
   public static Pattern<Term> term(Pattern<Symbol> car, Pattern<?> cdr) {
-    return () -> car.instantiate().consOnto(cdr.instantiate());
+    return null; // TODO () -> car.instantiate().consOnto(cdr.instantiate());
   }
 
   public static Pattern<Cell> cell(Pattern<?> car, Pattern<?> cdr) {
