@@ -2,8 +2,7 @@ package org.psympla.semantics;
 
 import java.util.Collection;
 
-import org.psympla.pattern.Substitution;
-import org.psympla.pattern.Variable;
+import org.psympla.pattern.Pattern;
 import org.psympla.symbol.LexicalItem;
 
 public interface EncodeState {
@@ -15,9 +14,7 @@ public interface EncodeState {
 
   <U> EncodeState putAll(Sign<U> signifier, Collection<? extends U> information);
 
-  EncodeState setParameter(LexicalItem parameter);
+  // EncodeState instantiations(Substitution instantiations);
 
-  EncodeState instantiations(Substitution instantiations);
-
-  <U extends LexicalItem> EncodeState putInstantiation(Variable<U> variable, U instantiation);
+  <U extends LexicalItem> EncodeState putInstantiation(Pattern<U> pattern, U instantiation);
 }

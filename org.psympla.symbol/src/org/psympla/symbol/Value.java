@@ -10,4 +10,9 @@ public class Value<T> implements Atom<T> {
   public T get() {
     return data;
   }
+
+  @Override
+  public <U extends Sequence> Cell<Value<T>, U> consOnto(U item) {
+    return new Cell<>(this, item);
+  }
 }

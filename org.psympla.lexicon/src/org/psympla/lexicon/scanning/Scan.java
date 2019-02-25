@@ -17,34 +17,34 @@ import org.psympla.symbol.LexicalItem;
  * 
  * @author Elias N Vasylenko
  */
-public interface Scan {
+public interface Scan<T extends LexicalItem> {
   int length();
 
-  LexicalItem evaluate();
+  T evaluate();
 
-  static Scan forParameter(int length, LexicalItem parameter) {
-    return new Scan() {
+  static <T extends LexicalItem> Scan<T> forParameter(int length, T parameter) {
+    return new Scan<>() {
       @Override
       public int length() {
         return length;
       }
 
       @Override
-      public LexicalItem evaluate() {
+      public T evaluate() {
         return parameter;
       }
     };
   }
 
-  static Scan forEvaluation(int length, Function<Integer, LexicalItem> parameter) {
-    return new Scan() {
+  static <T extends LexicalItem> Scan<T> forEvaluation(int length, Function<Integer, T> parameter) {
+    return new Scan<>() {
       @Override
       public int length() {
         return length;
       }
 
       @Override
-      public LexicalItem evaluate() {
+      public T evaluate() {
         return parameter.apply(length);
       }
     };

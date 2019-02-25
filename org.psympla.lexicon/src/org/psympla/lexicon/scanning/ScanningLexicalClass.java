@@ -6,14 +6,15 @@ import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Sequence;
 import org.psympla.lexicon.Token;
+import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Symbol;
 
-public class ScanningLexicalClass<C> implements LexicalClass<C> {
+public class ScanningLexicalClass<C, T extends LexicalItem> implements LexicalClass<C, T> {
   private final Symbol symbol;
-  private final Scanner<C> scanner;
-  private final Printer<C> printer;
+  private final Scanner<C, T> scanner;
+  private final Printer<C, T> printer;
 
-  public ScanningLexicalClass(Symbol symbol, Scanner<C> scanner, Printer<C> printer) {
+  public ScanningLexicalClass(Symbol symbol, Scanner<C, T> scanner, Printer<C, T> printer) {
     this.symbol = symbol;
     this.scanner = scanner;
     this.printer = printer;
@@ -25,12 +26,12 @@ public class ScanningLexicalClass<C> implements LexicalClass<C> {
   }
 
   @Override
-  public Stream<Lexeme<C>> scan(Sequence<C> characters) {
-    return scanner.scan(characters).map(scan -> new ScanningLexeme<C>(this, characters, scan));
+  public Stream<Lexeme<C, T>> scan(Sequence<C> characters) {
+    return scanner.scan(characters).map(scan -> new ScanningLexeme<C, T>(this, characters, scan));
   }
 
   @Override
-  public Lexeme<C> print(Token token) {
+  public Lexeme<C, T> print(Token<T> token) {
     Sequence<C> characters = printer.print(token.value());
     return new PrintingLexeme<>(this, characters, token);
   }

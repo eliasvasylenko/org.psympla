@@ -1,31 +1,35 @@
 package org.psympla.pattern;
 
-import org.psympla.symbol.Cell;
 import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Nil;
-import org.psympla.symbol.Symbol;
-import org.psympla.symbol.Term;
 
 public final class Patterns {
+  private static final Wildcard WILDCARD = new Wildcard();
+  private static final Literal NIL = new Literal(Nil.instance());
+
   private Patterns() {}
 
-  public static <T extends LexicalItem> Pattern<T> literal(T lexicalItem) {
-    return new Literal<>(lexicalItem);
+  public static Cons cons(Pattern car, Pattern cdr) {
+    return new Cons(car, cdr);
   }
 
-  public static Pattern<Term> term(Symbol car) {
-    return literal(car.consOnto(Nil.instance()));
+  public static Cons cons(LexicalItem car, Pattern cdr) {
+    return new Cons(literal(car), cdr);
   }
 
-  public static Pattern<Term> term(Symbol car, Pattern<?> cdr) {
-    return null;// TODO new CellPattern(literal(car), cdr);
+  public static Cons cons(Pattern car, LexicalItem cdr) {
+    return new Cons(car, literal(cdr));
   }
 
-  public static Pattern<Term> term(Pattern<Symbol> car, Pattern<?> cdr) {
-    return null; // TODO () -> car.instantiate().consOnto(cdr.instantiate());
+  public static Literal literal(LexicalItem lexicalItem) {
+    return new Literal(lexicalItem);
   }
 
-  public static Pattern<Cell> cell(Pattern<?> car, Pattern<?> cdr) {
-    return null;
+  public static final Wildcard wildcard() {
+    return WILDCARD;
+  }
+
+  public static final Literal nil() {
+    return NIL;
   }
 }

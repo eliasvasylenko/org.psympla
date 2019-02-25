@@ -1,9 +1,11 @@
 package org.psympla.lexicon;
 
-public interface Lexeme<C> {
-  LexicalClass<C> lexicalClass();
+import org.psympla.symbol.LexicalItem;
+
+public interface Lexeme<C, T extends LexicalItem> {
+  LexicalClass<C, T> lexicalClass();
 
   Sequence<C> characters();
 
-  Token evaluate();
+  Token<T> evaluate();
 }

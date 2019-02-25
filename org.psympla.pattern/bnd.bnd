@@ -1,6 +1,7 @@
 Bundle-Name: Psympla :: Pattern
 
-Export-Package: org.psympla.pattern
+Export-Package:\
+	org.psympla.pattern
 
--buildpath: \
+-buildpath:\
 	org.psympla.symbol;version=snapshot

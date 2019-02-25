@@ -2,8 +2,8 @@ package org.psympla.parser.earley;
 
 import java.util.Optional;
 
+import org.psympla.constraint.Match;
 import org.psympla.grammar.Rule;
-import org.psympla.pattern.Pattern;
 import org.psympla.pattern.Substitution;
 import org.psympla.symbol.LexicalItem;
 
@@ -18,7 +18,7 @@ public class EarleyItem {
     this.instantiations = instantiations;
   }
 
-  public Optional<Pattern<? extends LexicalItem>> nextItem() {
+  public Optional<Match<? extends LexicalItem>> nextItem() {
     if (isComplete()) {
       return Optional.empty();
     } else {

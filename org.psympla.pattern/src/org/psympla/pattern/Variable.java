@@ -1,6 +1,6 @@
 package org.psympla.pattern;
 
-import org.psympla.symbol.LexicalItem;
+import java.util.Objects;
 
 /**
  * Variables are identified by name.
@@ -13,29 +13,36 @@ import org.psympla.symbol.LexicalItem;
  *
  * @param <T>
  */
-public class Variable<T extends LexicalItem> implements Pattern<T> {
+public class Variable implements Pattern {
   private final String name;
 
-  private Variable(String name) {
+  public Variable(String name) {
     this.name = name;
   }
 
-  public static Variable<?> variable(String name) {
-    return new Variable<>(name);
-  }
-
-  public static <T extends LexicalItem> Variable<T> variable(
-      String name,
-      Constraint<T> constraint) {
-    return new Variable<>(name);
-  }
-
-  public String getName() {
+  public String name() {
     return name;
   }
 
   @Override
+  public int hashCode() {
+    return Objects.hash(name);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Variable other = (Variable) obj;
+    return Objects.equals(name, other.name);
+  }
+
+  @Override
   public String toString() {
-    return getClass().getSimpleName() + "(" + getName() + ")";
+    return getClass().getSimpleName() + "(" + name() + ")";
   }
 }

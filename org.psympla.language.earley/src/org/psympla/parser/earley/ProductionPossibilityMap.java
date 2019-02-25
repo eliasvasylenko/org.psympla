@@ -2,7 +2,7 @@ package org.psympla.parser.earley;
 
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.concat;
-import static org.psympla.pattern.Patterns.literal;
+import static org.psympla.constraint.Patterns.literal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.psympla.constraint.Match;
 import org.psympla.grammar.Grammar;
 import org.psympla.grammar.Rule;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Lexicon;
-import org.psympla.pattern.Pattern;
 import org.psympla.pattern.Variable;
 import org.psympla.symbol.Nil;
 import org.psympla.symbol.Symbol;
@@ -24,17 +24,17 @@ import org.psympla.symbol.Symbol;
 public class ProductionPossibilityMap {
   public static class LhsItem {
     private final Symbol symbol;
-    private final Pattern<?> pattern;
-    private final Map<Variable<?>, Set<Symbol>> mentionedSymbols = new HashMap<>();
+    private final Match<?> pattern;
+    private final Map<Variable, Set<Symbol>> mentionedSymbols = new HashMap<>();
     private final List<RhsItem> outgoingEdges = new ArrayList<>();
     private final List<RhsItem> incomingEdges = new ArrayList<>();
 
-    public LhsItem(Symbol symbol, Pattern<?> pattern) {
+    public LhsItem(Symbol symbol, Match<?> pattern) {
       this.symbol = symbol;
       this.pattern = pattern;
     }
 
-    public boolean addMentionedSymbols(Variable<?> variable, Collection<? extends Symbol> symbols) {
+    public boolean addMentionedSymbols(Variable variable, Collection<? extends Symbol> symbols) {
       return mentionedSymbols.computeIfAbsent(variable, v -> new HashSet<>()).addAll(symbols);
     }
   }
@@ -64,6 +64,6 @@ public class ProductionPossibilityMap {
   }
 
   void addVertex(LhsItem vertex) {
-    //vertices.add(vertex);
+    // vertices.add(vertex);
   }
 }

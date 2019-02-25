@@ -2,8 +2,7 @@ package org.psympla.semantics;
 
 import java.util.stream.Stream;
 
-import org.psympla.pattern.Substitution;
-import org.psympla.pattern.Variable;
+import org.psympla.pattern.Pattern;
 import org.psympla.symbol.LexicalItem;
 
 public interface DecodeState {
@@ -17,9 +16,7 @@ public interface DecodeState {
 
   <U> U getContext(Class<U> type);
 
-  LexicalItem getParameter();
+  // Instantiat instantiations();
 
-  Substitution instantiations();
-
-  <U extends LexicalItem> U getInstantiate(Variable<U> variable);
+  <U extends LexicalItem> U getInstantiation(Pattern<U> pattern);
 }

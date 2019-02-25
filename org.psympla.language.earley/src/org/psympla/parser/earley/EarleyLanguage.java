@@ -2,11 +2,11 @@ package org.psympla.parser.earley;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.language.Language;
+import org.psympla.language.Sign;
 import org.psympla.lexicon.Lexicon;
 import org.psympla.lexicon.Sequence;
 import org.psympla.semantics.Context;
 import org.psympla.semantics.Semantics;
-import org.psympla.semantics.Sign;
 
 public class EarleyLanguage<C> implements Language<C> {
   private final Lexicon<C> lexicon;

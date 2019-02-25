@@ -8,43 +8,27 @@ import java.util.Objects;
  * @author Elias N Vasylenko
  */
 public class Symbol implements Atom<Symbol> {
-  private final String namespace;
-  private final String id;
+  private final String name;
 
-  public Symbol(String namespace, String id) {
-    this.namespace = namespace;
-    this.id = id;
+  public Symbol(String name) {
+    this.name = name;
+  }
+
+  /**
+   * @return the name of the symbol
+   */
+  public String name() {
+    return name;
   }
 
   @Override
-  public Term consOnto(LexicalItem item) {
-    return new Term(this, item);
-  }
-
-  /**
-   * The namespace of the symbol. In practice users may choose a string
-   * representation of some domain specific concept of scope such as a Java
-   * package or a URI. As such there are no built-in restrictions on format so as
-   * to be permissive of as many schemes as possible. Typically such concepts have
-   * a straightforward and canonical string format, so this is expected to be a
-   * flexible abstraction.
-   * 
-   * @return a string representation of the symbol's namespace
-   */
-  public String namespace() {
-    return namespace;
-  }
-
-  /**
-   * @return the id of the symbol
-   */
-  public String id() {
-    return id;
+  public <T extends Sequence> Cell<Symbol, T> consOnto(T item) {
+    return new Cell<>(this, item);
   }
 
   @Override
   public String toString() {
-    return getClass().getSimpleName() + "(" + namespace + " " + id + ")";
+    return getClass().getSimpleName() + "(" + name + ")";
   }
 
   @Override
@@ -56,11 +40,11 @@ public class Symbol implements Atom<Symbol> {
 
     Symbol that = (Symbol) obj;
 
-    return Objects.equals(this.namespace, that.namespace) && Objects.equals(this.id, that.id);
+    return Objects.equals(this.name, that.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(namespace, id);
+    return Objects.hash(name);
   }
 }

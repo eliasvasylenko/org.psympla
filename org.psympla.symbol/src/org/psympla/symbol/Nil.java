@@ -17,7 +17,7 @@ public class Nil implements Sequence, Atom<Void> {
   }
 
   @Override
-  public boolean isProper() {
-    return true;
+  public <T extends Sequence> Cell<Nil, T> consOnto(T item) {
+    return new Cell<>(this, item);
   }
 }

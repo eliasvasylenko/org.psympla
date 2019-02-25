@@ -2,14 +2,19 @@ package org.psympla.pattern;
 
 import org.psympla.symbol.LexicalItem;
 
-class Literal<T extends LexicalItem> implements Pattern<T> {
-  private final T lexicalItem;
+public class Literal implements Pattern {
+  private final LexicalItem lexicalItem;
 
-  public Literal(T lexicalItem) {
+  Literal(LexicalItem lexicalItem) {
     this.lexicalItem = lexicalItem;
   }
 
-  public T getLexicalItem() {
+  public LexicalItem lexicalItem() {
     return lexicalItem;
+  }
+
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "(" + lexicalItem() + ")";
   }
 }

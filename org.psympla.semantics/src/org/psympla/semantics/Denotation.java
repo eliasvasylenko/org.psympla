@@ -9,17 +9,17 @@ package org.psympla.semantics;
  * @param <T>
  */
 public class Denotation<T> {
-  private final Meaning<T> meaning;
+  private final Designation<T> meaning;
   private final Encoder<T> encoder;
   private final Decoder<T> decoder;
 
-  public Denotation(Meaning<T> meaning, Encoder<T> encoder, Decoder<T> decoder) {
+  public Denotation(Designation<T> meaning, Encoder<T> encoder, Decoder<T> decoder) {
     this.meaning = meaning;
     this.encoder = encoder;
     this.decoder = decoder;
   }
 
-  public Meaning<T> meaning() {
+  public Designation<T> meaning() {
     return meaning;
   }
 

@@ -2,10 +2,12 @@ package org.psympla.lexicon;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.psympla.symbol.Symbol;
@@ -30,36 +32,35 @@ public class Lexicon<C> {
     return (Lexicon<C>) EMPTY;
   }
 
-  private final List<LexicalClass<C>> lexicalClasses;
+  private final Map<Symbol, LexicalClass<C, ?>> lexicalClasses;
 
-  protected Lexicon(Collection<? extends LexicalClass<C>> lexicalClasses) {
-    this.lexicalClasses = new ArrayList<>(lexicalClasses);
-  }
-
-  private Lexicon(List<LexicalClass<C>> lexicalClasses) {
-    this.lexicalClasses = lexicalClasses;
-  }
-
-  public Stream<Lexeme<C>> scan(Symbol symbol, Sequence<C> characters) {
-    return lexicalClasses
+  protected Lexicon(Collection<? extends LexicalClass<C, ?>> lexicalClasses) {
+    this.lexicalClasses = lexicalClasses
         .stream()
-        .filter(lexicalClass -> lexicalClass.symbol().equals(symbol))
-        .flatMap(lexicalClass -> lexicalClass.scan(characters));
+        .collect(toMap(LexicalClass::symbol, Function.identity()));
   }
 
-  public Lexicon<C> withLexicalClass(LexicalClass<C> lexicalClass) {
+  public Lexicon<C> withLexicalClass(LexicalClass<C, ?> lexicalClass) {
     return withLexicalClasses(singleton(lexicalClass));
   }
 
-  public Lexicon<C> withLexicalClasses(Collection<? extends LexicalClass<C>> lexicalClasses) {
-    var newLexicalClasses = new ArrayList<LexicalClass<C>>(
+  public Lexicon<C> withLexicalClasses(Collection<? extends LexicalClass<C, ?>> lexicalClasses) {
+    var newLexicalClasses = new ArrayList<LexicalClass<C, ?>>(
         this.lexicalClasses.size() + lexicalClasses.size());
-    newLexicalClasses.addAll(this.lexicalClasses);
-    lexicalClasses.forEach(newLexicalClasses::add);
+    newLexicalClasses.addAll(this.lexicalClasses.values());
+    newLexicalClasses.addAll(lexicalClasses);
     return new Lexicon<>(newLexicalClasses);
   }
 
-  public Stream<LexicalClass<C>> getLexicalClasses() {
-    return lexicalClasses.stream();
+  public Stream<Symbol> getSymbols() {
+    return lexicalClasses.keySet().stream();
+  }
+
+  public Stream<LexicalClass<C, ?>> getLexicalClasses() {
+    return lexicalClasses.values().stream();
+  }
+
+  public LexicalClass<C, ?> getLexicalClass(Symbol symbol) {
+    return lexicalClasses.get(symbol);
   }
 }

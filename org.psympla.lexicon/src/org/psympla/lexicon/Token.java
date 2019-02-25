@@ -3,11 +3,11 @@ package org.psympla.lexicon;
 import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Symbol;
 
-public class Token {
+public class Token<T extends LexicalItem> {
   private final Symbol name;
-  private final LexicalItem value;
+  private final T value;
 
-  public Token(Symbol name, LexicalItem value) {
+  public Token(Symbol name, T value) {
     this.name = name;
     this.value = value;
   }
@@ -16,7 +16,7 @@ public class Token {
     return name;
   }
 
-  public LexicalItem value() {
+  public T value() {
     return value;
   }
 }
