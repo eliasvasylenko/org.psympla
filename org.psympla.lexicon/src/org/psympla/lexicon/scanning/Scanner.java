@@ -2,10 +2,10 @@ package org.psympla.lexicon.scanning;
 
 import java.util.stream.Stream;
 
+import org.psympla.lexicon.Characters;
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
-import org.psympla.lexicon.Sequence;
-import org.psympla.symbol.LexicalItem;
+import org.psympla.symbol.Sequence;
 
 /**
  * A scanner accepts a list of characters and outputs a set of {@link Scan
@@ -21,6 +21,6 @@ import org.psympla.symbol.LexicalItem;
  *
  * @param <C>
  */
-public interface Scanner<C, T extends LexicalItem> {
-  Stream<Scan<T>> scan(Sequence<C> characters);
+public interface Scanner<C, T extends Sequence> {
+  Stream<Scan<T>> scan(Characters<C> characters);
 }

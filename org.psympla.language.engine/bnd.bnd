@@ -3,7 +3,7 @@ Bundle-Description: \
 	API for defining and processing languages
 
 Export-Package: \
-	org.psympla.language
+	org.psympla.language.engine
 
 -buildpath: \
 	org.psympla.grammar;version=snapshot,\

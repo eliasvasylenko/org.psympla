@@ -1,9 +1,9 @@
 package org.psympla.lexicon;
 
-import org.psympla.symbol.LexicalItem;
+import org.psympla.symbol.Sequence;
 import org.psympla.symbol.Symbol;
 
-public class Token<T extends LexicalItem> {
+public class Token<T extends Sequence> {
   private final Symbol name;
   private final T value;
 

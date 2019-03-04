@@ -2,16 +2,16 @@ package org.psympla.text;
 
 import java.util.Optional;
 
-import org.psympla.lexicon.Sequence;
+import org.psympla.lexicon.Characters;
 
-public class Text<C extends TextUnit> implements Sequence<C> {
+public class Text<C extends TextUnit> implements Characters<C> {
   private final String string;
 
   public Text(String string) {
     this.string = string;
   }
 
-  public Text(Sequence<C> characters) {
+  public Text(Characters<C> characters) {
     throw new UnsupportedOperationException();
   }
 

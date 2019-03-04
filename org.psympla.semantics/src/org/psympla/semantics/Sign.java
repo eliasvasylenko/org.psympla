@@ -20,8 +20,8 @@ public class Sign<T> {
     this.name = name;
   }
 
-  public Sign(String namespace, String id) {
-    this.name = new Symbol(namespace, id);
+  public Sign(String namespace) {
+    this.name = new Symbol(namespace);
   }
 
   public Symbol name() {

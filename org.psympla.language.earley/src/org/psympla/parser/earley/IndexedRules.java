@@ -5,22 +5,21 @@ import java.util.Collections;
 import java.util.List;
 
 import org.psympla.grammar.Rule;
-import org.psympla.symbol.Symbol;
 
-public class IndexedSymbol {
-  private final Symbol symbol;
+public class IndexedRules {
+  private final Index index;
   private final List<Rule> rules = new ArrayList<>();
 
-  IndexedSymbol(Symbol symbol) {
-    this.symbol = symbol;
+  IndexedRules(Index index) {
+    this.index = index;
   }
 
   void addRule(Rule rule) {
     rules.add(rule);
   }
 
-  public Symbol getSymbol() {
-    return symbol;
+  public Index getIndex() {
+    return index;
   }
 
   public List<Rule> getRules() {

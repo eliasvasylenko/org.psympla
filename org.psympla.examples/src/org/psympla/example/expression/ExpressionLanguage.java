@@ -8,7 +8,9 @@ import org.psympla.text.Text;
 
 public class ExpressionLanguage extends EarleyLanguage<CodePoint> {
   public static void main(String... args) {
-    Expression expression = new ExpressionLanguage().decode(EXPRESSION, new Text<>("a + b * c"));
+    Expression expression = new ExpressionLanguage()
+        .designation(EXPRESSION)
+        .decode(new Text<>("a + b * c"));
     System.out.println(expression);
   }
 

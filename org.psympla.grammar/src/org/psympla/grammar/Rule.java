@@ -1,7 +1,8 @@
 package org.psympla.grammar;
 
-import static org.psympla.pattern.Patterns.cons;
+import static java.util.stream.Collectors.toList;
 import static org.psympla.pattern.Patterns.literal;
+import static org.psympla.pattern.Patterns.sequence;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,43 +14,38 @@ import org.psympla.constraint.Scope;
 import org.psympla.pattern.Pattern;
 import org.psympla.pattern.Patterns;
 import org.psympla.symbol.LexicalItem;
+import org.psympla.symbol.Sequence;
 import org.psympla.symbol.Symbol;
 
 public class Rule {
-  private final Symbol symbol;
-  private final Pattern parameter;
+  private final Pattern pattern;
   private final List<Pattern> products;
   private final Scope scope;
 
-  public Rule(Symbol symbol) {
-    this(symbol, Patterns.nil());
+  public Rule(Pattern pattern) {
+    this(pattern, List.of(), Scope.empty());
   }
 
-  public Rule(Symbol symbol, LexicalItem parameter) {
-    this(symbol, literal(parameter));
+  public Rule(LexicalItem patternLiteral) {
+    this(literal(patternLiteral));
   }
 
   public Rule(Symbol symbol, Pattern parameter) {
-    this(symbol, parameter, List.of(), Scope.empty());
+    this(sequence(literal(symbol), parameter));
   }
 
-  private Rule(Symbol symbol, Pattern parameter, List<Pattern> production, Scope scope) {
-    this.symbol = symbol;
-    this.parameter = parameter;
+  public Rule(Symbol symbol, LexicalItem parameterLiteral) {
+    this(Sequence.of(symbol, parameterLiteral));
+  }
+
+  private Rule(Pattern pattern, List<Pattern> production, Scope scope) {
+    this.pattern = pattern;
     this.products = List.copyOf(production);
     this.scope = scope;
   }
 
-  public Symbol symbol() {
-    return symbol;
-  }
-
-  public Pattern parameter() {
-    return parameter;
-  }
-
   public Pattern pattern() {
-    return cons(symbol, parameter);
+    return pattern;
   }
 
   public Stream<Pattern> products() {
@@ -68,12 +64,12 @@ public class Rule {
     return scope;
   }
 
-  public Rule withProduct(Symbol productSymbol) {
-    return withProduct(productSymbol, Patterns.wildcard());
+  public Rule withProduct(LexicalItem product) {
+    return withProducts(product);
   }
 
-  public Rule withProduct(Symbol productSymbol, Pattern productParameter) {
-    return withProduct(cons(productSymbol, productParameter));
+  public final Rule withProducts(LexicalItem... production) {
+    return withProducts(Stream.of(production).map(Patterns::literal).collect(toList()));
   }
 
   public Rule withProduct(Pattern product) {
@@ -88,10 +84,10 @@ public class Rule {
     List<Pattern> newProduction = new ArrayList<>(this.products.size() + production.size());
     newProduction.addAll(this.products);
     newProduction.addAll(production);
-    return new Rule(symbol, parameter, newProduction, scope);
+    return new Rule(pattern, newProduction, scope);
   }
 
   public Rule withConstraint(Constraint constraint) {
-    return new Rule(symbol, parameter, products, scope.withConstraint(constraint));
+    return new Rule(pattern, products, scope.withConstraint(constraint));
   }
 }

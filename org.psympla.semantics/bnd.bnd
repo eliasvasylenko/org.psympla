@@ -3,7 +3,8 @@ Bundle-Description: \
 	API for defining semantic relations between grammars and information
 
 Export-Package: \
-	org.psympla.semantics
+	org.psympla.semantics,\
+	org.psympla.semantics.type
 
 -buildpath: \
 	org.psympla.grammar;version=snapshot,\

@@ -6,11 +6,14 @@ import java.util.stream.Stream;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.grammar.Rule;
-import org.psympla.symbol.Symbol;
 
 public class IndexedGrammar {
   private final Grammar grammar;
-  private final Map<Symbol, IndexedSymbol> symbols = new HashMap<>();
+  /**
+   * TODO All rule patterns that are not sequences must be specialized. All rule
+   * patterns that are sequences must have their left-most component specialized.
+   */
+  private final Map<Index, IndexedRules> symbols = new HashMap<>();
 
   public IndexedGrammar(Grammar grammar) {
     this.grammar = grammar;
@@ -19,15 +22,15 @@ public class IndexedGrammar {
   }
 
   private void addRule(Rule rule) {
-    symbols.computeIfAbsent(rule.symbol(), IndexedSymbol::new).addRule(rule);
+    symbols.computeIfAbsent(new Index(rule.pattern()), IndexedRules::new).addRule(rule);
   }
 
-  public IndexedSymbol getSymbol(Symbol symbol) {
-    var indexed = symbols.get(symbol);
-    return indexed == null ? new IndexedSymbol(symbol) : indexed;
+  public IndexedRules getRules(Index index) {
+    var indexed = symbols.get(index);
+    return indexed == null ? new IndexedRules(index) : indexed;
   }
 
-  public Stream<Symbol> symbols() {
+  public Stream<Index> indices() {
     return symbols.keySet().stream();
   }
 }

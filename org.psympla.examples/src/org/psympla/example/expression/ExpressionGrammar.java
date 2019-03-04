@@ -5,50 +5,46 @@ import static org.psympla.example.expression.ExpressionLexicon.ADD;
 import static org.psympla.example.expression.ExpressionLexicon.CLOSE_BRACKET;
 import static org.psympla.example.expression.ExpressionLexicon.DIVIDE;
 import static org.psympla.example.expression.ExpressionLexicon.MULTIPLY;
-import static org.psympla.example.expression.ExpressionLexicon.NAMESPACE;
 import static org.psympla.example.expression.ExpressionLexicon.OPEN_BRACKET;
 import static org.psympla.example.expression.ExpressionLexicon.SUBTRACT;
 import static org.psympla.example.expression.ExpressionLexicon.VARIABLE;
 import static org.psympla.pattern.Patterns.cons;
+import static org.psympla.pattern.Patterns.variable;
 import static org.psympla.pattern.Patterns.wildcard;
 
 import java.util.List;
 
-import org.psympla.constraint.Match;
-import org.psympla.constraint.Or;
 import org.psympla.grammar.Grammar;
 import org.psympla.grammar.Rule;
-import org.psympla.pattern.Variable;
+import org.psympla.symbol.Sequence;
 import org.psympla.symbol.Symbol;
 
 public class ExpressionGrammar extends Grammar {
-  public static final Symbol EXPRESSION = new Symbol(NAMESPACE, "expression");
+  public static final Symbol BINARY_OPERATOR = new Symbol("binary-operator");
+  public static final Symbol EXPRESSION = new Symbol("expression");
 
   protected ExpressionGrammar(ExpressionLexicon lexicon) {
     super(rules(lexicon));
   }
 
   private static List<Rule> rules(ExpressionLexicon lexicon) {
-    var T = new Variable("T");
-
     return asList(
-        
-        new Rule(EXPRESSION, VARIABLE).withProduct(VARIABLE, wildcard()),
 
-        new Rule(EXPRESSION, T)
-            .withProduct(EXPRESSION)
-            .withProduct(T)
-            .withProduct(EXPRESSION)
-            .withConstraint(
-                new Or(
-                    new Match(T, cons(MULTIPLY, wildcard())),
-                    new Match(T, cons(DIVIDE, wildcard())),
-                    new Match(T, cons(ADD, wildcard())),
-                    new Match(T, cons(SUBTRACT, wildcard())))),
+        new Rule(EXPRESSION).withProduct(cons(VARIABLE, wildcard())),
 
-        new Rule(EXPRESSION, new Variable("T"))
+        new Rule(BINARY_OPERATOR, variable("Op"))
+            .withProduct(EXPRESSION)
+            .withProduct(cons(variable("Op"), wildcard()))
+            .withProduct(EXPRESSION),
+
+        new Rule(EXPRESSION).withProduct(Sequence.of(BINARY_OPERATOR, MULTIPLY)),
+        new Rule(EXPRESSION).withProduct(Sequence.of(BINARY_OPERATOR, DIVIDE)),
+        new Rule(EXPRESSION).withProduct(Sequence.of(BINARY_OPERATOR, ADD)),
+        new Rule(EXPRESSION).withProduct(Sequence.of(BINARY_OPERATOR, SUBTRACT)),
+
+        new Rule(EXPRESSION)
             .withProduct(OPEN_BRACKET)
-            .withProduct(EXPRESSION, new Variable("T"))
+            .withProduct(EXPRESSION)
             .withProduct(CLOSE_BRACKET)
 
     );

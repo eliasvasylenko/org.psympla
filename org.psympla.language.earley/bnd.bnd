@@ -5,8 +5,10 @@ Bundle-Description: \
 Export-Package: org.psympla.parser.earley
 
 -buildpath: \
+	org.psympla.constraints;version=snapshot,\
 	org.psympla.grammar;version=snapshot,\
 	org.psympla.language;version=snapshot,\
+	org.psympla.language.engine;version=snapshot,\
 	org.psympla.lexicon;version=snapshot,\
 	org.psympla.pattern;version=snapshot,\
 	org.psympla.semantics;version=snapshot,\

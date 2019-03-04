@@ -1,12 +1,11 @@
 package org.psympla.parser.earley;
 
 import org.psympla.grammar.Grammar;
+import org.psympla.language.Designation;
 import org.psympla.language.Language;
-import org.psympla.language.Sign;
 import org.psympla.lexicon.Lexicon;
-import org.psympla.lexicon.Sequence;
-import org.psympla.semantics.Context;
 import org.psympla.semantics.Semantics;
+import org.psympla.semantics.Sign;
 
 public class EarleyLanguage<C> implements Language<C> {
   private final Lexicon<C> lexicon;
@@ -22,13 +21,7 @@ public class EarleyLanguage<C> implements Language<C> {
   }
 
   @Override
-  public <T> T decode(Sign<T> sign, Sequence<C> encoding, Context context) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public <T> Sequence<C> encode(Sign<T> sign, T information, Context context) {
+  public <T> Designation<C, T> designation(Sign<T> sign) {
     // TODO Auto-generated method stub
     return null;
   }

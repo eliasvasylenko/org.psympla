@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Variable implements Pattern {
   private final String name;
 
-  public Variable(String name) {
+  Variable(String name) {
     this.name = name;
   }
 

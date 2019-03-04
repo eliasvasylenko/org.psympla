@@ -1,20 +1,20 @@
 package org.psympla.lexicon.scanning;
 
+import org.psympla.lexicon.Characters;
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
-import org.psympla.lexicon.Sequence;
 import org.psympla.lexicon.Token;
-import org.psympla.symbol.LexicalItem;
+import org.psympla.symbol.Sequence;
 
-public class ScanningLexeme<C, T extends LexicalItem> implements Lexeme<C, T> {
+public class ScanningLexeme<C, T extends Sequence> implements Lexeme<C, T> {
   private final ScanningLexicalClass<C, T> lexicalClass;
-  private final Sequence<C> characters;
+  private final Characters<C> characters;
   private final Scan<T> scan;
   private Token<T> token;
 
   protected ScanningLexeme(
       ScanningLexicalClass<C, T> lexicalClass,
-      Sequence<C> characters,
+      Characters<C> characters,
       Scan<T> scan) {
     this.lexicalClass = lexicalClass;
     this.characters = characters.subSequence(0, scan.length());
@@ -27,7 +27,7 @@ public class ScanningLexeme<C, T extends LexicalItem> implements Lexeme<C, T> {
   }
 
   @Override
-  public Sequence<C> characters() {
+  public Characters<C> characters() {
     return characters;
   }
 

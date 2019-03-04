@@ -7,15 +7,15 @@ import static org.psympla.example.expression.ExpressionLexicon.DIVIDE;
 import static org.psympla.example.expression.ExpressionLexicon.MULTIPLY;
 import static org.psympla.example.expression.ExpressionLexicon.SUBTRACT;
 import static org.psympla.example.expression.ExpressionLexicon.VARIABLE;
+import static org.psympla.pattern.Patterns.variable;
 
 import java.util.Collection;
 
-import org.psympla.pattern.Patterns;
-import org.psympla.pattern.Variable;
 import org.psympla.semantics.Denotation;
 import org.psympla.semantics.Designation;
 import org.psympla.semantics.Semantics;
 import org.psympla.semantics.Sign;
+import org.psympla.semantics.Unknown;
 import org.psympla.symbol.Value;
 
 /*
@@ -38,6 +38,8 @@ import org.psympla.symbol.Value;
 public class ExpressionSemantics extends Semantics {
   public static final Sign<Expression> EXPRESSION = new Sign<>(ExpressionGrammar.EXPRESSION);
 
+  private static final Unknown<Value<String>> VARIABLE_NAME = new Unknown<>("Name", null);
+
   public ExpressionSemantics(ExpressionGrammar grammar, ExpressionLexicon lexicon) {
     super(denotations(grammar, lexicon));
   }
@@ -45,8 +47,6 @@ public class ExpressionSemantics extends Semantics {
   private static Collection<? extends Denotation<?>> denotations(
       ExpressionGrammar grammar,
       ExpressionLexicon lexicon) {
-    var varName = new Variable<Value<String>>("T");
-
     return asList(
 
         new Denotation<>(
@@ -74,13 +74,14 @@ public class ExpressionSemantics extends Semantics {
 
         new Denotation<>(
             new Designation<>(EXPRESSION, VARIABLE, Var.class),
-            (e, i) -> e.putInstantiation(varName, new Value<>(i.name())),
-            d -> new Var(d.getInstantiation(varName).toString())),
+            (e, i) -> e.putInstantiation(VARIABLE_NAME, new Value<>(i.name())),
+            d -> new Var(d.getInstantiation(VARIABLE_NAME).get())),
 
         new Denotation<>(
-            new Designation<>(EXPRESSION, new Variable("T"), Expression.class),
+            new Designation<>(EXPRESSION, variable("T"), Expression.class),
             (e, i) -> e.put(EXPRESSION, i),
-            d -> d.get(EXPRESSION)));
-  }
+            d -> d.get(EXPRESSION))
 
+    );
+  }
 }

@@ -2,14 +2,14 @@ package org.psympla.lexicon.scanning;
 
 import java.util.stream.Stream;
 
+import org.psympla.lexicon.Characters;
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
-import org.psympla.lexicon.Sequence;
 import org.psympla.lexicon.Token;
-import org.psympla.symbol.LexicalItem;
+import org.psympla.symbol.Sequence;
 import org.psympla.symbol.Symbol;
 
-public class ScanningLexicalClass<C, T extends LexicalItem> implements LexicalClass<C, T> {
+public class ScanningLexicalClass<C, T extends Sequence> implements LexicalClass<C, T> {
   private final Symbol symbol;
   private final Scanner<C, T> scanner;
   private final Printer<C, T> printer;
@@ -26,13 +26,13 @@ public class ScanningLexicalClass<C, T extends LexicalItem> implements LexicalCl
   }
 
   @Override
-  public Stream<Lexeme<C, T>> scan(Sequence<C> characters) {
+  public Stream<Lexeme<C, T>> scan(Characters<C> characters) {
     return scanner.scan(characters).map(scan -> new ScanningLexeme<C, T>(this, characters, scan));
   }
 
   @Override
   public Lexeme<C, T> print(Token<T> token) {
-    Sequence<C> characters = printer.print(token.value());
+    Characters<C> characters = printer.print(token.value());
     return new PrintingLexeme<>(this, characters, token);
   }
 }
