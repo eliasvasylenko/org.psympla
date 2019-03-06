@@ -3,33 +3,54 @@ package org.psympla.parser.earley;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.concat;
 
+import java.util.List;
+import java.util.Set;
+
+import org.psympla.constraint.Constraint;
 import org.psympla.grammar.Grammar;
 import org.psympla.grammar.Rule;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Lexicon;
 import org.psympla.parser.earley.ProductionPossibilityMap.LhsItem;
+import org.psympla.pattern.Pattern;
 import org.psympla.pattern.Patterns;
 import org.psympla.symbol.Sequence;
 
-public class ProductionPossibilityMap {
-  public static class Vertex {
-    private final Rule rule;
+import sun.security.provider.certpath.Vertex;
 
-    public Vertex(Rule rule) {
+public class ProductionPossibilityMap {
+  public static class CompiledRule {
+    private final Rule rule;
+    private final List<CompiledProduct> products;
+
+    public CompiledRule(Rule rule) {
       this.rule = rule;
     }
   }
 
-  public static class Edge {
-    private final Vertex head;
-    private final Vertex tail;
-    private final int productIndex;
+  public class CompiledProduct {
+    private final Pattern pattern;
+    private final Set<Constraint> constraints;
+    private final Set<Prediction> predictions;
 
-    public Edge(Vertex head, Vertex tail, int productIndex) {
-      this.head = head;
-      this.tail = tail;
-      this.productIndex = productIndex;
-    }
+  }
+
+  /*
+   * TODO this is basically pre-computing the prediction (and scanning/completion
+   * over nullables) so we have pre-prepped tables. Since this is the case, it
+   * might make sense to simply use the same data types? Though in this case it's
+   * a table without an index, and earley items without the index, so maybe not.
+   * Also we probably need to keep track of a little extra information to deal
+   * with specialization and guard against problematic recursion etc.
+   * 
+   * TODO I think it might be best to try make a naive direct implementation of
+   * the algorithm then revisit the pre-processing, since A) it's an optimization
+   * and B) it follows many of the same rules.
+   */
+
+  public class Prediction {
+    private final CompiledRule rule;
+    private final int dot;
   }
 
   public ProductionPossibilityMap(Grammar grammar, Lexicon<?> lexicon) {
