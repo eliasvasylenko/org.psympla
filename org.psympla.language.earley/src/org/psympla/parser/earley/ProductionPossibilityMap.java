@@ -31,7 +31,7 @@ public class ProductionPossibilityMap {
   public class CompiledProduct {
     private final Pattern pattern;
     private final Set<Constraint> constraints;
-    private final Set<Prediction> predictions;
+    private final Set<LR0Item> predictions;
 
   }
 
@@ -48,9 +48,11 @@ public class ProductionPossibilityMap {
    * and B) it follows many of the same rules.
    */
 
-  public class Prediction {
+  public class LR0Item {
     private final CompiledRule rule;
     private final int dot;
+    private final Set<LR0Item> fromIndex;
+    private final Set<LR0Item> toIndex;
   }
 
   public ProductionPossibilityMap(Grammar grammar, Lexicon<?> lexicon) {
