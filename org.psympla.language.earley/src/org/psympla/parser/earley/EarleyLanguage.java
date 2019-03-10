@@ -22,7 +22,6 @@ public class EarleyLanguage<C> implements Language<C> {
 
   @Override
   public <T> Designation<C, T> designation(Sign<T> sign) {
-    // TODO Auto-generated method stub
-    return null;
+    return new EarleyDesignation<>(lexicon, grammar, sign);
   }
 }

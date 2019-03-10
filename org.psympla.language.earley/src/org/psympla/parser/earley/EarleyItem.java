@@ -1,36 +1,56 @@
 package org.psympla.parser.earley;
 
-import java.util.Optional;
+import java.util.Objects;
 
 import org.psympla.grammar.Rule;
-import org.psympla.pattern.Pattern;
 
+//TODO value type & record
 public class EarleyItem {
-  private final Rule rule;
-  private final int position;
+  private final LR0Item lr0Item;
+  private final int inputOrigin;
+  private final int inputPosition;
 
-  public EarleyItem(Rule rule, int position) {
-    this.rule = rule;
-    this.position = position;
-  }
-
-  public Optional<Pattern> nextItem() {
-    if (isComplete()) {
-      return Optional.empty();
-    } else {
-      return Optional.of(rule.products().skip(position).findFirst().get());
-    }
-  }
-
-  public boolean isComplete() {
-    return position == rule.products().count();
-  }
-
-  public int position() {
-    return position;
+  public EarleyItem(LR0Item lr0Item, int inputOrigin, int inputPosition) {
+    this.lr0Item = lr0Item;
+    this.inputOrigin = inputOrigin;
+    this.inputPosition = inputPosition;
   }
 
   public Rule rule() {
-    return rule;
+    return lr0Item.rule();
+  }
+
+  public int dotPosition() {
+    return lr0Item.dotPosition();
+  }
+
+  public LR0Item lr0Item() {
+    return lr0Item;
+  }
+
+  public int inputOrigin() {
+    return inputOrigin;
+  }
+
+  public int inputPosition() {
+    return inputPosition;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this)
+      return true;
+    if (obj == null || obj.getClass() != getClass())
+      return false;
+
+    EarleyItem that = (EarleyItem) obj;
+
+    return Objects.equals(this.lr0Item, that.lr0Item) && (this.inputOrigin == that.inputOrigin)
+        && (this.inputPosition == that.inputPosition);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(lr0Item, inputOrigin, inputPosition);
   }
 }
