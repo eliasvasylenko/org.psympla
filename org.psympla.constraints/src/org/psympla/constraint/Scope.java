@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.psympla.pattern.Variable;
 import org.psympla.symbol.LexicalItem;
@@ -33,6 +34,10 @@ public class Scope {
     var constraints = new HashSet<>(this.constraints);
     constraints.add(constraint);
     return new Scope(constraints, instantiations);
+  }
+
+  public Stream<Constraint> constraints() {
+    return constraints.stream();
   }
 
   public Scope withInstantiation(Variable variable, LexicalItem lexicalItem) {

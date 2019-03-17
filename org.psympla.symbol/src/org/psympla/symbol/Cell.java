@@ -1,5 +1,6 @@
 package org.psympla.symbol;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class Cell<T extends LexicalItem, U extends Sequence> implements Sequence {
@@ -29,5 +30,27 @@ public class Cell<T extends LexicalItem, U extends Sequence> implements Sequence
   @Override
   public <V extends Sequence> Cell<Cell<T, U>, V> consOnto(V item) {
     return new Cell<>(this, item);
+  }
+
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "(" + car + ", " + cdr + ")";
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this)
+      return true;
+    if (!(obj instanceof Cell<?, ?>))
+      return false;
+
+    Cell<?, ?> that = (Cell<?, ?>) obj;
+
+    return Objects.equals(this.car, that.car) && Objects.equals(this.cdr, that.cdr);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(car, cdr);
   }
 }

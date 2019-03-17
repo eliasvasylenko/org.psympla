@@ -16,4 +16,9 @@ public class Nil implements Sequence, Atom<Void> {
   public <T extends Sequence> Cell<Nil, T> consOnto(T item) {
     return new Cell<>(this, item);
   }
+
+  @Override
+  public String toString() {
+    return getClass().getSimpleName();
+  }
 }

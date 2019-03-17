@@ -18,8 +18,9 @@ public class EarleyParser {
     }
   }
 
-  private void predict(EarleySet earleySet) {
+  private void predict(EarleySet set) {
     // TODO predict (and scan & complete over empties) recursively
 
+    set.nodes().forEach(node -> {});
   }
 }

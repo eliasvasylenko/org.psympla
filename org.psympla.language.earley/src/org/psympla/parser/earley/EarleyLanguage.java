@@ -4,6 +4,7 @@ import org.psympla.grammar.Grammar;
 import org.psympla.language.Designation;
 import org.psympla.language.Language;
 import org.psympla.lexicon.Lexicon;
+import org.psympla.parser.earley.products.ProductPredictionMap;
 import org.psympla.semantics.Semantics;
 import org.psympla.semantics.Sign;
 
@@ -17,7 +18,7 @@ public class EarleyLanguage<C> implements Language<C> {
     this.grammar = grammar;
     this.semantics = semantics;
 
-    var productions = new ProductionPossibilityMap(grammar, lexicon);
+    var productions = new ProductPredictionMap(grammar, lexicon);
   }
 
   @Override

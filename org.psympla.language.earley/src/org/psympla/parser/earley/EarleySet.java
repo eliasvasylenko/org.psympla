@@ -2,6 +2,7 @@ package org.psympla.parser.earley;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class EarleySet {
   private final int inputPosition;
@@ -19,5 +20,9 @@ public class EarleySet {
   EarleyItemNode addItem(LR0Item lr0Item, int inputOrigin) {
     return items
         .computeIfAbsent(new EarleyItem(lr0Item, inputOrigin, inputPosition), EarleyItemNode::new);
+  }
+
+  public Stream<EarleyItemNode> nodes() {
+    return items.values().stream();
   }
 }

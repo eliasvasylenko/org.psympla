@@ -58,7 +58,7 @@ public final class Patterns {
   private static Pattern sequence(List<Pattern> items) {
     return items.size() == 0
         ? NIL
-        : new Cons(items.get(0), sequence(items.subList(0, items.size())));
+        : new Cons(items.get(0), sequence(items.subList(1, items.size())));
   }
 
   public static Pattern literal(LexicalItem lexicalItem) {
