@@ -13,6 +13,12 @@ import org.psympla.symbol.Symbol;
 public interface LexicalClass<C, T extends Sequence> {
   Symbol symbol();
 
+  Pattern parameter();
+
+  default Pattern pattern() {
+    return Patterns.cons(symbol(), parameter());
+  }
+
   Stream<Lexeme<C, T>> scan(Characters<C> characters);
 
   Lexeme<C, T> print(Token<T> token);

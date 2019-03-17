@@ -5,8 +5,12 @@ import java.util.Map;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.lexicon.Lexicon;
+import org.psympla.parser.index.GrammaticIndex;
+import org.psympla.parser.index.LexicalIndex;
 
-public class ProductPredictionMap {
+public class ProductPredictionMap<C> {
+  private final GrammaticIndex grammaticIndex;
+  private final LexicalIndex<C> lexicalIndex;
   private final Map<Product, Predictions> predictions;
 
   /*
@@ -16,20 +20,20 @@ public class ProductPredictionMap {
    * a table without an index, and earley items without the index, so maybe not.
    * Also we probably need to keep track of a little extra information to deal
    * with specialization and guard against problematic recursion etc.
-   * 
-   * TODO I think it might be best to try make a naive direct implementation of
-   * the algorithm then revisit the pre-processing, since A) it's an optimization
-   * and B) it follows many of the same rules.
    */
 
-  public ProductPredictionMap(Grammar grammar, Lexicon<?> lexicon) {
-    predictions = new HashMap<>();
+  public ProductPredictionMap(Grammar grammar, Lexicon<C> lexicon) {
+    this.grammaticIndex = new GrammaticIndex(grammar);
+    this.lexicalIndex = new LexicalIndex<>(lexicon);
+    this.predictions = new HashMap<>();
 
     grammar
         .getRules()
         .flatMap(Product::getProducts)
         .forEach(product -> predictions.computeIfAbsent(product, p -> new Predictions(product)));
 
+    System.out.println(grammaticIndex);
+    System.out.println(lexicalIndex);
     for (var product : predictions.keySet()) {
       System.out.println(product);
       System.out.println(" --- " + predictions.get(product));

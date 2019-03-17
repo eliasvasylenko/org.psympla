@@ -1,5 +1,6 @@
 package org.psympla.grammar;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.psympla.pattern.Patterns.literal;
 import static org.psympla.pattern.Patterns.sequence;
@@ -89,5 +90,11 @@ public class Rule {
 
   public Rule withConstraint(Constraint constraint) {
     return new Rule(pattern, products, scope.withConstraint(constraint));
+  }
+
+  @Override
+  public String toString() {
+    return pattern + " -> " + products.stream().map(Object::toString).collect(joining(" ")) + " : "
+        + scope;
   }
 }

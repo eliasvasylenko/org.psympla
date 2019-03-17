@@ -4,7 +4,8 @@ Bundle-Description: \
 
 Export-Package:\
 	org.psympla.parser.earley,\
-	org.psympla.parser.earley.products
+	org.psympla.parser.earley.products,\
+	org.psympla.parser.index
 
 -buildpath: \
 	org.psympla.constraints;version=snapshot,\
