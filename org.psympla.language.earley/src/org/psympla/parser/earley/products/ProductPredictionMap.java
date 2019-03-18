@@ -11,7 +11,7 @@ import org.psympla.parser.index.LexicalIndex;
 public class ProductPredictionMap<C> {
   private final GrammaticIndex grammaticIndex;
   private final LexicalIndex<C> lexicalIndex;
-  private final Map<Product, Predictions> predictions;
+  private final Map<Product, Predictions<C>> predictions;
 
   /*
    * TODO this is basically pre-computing the prediction (and scanning/completion
@@ -30,7 +30,9 @@ public class ProductPredictionMap<C> {
     grammar
         .getRules()
         .flatMap(Product::getProducts)
-        .forEach(product -> predictions.computeIfAbsent(product, p -> new Predictions(product)));
+        .forEach(
+            product -> predictions
+                .computeIfAbsent(product, p -> new Predictions<>(product, lexicalIndex)));
 
     System.out.println(grammaticIndex);
     System.out.println(lexicalIndex);

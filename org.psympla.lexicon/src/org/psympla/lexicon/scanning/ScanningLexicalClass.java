@@ -7,6 +7,7 @@ import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.lexicon.Token;
 import org.psympla.pattern.Pattern;
+import org.psympla.pattern.Patterns;
 import org.psympla.symbol.Sequence;
 import org.psympla.symbol.Symbol;
 
@@ -39,6 +40,11 @@ public class ScanningLexicalClass<C, T extends Sequence> implements LexicalClass
 
   @Override
   public Pattern parameter() {
-    return null;
+    return Patterns.variable("T");
+  }
+
+  @Override
+  public String toString() {
+    return Patterns.cons(symbol(), parameter()) + " -> " + scanner + " <- " + printer;
   }
 }
