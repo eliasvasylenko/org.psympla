@@ -6,14 +6,14 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.psympla.parser.earley.LR0Item;
-import org.psympla.parser.index.LexicalIndex;
+import org.psympla.parser.index.RuleIndex;
 
 public class Predictions<C> {
   private final Map<LR0Item, Prediction> predictions;
 
-  public Predictions(Product product, LexicalIndex<C> lexicalIndex) {
+  public Predictions(Product product, RuleIndex<C> ruleIndex) {
     this.predictions = new HashMap<>();
-    lexicalIndex.getLexicalGroups(product.pattern()).collect(arg0);
+    ruleIndex.getRules(product.pattern());
   }
 
   public Optional<Prediction> prediction(LR0Item item) {

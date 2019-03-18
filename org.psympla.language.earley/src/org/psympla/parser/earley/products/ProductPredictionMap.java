@@ -5,12 +5,10 @@ import java.util.Map;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.lexicon.Lexicon;
-import org.psympla.parser.index.GrammaticIndex;
-import org.psympla.parser.index.LexicalIndex;
+import org.psympla.parser.index.RuleIndex;
 
 public class ProductPredictionMap<C> {
-  private final GrammaticIndex grammaticIndex;
-  private final LexicalIndex<C> lexicalIndex;
+  private final RuleIndex<C> ruleIndex;
   private final Map<Product, Predictions<C>> predictions;
 
   /*
@@ -23,8 +21,7 @@ public class ProductPredictionMap<C> {
    */
 
   public ProductPredictionMap(Grammar grammar, Lexicon<C> lexicon) {
-    this.grammaticIndex = new GrammaticIndex(grammar);
-    this.lexicalIndex = new LexicalIndex<>(lexicon);
+    this.ruleIndex = new RuleIndex<>(grammar, lexicon);
     this.predictions = new HashMap<>();
 
     grammar
@@ -32,10 +29,9 @@ public class ProductPredictionMap<C> {
         .flatMap(Product::getProducts)
         .forEach(
             product -> predictions
-                .computeIfAbsent(product, p -> new Predictions<>(product, lexicalIndex)));
+                .computeIfAbsent(product, p -> new Predictions<>(product, ruleIndex)));
 
-    System.out.println(grammaticIndex);
-    System.out.println(lexicalIndex);
+    System.out.println(ruleIndex);
     for (var product : predictions.keySet()) {
       System.out.println(product);
       System.out.println(" --- " + predictions.get(product));

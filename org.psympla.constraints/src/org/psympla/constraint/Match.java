@@ -42,4 +42,9 @@ public class Match implements Constraint {
     // TODO Auto-generated method stub
     return null;
   }
+
+  public boolean isValid() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }
