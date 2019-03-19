@@ -32,6 +32,7 @@ public class ProductPredictionMap<C> {
                 .computeIfAbsent(product, p -> new Predictions<>(product, ruleIndex)));
 
     System.out.println(ruleIndex);
+    System.out.println();
     for (var product : predictions.keySet()) {
       System.out.println(product);
       System.out.println(" --- " + predictions.get(product));

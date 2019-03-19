@@ -1,5 +1,6 @@
 package org.psympla.parser.index;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Stream.concat;
 
 import java.util.ArrayList;
@@ -125,13 +126,17 @@ public class RuleIndex<C> {
 
   private Stream<Rule> getRules(Symbol symbol, boolean parametric) {
     return concat(
-        (parametric ? sequences : singles).get(symbol).stream(),
-        Stream.of(sequences.get(null), singles.get(null)).flatMap(List::stream));
+        (parametric ? sequences : singles).getOrDefault(symbol, emptyList()).stream(),
+        Stream
+            .of(sequences.getOrDefault(null, emptyList()), singles.getOrDefault(null, emptyList()))
+            .flatMap(List::stream));
   }
 
   private Stream<Rule> getRules(boolean parametric) {
     return parametric
-        ? concat(singles.get(null).stream(), sequences.values().stream().flatMap(List::stream))
+        ? concat(
+            singles.getOrDefault(null, emptyList()).stream(),
+            sequences.values().stream().flatMap(List::stream))
         : Stream
             .of(singles.values(), sequences.values())
             .flatMap(Collection::stream)
