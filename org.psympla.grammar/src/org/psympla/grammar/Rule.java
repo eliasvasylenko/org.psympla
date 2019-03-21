@@ -39,7 +39,7 @@ public class Rule {
     this(Sequence.of(symbol, parameterLiteral));
   }
 
-  private Rule(Pattern pattern, List<Pattern> production, Scope scope) {
+  protected Rule(Pattern pattern, List<Pattern> production, Scope scope) {
     this.pattern = pattern;
     this.products = List.copyOf(production);
     this.scope = scope;

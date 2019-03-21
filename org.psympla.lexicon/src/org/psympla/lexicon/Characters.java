@@ -6,4 +6,15 @@ public interface Characters<C> {
   default Characters<C> subSequence(int to) {
     return subSequence(0, to);
   }
+
+  static <C> Characters<C> empty() {
+    return new Characters<C>() {
+      @Override
+      public Characters<C> subSequence(int from, int to) {
+        if (from != 0 || to != 0)
+          throw new IndexOutOfBoundsException();
+        return this;
+      }
+    };
+  }
 }

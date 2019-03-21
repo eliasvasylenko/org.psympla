@@ -4,9 +4,6 @@ import java.util.Objects;
 
 import org.psympla.grammar.Rule;
 
-/*
- * TODO abstract over both rules and lexical groups. Perhaps by generating a synthetic rule for each terminal.
- */
 //TODO value type & record
 public class LR0Item {
   private final Rule rule;
@@ -23,6 +20,10 @@ public class LR0Item {
 
   public int dotPosition() {
     return dotPosition;
+  }
+
+  public boolean isComplete() {
+    return rule.length() == dotPosition;
   }
 
   @Override

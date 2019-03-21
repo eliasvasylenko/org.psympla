@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.psympla.constraint.Match;
-import org.psympla.constraint.ValueType;
 import org.psympla.grammar.Grammar;
 import org.psympla.grammar.Rule;
 import org.psympla.lexicon.LexicalClass;
@@ -20,8 +19,6 @@ import org.psympla.lexicon.Lexicon;
 import org.psympla.pattern.Cons;
 import org.psympla.pattern.Literal;
 import org.psympla.pattern.Pattern;
-import org.psympla.pattern.Patterns;
-import org.psympla.pattern.Variable;
 import org.psympla.symbol.Cell;
 import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Symbol;
@@ -65,12 +62,9 @@ public class RuleIndex<C> {
     }
   }
 
-  private static final Variable LEXEME = Patterns.variable("T");
-
   private final Map<Symbol, List<Rule>> sequences = new HashMap<>();
   private final Map<Symbol, List<Rule>> singles = new HashMap<>();
-  private final Map<Symbol, Rule> terminalRules = new HashMap<>();
-  private final Map<Rule, LexicalClass<C, ?>> lexicalClasses = new HashMap<>();
+  private final Map<Symbol, TerminalRule<C>> terminalRules = new HashMap<>();
 
   public RuleIndex(Grammar grammar, Lexicon<C> lexicon) {
     grammar.getRules().forEach(this::addRule);
@@ -78,16 +72,9 @@ public class RuleIndex<C> {
   }
 
   private void addLexicalClass(LexicalClass<C, ?> lexicalClass) {
-    Rule rule = createTerminalRule(lexicalClass);
+    TerminalRule<C> rule = new TerminalRule<>(lexicalClass);
     terminalRules.put(lexicalClass.symbol(), rule);
-    lexicalClasses.put(rule, lexicalClass);
     addRule(rule);
-  }
-
-  private Rule createTerminalRule(LexicalClass<C, ?> lexicalClass) {
-    return new Rule(lexicalClass.pattern())
-        .withProduct(LEXEME)
-        .withConstraint(new ValueType<>(LEXEME, String.class));
   }
 
   private void addRule(Rule rule) {
@@ -108,20 +95,12 @@ public class RuleIndex<C> {
         .filter(t -> new Match(pattern, t.pattern()).isValid());
   }
 
-  public Stream<Rule> getTerminalRules() {
+  public Stream<TerminalRule<C>> getTerminalRules() {
     return terminalRules.values().stream();
   }
 
-  public Rule getTerminalRule(Symbol symbol) {
-    return terminalRules.get(symbol);
-  }
-
-  public Optional<LexicalClass<C, ?>> getLexicalClass(Rule rule) {
-    return Optional.ofNullable(lexicalClasses.get(rule));
-  }
-
-  public boolean isTerminalRule(Rule rule) {
-    return lexicalClasses.containsKey(rule);
+  public Optional<TerminalRule<C>> getTerminalRule(Symbol symbol) {
+    return Optional.ofNullable(terminalRules.get(symbol));
   }
 
   private Stream<Rule> getRules(Symbol symbol, boolean parametric) {

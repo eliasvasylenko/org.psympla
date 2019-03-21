@@ -2,6 +2,7 @@ package org.psympla.lexicon;
 
 import java.util.stream.Stream;
 
+import org.psympla.constraint.Scope;
 import org.psympla.pattern.Pattern;
 import org.psympla.pattern.Patterns;
 import org.psympla.symbol.Sequence;
@@ -26,4 +27,6 @@ public interface LexicalClass<C, T extends Sequence> {
   default Pattern instance(T parameter) {
     return Patterns.literal(symbol().consOnto(parameter));
   }
+
+  Scope scope();
 }

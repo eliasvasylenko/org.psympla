@@ -2,6 +2,7 @@ package org.psympla.lexicon.scanning;
 
 import java.util.stream.Stream;
 
+import org.psympla.constraint.Scope;
 import org.psympla.lexicon.Characters;
 import org.psympla.lexicon.Lexeme;
 import org.psympla.lexicon.LexicalClass;
@@ -46,5 +47,10 @@ public class ScanningLexicalClass<C, T extends Sequence> implements LexicalClass
   @Override
   public String toString() {
     return Patterns.cons(symbol(), parameter()) + " -> " + scanner + " <- " + printer;
+  }
+
+  @Override
+  public Scope scope() {
+    return Scope.empty();
   }
 }

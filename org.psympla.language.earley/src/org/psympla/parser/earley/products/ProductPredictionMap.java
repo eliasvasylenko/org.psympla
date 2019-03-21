@@ -2,41 +2,44 @@ package org.psympla.parser.earley.products;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.psympla.grammar.Grammar;
+import org.psympla.grammar.Rule;
 import org.psympla.lexicon.Lexicon;
+import org.psympla.parser.earley.LR0Item;
 import org.psympla.parser.index.RuleIndex;
 
-public class ProductPredictionMap<C> {
-  private final RuleIndex<C> ruleIndex;
-  private final Map<Product, Predictions<C>> predictions;
+public class ProductPredictionMap {
+  private final RuleIndex<?> ruleIndex;
+  private final Map<LR0Item, Predictions> predictions;
 
-  /*
-   * TODO this is basically pre-computing the prediction (and scanning/completion
-   * over nullables) so we have pre-prepped tables. Since this is the case, it
-   * might make sense to simply use the same data types? Though in this case it's
-   * a table without an index, and earley items without the index, so maybe not.
-   * Also we probably need to keep track of a little extra information to deal
-   * with specialization and guard against problematic recursion etc.
-   */
-
-  public ProductPredictionMap(Grammar grammar, Lexicon<C> lexicon) {
+  public ProductPredictionMap(Grammar grammar, Lexicon<?> lexicon) {
     this.ruleIndex = new RuleIndex<>(grammar, lexicon);
-    this.predictions = new HashMap<>();
 
+    this.predictions = new HashMap<>();
+    Predictions
+        .forTerminalRules(ruleIndex)
+        .forEach(prediction -> predictions.put(prediction.item(), prediction));
     grammar
         .getRules()
-        .flatMap(Product::getProducts)
+        .flatMap(this::getLR0Items)
         .forEach(
-            product -> predictions
+            product -> productPredictions
                 .computeIfAbsent(product, p -> new Predictions<>(product, ruleIndex)));
+
+    this.predictions = new HashMap<>();
 
     System.out.println(ruleIndex);
     System.out.println();
-    for (var product : predictions.keySet()) {
+    for (var product : productPredictions.keySet()) {
       System.out.println(product);
-      System.out.println(" --- " + predictions.get(product));
+      System.out.println(" --- " + productPredictions.get(product));
       System.out.println();
     }
+  }
+
+  private Stream<LR0Item> getLR0Items(Rule rule) {
+
   }
 }
