@@ -70,6 +70,6 @@ public class Predictions {
 
   @Override
   public String toString() {
-    return predictions.toString();
+    return getClass().getSimpleName() + predictions;
   }
 }
