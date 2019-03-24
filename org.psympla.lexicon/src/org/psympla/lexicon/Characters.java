@@ -1,5 +1,12 @@
 package org.psympla.lexicon;
 
+/**
+ * 
+ * 
+ * @author Elias N Vasylenko
+ *
+ * @param <C>
+ */
 public interface Characters<C> {
   Characters<C> subSequence(int from, int to);
 
