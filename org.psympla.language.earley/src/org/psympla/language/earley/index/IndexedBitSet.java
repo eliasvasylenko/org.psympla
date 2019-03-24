@@ -7,8 +7,6 @@ import java.util.Objects;
 public abstract class IndexedBitSet<U, T> {
   public static final long FULL_BITS = ~0L;
 
-  private long[] bits;
-
   // TODO value type
   private static class LongArrayIndex {
     final int longIndex;
@@ -28,11 +26,19 @@ public abstract class IndexedBitSet<U, T> {
     return ((index - 1) / Long.SIZE) + 1;
   }
 
+  private long[] bits;
   private final U domain;
 
   IndexedBitSet(U domain) {
     this.domain = domain;
-    this.bits = new long[getIndex(domainSize())];
+    this.bits = null;
+  }
+
+  private long[] initializeBits() {
+    if (bits == null) {
+      bits = new long[domainSize()];
+    }
+    return bits;
   }
 
   public U domain() {
@@ -63,22 +69,34 @@ public abstract class IndexedBitSet<U, T> {
 
   public void add(T element) {
     var index = longArrayIndex(element);
+    initializeBits();
+
     bits[index.longIndex] = bits[index.longIndex] | index.longMask;
   }
 
   public void remove(T element) {
+    if (bits == null) {
+      return;
+    }
+
     var index = longArrayIndex(element);
     bits[index.longIndex] = bits[index.longIndex] & ~index.longMask;
   }
 
   public boolean contains(T element) {
+    if (bits == null) {
+      return false;
+    }
+
     var index = longArrayIndex(element);
     return (bits[index.longIndex] & index.longMask) != 0;
   }
 
   public void addAll(IndexedBitSet<?, ?> elements) {
-    if (!isCompatible(elements))
+    if (!isCompatible(elements)) {
       return;
+    }
+    initializeBits();
 
     for (int i = 0; i < bits.length; i++) {
       bits[i] = bits[i] | elements.bits[i];
@@ -86,8 +104,9 @@ public abstract class IndexedBitSet<U, T> {
   }
 
   public void removeAll(IndexedBitSet<?, ?> elements) {
-    if (!isCompatible(elements))
+    if (!isCompatible(elements) || bits == null) {
       return;
+    }
 
     for (int i = 0; i < bits.length; i++) {
       bits[i] = bits[i] & ~elements.bits[i];
@@ -95,8 +114,9 @@ public abstract class IndexedBitSet<U, T> {
   }
 
   public boolean containsAll(IndexedBitSet<?, ?> elements) {
-    if (!isCompatible(elements))
+    if (!isCompatible(elements) || bits == null) {
       return elements.isEmpty();
+    }
 
     for (int i = 0; i < bits.length; i++) {
       if (bits[i] == (bits[i] & elements.bits[i])) {
@@ -130,6 +150,10 @@ public abstract class IndexedBitSet<U, T> {
   }
 
   public int size() {
+    if (bits == null) {
+      return 0;
+    }
+
     int size = 0;
     for (int i = 0; i < bits.length; i++) {
       size += Long.bitCount(bits[i]);
@@ -138,26 +162,36 @@ public abstract class IndexedBitSet<U, T> {
   }
 
   public void empty() {
-    for (int i = 0; i < bits.length; i++) {
-      bits[i] = 0;
-    }
+    bits = null;
   }
 
   public void fill() {
+    initializeBits();
+
     for (int i = 0; i < bits.length; i++) {
       bits[i] = FULL_BITS;
     }
   }
 
   public boolean isEmpty() {
-    for (int i = 0; i < bits.length; i++) {
-      if (bits[i] != 0)
-        return false;
+    if (bits == null) {
+      return true;
     }
+
+    for (int i = 0; i < bits.length; i++) {
+      if (bits[i] != 0) {
+        return false;
+      }
+    }
+    bits = null;
     return true;
   }
 
   public boolean isFull() {
+    if (bits == null) {
+      return false;
+    }
+
     for (int i = 0; i < bits.length; i++) {
       if (bits[i] != FULL_BITS)
         return false;

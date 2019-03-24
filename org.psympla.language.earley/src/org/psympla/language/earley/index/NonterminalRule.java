@@ -1,6 +1,11 @@
 package org.psympla.language.earley.index;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.concat;
+
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.psympla.grammar.Rule;
 
@@ -15,7 +20,18 @@ import org.psympla.grammar.Rule;
  */
 // TODO value type?
 public class NonterminalRule extends IndexedRule {
+  private final List<IndexedItem> items;
+
   NonterminalRule(int index, IndexedLanguage<?> indexedLanguage, Rule rule) {
-    super(index, indexedLanguage, rule.pattern(), rule.products().collect(toList()), rule.scope());
+    super(index, indexedLanguage, rule.pattern(), rule.scope(), rule.products().collect(toList()));
+
+    items = concat(
+        IntStream.range(0, productCount()).mapToObj(i -> IndexedItem.nonterminal(this, i)),
+        Stream.of(IndexedItem.complete(this))).collect(toList());
+  }
+
+  @Override
+  protected List<IndexedItem> getItems() {
+    return items;
   }
 }

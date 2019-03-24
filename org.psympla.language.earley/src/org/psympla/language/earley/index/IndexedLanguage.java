@@ -24,13 +24,14 @@ public class IndexedLanguage<C> {
         .mapToObj(i -> new TerminalRule<C>(i, this, lexicalClasses.get(i)))
         .collect(toList());
 
-    System.out.println(nonterminalRules);
-    System.out.println(terminalRules);
-    System.out.println();
-    for (var closure : terminalRules) {
-      System.out.println(closure);
+    rules().flatMap(IndexedRule::items).forEach(item -> {
+      System.out.println(item.item());
       System.out.println();
-    }
+    });
+  }
+
+  private void markNullable(IndexedItem item) {
+    item.markNullable();
   }
 
   public NonterminalRule nonterminalRule(int index) {

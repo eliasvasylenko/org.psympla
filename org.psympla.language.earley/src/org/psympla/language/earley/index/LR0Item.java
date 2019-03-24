@@ -1,13 +1,18 @@
 package org.psympla.language.earley.index;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.mapping;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.stream.Collector;
 
 //TODO value type & record
 public class LR0Item {
+  private static final String ARROW_STRING = " -> ";
+  private static final String DOT_STRING = " . ";
+  private static final String COLON_STRING = " : ";
+
   private final IndexedRule rule;
   private final int dotPosition;
 
@@ -51,11 +56,12 @@ public class LR0Item {
 
   @Override
   public String toString() {
-    return rule.pattern() + " -> " + toString(rule.products().limit(dotPosition)) + " . "
-        + toString(rule.products().skip(dotPosition));
+    return rule.pattern() + ARROW_STRING
+        + rule.products().limit(dotPosition).collect(productString()) + DOT_STRING
+        + rule.products().skip(dotPosition).collect(productString()) + COLON_STRING + rule.scope();
   }
 
-  private String toString(Stream<IndexedProduct> products) {
-    return products.map(Object::toString).collect(joining(" "));
+  private Collector<IndexedProduct, ?, String> productString() {
+    return mapping(p -> p.pattern().toString(), joining(" "));
   }
 }

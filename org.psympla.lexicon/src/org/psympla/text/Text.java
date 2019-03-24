@@ -12,7 +12,8 @@ public class Text<C extends TextUnit> implements Characters<C> {
   }
 
   public Text(Characters<C> characters) {
-    throw new UnsupportedOperationException();
+    // TODO Auto-generated method stub
+    this.string = null;
   }
 
   @Override

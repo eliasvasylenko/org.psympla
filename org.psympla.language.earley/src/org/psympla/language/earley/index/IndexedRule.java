@@ -20,30 +20,36 @@ import org.psympla.pattern.Pattern;
  */
 // TODO value type?
 public abstract class IndexedRule {
+  private final IndexedLanguage<?> indexedLanguage;
   private final int index;
+
   private final Pattern pattern;
-  private final List<IndexedItem> items;
-  private final List<IndexedProduct> products;
   private final Scope scope;
+
+  private final List<IndexedProduct> products;
 
   IndexedRule(
       int index,
       IndexedLanguage<?> indexedLanguage,
       Pattern pattern,
-      List<Pattern> products,
-      Scope scope) {
+      Scope scope,
+      List<Pattern> products) {
+    this.indexedLanguage = indexedLanguage;
+    this.index = index;
+
     this.pattern = pattern;
+    this.scope = scope;
     this.products = IntStream
         .range(0, products.size())
         .mapToObj(i -> new IndexedProduct(new LR0Item(this, i), products.get(i)))
         .collect(toList());
-    this.items = IntStream
-        .rangeClosed(0, products.size())
-        .mapToObj(i -> new IndexedItem(indexedLanguage, new LR0Item(this, i)))
-        .collect(toList());
-    this.scope = scope;
-    this.index = index;
   }
+
+  public IndexedLanguage<?> language() {
+    return indexedLanguage;
+  }
+
+  protected abstract List<IndexedItem> getItems();
 
   public int index() {
     return index;
@@ -54,15 +60,15 @@ public abstract class IndexedRule {
   }
 
   public IndexedItem item(int index) {
-    return items.get(index);
+    return getItems().get(index);
   }
 
   public int itemCount() {
-    return items.size();
+    return getItems().size();
   }
 
   public Stream<IndexedItem> items() {
-    return items.stream();
+    return getItems().stream();
   }
 
   public IndexedProduct product(int index) {

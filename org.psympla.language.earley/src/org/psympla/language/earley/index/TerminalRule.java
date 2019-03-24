@@ -21,15 +21,22 @@ public class TerminalRule<C> extends IndexedRule {
   private static final Variable LEXEME = Patterns.variable("T");
 
   private final LexicalClass<C, ?> lexicalClass;
+  private final List<IndexedItem> items;
 
   TerminalRule(int index, IndexedLanguage<C> indexedLanguage, LexicalClass<C, ?> lexicalClass) {
     super(
         index,
         indexedLanguage,
         lexicalClass.pattern(),
-        List.of(LEXEME),
-        lexicalClass.scope().withConstraint(new ValueType<>(LEXEME, String.class)));
+        lexicalClass.scope().withConstraint(new ValueType<>(LEXEME, String.class)),
+        List.of(LEXEME));
     this.lexicalClass = lexicalClass;
+    this.items = List.of(IndexedItem.terminal(this), IndexedItem.complete(this));
+  }
+
+  @Override
+  protected List<IndexedItem> getItems() {
+    return items;
   }
 
   public LexicalClass<C, ?> lexicalClass() {
