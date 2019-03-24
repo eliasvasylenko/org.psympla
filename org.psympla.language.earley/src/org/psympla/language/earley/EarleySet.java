@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.psympla.language.earley.index.LR0Item;
+
 public class EarleySet {
   private final int inputPosition;
   private final Map<EarleyItem, EarleyItemNode> items;

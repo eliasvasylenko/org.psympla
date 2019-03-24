@@ -1,23 +1,23 @@
 package org.psympla.language.earley.index;
 
 // TODO value type?
-public class TerminalRuleSet<C> extends IndexedBitSet<TerminalRuleIndex<C>, TerminalRule<C>> {
-  TerminalRuleSet(TerminalRuleIndex<C> indexedRules) {
+public class TerminalRuleSet<C> extends IndexedBitSet<IndexedLanguage<C>, TerminalRule<C>> {
+  TerminalRuleSet(IndexedLanguage<C> indexedRules) {
     super(indexedRules);
   }
 
   @Override
-  protected int domainSize(TerminalRuleIndex<C> domain) {
-    return domain.count();
+  protected int domainSize(IndexedLanguage<C> domain) {
+    return domain.terminalRuleCount();
   }
 
   @Override
-  protected TerminalRule<C> get(TerminalRuleIndex<C> domain, int index) {
-    return domain.getRule(index);
+  protected TerminalRule<C> get(IndexedLanguage<C> domain, int index) {
+    return domain.terminalRule(index);
   }
 
   @Override
-  protected int indexOf(TerminalRuleIndex<C> domain, TerminalRule<C> element) {
+  protected int indexOf(IndexedLanguage<C> domain, TerminalRule<C> element) {
     return element.index();
   }
 }

@@ -1,5 +1,8 @@
 package org.psympla.language.earley.index;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 // TODO value type?
 public abstract class IndexedBitSet<U, T> {
   public static final long FULL_BITS = ~0L;
@@ -74,7 +77,7 @@ public abstract class IndexedBitSet<U, T> {
   }
 
   public void addAll(IndexedBitSet<?, ?> elements) {
-    if (domain().equals(elements.domain()))
+    if (!isCompatible(elements))
       return;
 
     for (int i = 0; i < bits.length; i++) {
@@ -83,7 +86,7 @@ public abstract class IndexedBitSet<U, T> {
   }
 
   public void removeAll(IndexedBitSet<?, ?> elements) {
-    if (domain().equals(elements.domain()))
+    if (!isCompatible(elements))
       return;
 
     for (int i = 0; i < bits.length; i++) {
@@ -92,7 +95,7 @@ public abstract class IndexedBitSet<U, T> {
   }
 
   public boolean containsAll(IndexedBitSet<?, ?> elements) {
-    if (domain().equals(elements.domain()))
+    if (!isCompatible(elements))
       return elements.isEmpty();
 
     for (int i = 0; i < bits.length; i++) {
@@ -101,6 +104,29 @@ public abstract class IndexedBitSet<U, T> {
       }
     }
     return true;
+  }
+
+  private boolean isCompatible(IndexedBitSet<?, ?> elements) {
+    return domain.equals(elements.domain) && getClass().equals(elements.getClass());
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    if (obj == null || getClass().equals(obj.getClass())) {
+      return false;
+    }
+
+    var that = (IndexedBitSet<?, ?>) obj;
+
+    return Objects.equals(this.domain, that.domain) && Arrays.equals(this.bits, that.bits);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(domain, bits);
   }
 
   public int size() {

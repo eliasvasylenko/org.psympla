@@ -12,8 +12,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.psympla.constraint.Match;
-import org.psympla.grammar.Grammar;
-import org.psympla.grammar.Rule;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.pattern.Pattern;
 import org.psympla.symbol.Symbol;
@@ -32,16 +30,12 @@ public class RuleMatcher<C> {
   private final Map<Symbol, List<NonterminalRule>> sequences = new HashMap<>();
   private final Map<Symbol, List<NonterminalRule>> singles = new HashMap<>();
 
-  public RuleMatcher(Grammar grammar) {
-    grammar.getRules().forEach(this::addRule);
+  public RuleMatcher(IndexedLanguage<C> language) {
+    language.nonterminalRules().forEach(this::addRule);
+    language.terminalRules().forEach(this::addRule);
   }
 
-  public RuleMatcher(IndexedLanguage<?> language) {
-    grammar.getRules().forEach(this::addRule);
-    terminals.getRules().forEach(this::addRule);
-  }
-
-  private void addRule(Rule rule) {
+  private void addRule(NonterminalRule rule) {
     Pattern pattern = rule.pattern();
     var index = new RulePattern(pattern);
 
@@ -50,37 +44,25 @@ public class RuleMatcher<C> {
         .add(rule);
   }
 
-  public Stream<Rule> getRules() {
-    return Stream
-        .of(sequences.values(), singles.values())
-        .flatMap(Collection::stream)
-        .flatMap(Collection::stream);
+  private void addRule(TerminalRule<C> rule) {
+    terminals.put(rule.lexicalClass().symbol(), rule);
   }
 
-  public Stream<TerminalRule<C>> getRules(Pattern pattern) {
-    var index = new RulePattern(pattern);
-
-    return index.parametric()
-        ? index
-            .symbol()
-            .map(terminalRules::get)
-            .flatMap(Optional::ofNullable)
-            .map(Stream::of)
-            .orElseGet(terminalRuleList::stream)
-        : Stream.empty();
+  public Stream<IndexedRule> getRules(Pattern pattern) {
+    return Stream.concat(getNonterminalRules(pattern), getTerminalRules(pattern));
   }
 
-  public Stream<Rule> getRules(Pattern pattern) {
+  public Stream<NonterminalRule> getNonterminalRules(Pattern pattern) {
     var index = new RulePattern(pattern);
 
     return index
         .symbol()
-        .map(s -> getRules(s, index.parametric()))
-        .orElseGet(() -> getRules(index.parametric()))
+        .map(s -> getNonterminalRules(s, index.parametric()))
+        .orElseGet(() -> getNonterminalRules(index.parametric()))
         .filter(t -> new Match(pattern, t.pattern()).isValid());
   }
 
-  private Stream<Rule> getRules(Symbol symbol, boolean parametric) {
+  private Stream<NonterminalRule> getNonterminalRules(Symbol symbol, boolean parametric) {
     return concat(
         (parametric ? sequences : singles).getOrDefault(symbol, emptyList()).stream(),
         Stream
@@ -88,7 +70,7 @@ public class RuleMatcher<C> {
             .flatMap(List::stream));
   }
 
-  private Stream<Rule> getRules(boolean parametric) {
+  private Stream<NonterminalRule> getNonterminalRules(boolean parametric) {
     return parametric
         ? concat(
             singles.getOrDefault(null, emptyList()).stream(),
@@ -99,12 +81,20 @@ public class RuleMatcher<C> {
             .flatMap(List::stream);
   }
 
-  @Override
-  public String toString() {
-    return singles.toString() + sequences.toString();
+  public Stream<TerminalRule<C>> getTerminalRules(Pattern pattern) {
+    var index = new RulePattern(pattern);
+
+    return index.parametric()
+        ? index
+            .symbol()
+            .map(terminals::get)
+            .flatMap(Optional::ofNullable)
+            .map(Stream::of)
+            .orElseGet(() -> terminals.values().stream())
+        : Stream.empty();
   }
 
   public int count() {
-    return sequences.size() + singles.size();
+    return terminals.size() + sequences.size() + singles.size();
   }
 }

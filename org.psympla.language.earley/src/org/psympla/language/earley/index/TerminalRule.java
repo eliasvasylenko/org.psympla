@@ -20,21 +20,16 @@ import org.psympla.pattern.Variable;
 public class TerminalRule<C> extends IndexedRule {
   private static final Variable LEXEME = Patterns.variable("T");
 
-  private final TerminalRuleIndex<C> indexed;
   private final LexicalClass<C, ?> lexicalClass;
 
-  public TerminalRule(int index, TerminalRuleIndex<C> indexed, LexicalClass<C, ?> lexicalClass) {
-    super(index
+  TerminalRule(int index, IndexedLanguage<C> indexedLanguage, LexicalClass<C, ?> lexicalClass) {
+    super(
+        index,
+        indexedLanguage,
         lexicalClass.pattern(),
         List.of(LEXEME),
         lexicalClass.scope().withConstraint(new ValueType<>(LEXEME, String.class)));
-    this.indexed = indexed;
-    this.index = indexed.count();
     this.lexicalClass = lexicalClass;
-  }
-
-  public TerminalRuleIndex<C> indexed() {
-    return indexed;
   }
 
   public LexicalClass<C, ?> lexicalClass() {

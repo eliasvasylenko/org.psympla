@@ -3,7 +3,8 @@ package org.psympla.language.earley;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.psympla.grammar.Rule;
+import org.psympla.language.earley.index.IndexedRule;
+import org.psympla.language.earley.index.LR0Item;
 
 public class EarleyItemNode {
   private static final int INITIAL_PREDICTOR_LIST_SIZE = 8;
@@ -33,7 +34,7 @@ public class EarleyItemNode {
     return item;
   }
 
-  public Rule rule() {
+  public IndexedRule rule() {
     return item.rule();
   }
 

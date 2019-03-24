@@ -2,7 +2,8 @@ package org.psympla.language.earley;
 
 import java.util.Objects;
 
-import org.psympla.grammar.Rule;
+import org.psympla.language.earley.index.IndexedRule;
+import org.psympla.language.earley.index.LR0Item;
 
 //TODO value type & record
 public class EarleyItem {
@@ -16,7 +17,7 @@ public class EarleyItem {
     this.inputPosition = inputPosition;
   }
 
-  public Rule rule() {
+  public IndexedRule rule() {
     return lr0Item.rule();
   }
 

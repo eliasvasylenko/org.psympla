@@ -1,9 +1,7 @@
-package org.psympla.language.earley;
+package org.psympla.language.earley.index;
 
 import java.util.Objects;
-
-import org.psympla.grammar.Rule;
-import org.psympla.language.earley.index.IndexedRule;
+import java.util.Optional;
 
 //TODO value type & record
 public class LR0Item {
@@ -15,7 +13,7 @@ public class LR0Item {
     this.dotPosition = dotPosition;
   }
 
-  public Rule rule() {
+  public IndexedRule rule() {
     return rule;
   }
 
@@ -24,7 +22,11 @@ public class LR0Item {
   }
 
   public boolean isComplete() {
-    return rule.length() == dotPosition;
+    return rule.getProductCount() == dotPosition;
+  }
+
+  public Optional<IndexedProduct> nextProduct() {
+    return isComplete() ? Optional.empty() : Optional.of(rule.getProduct(dotPosition));
   }
 
   @Override
@@ -42,5 +44,11 @@ public class LR0Item {
   @Override
   public int hashCode() {
     return Objects.hash(rule, dotPosition);
+  }
+
+  @Override
+  public String toString() {
+    // TODO Auto-generated method stub
+    return 
   }
 }
