@@ -2,7 +2,7 @@ package org.psympla.example.expression;
 
 import static org.psympla.example.expression.ExpressionSemantics.EXPRESSION;
 
-import org.psympla.parser.earley.EarleyLanguage;
+import org.psympla.language.earley.EarleyLanguage;
 import org.psympla.text.CodePoint;
 import org.psympla.text.Text;
 

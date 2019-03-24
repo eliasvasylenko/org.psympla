@@ -1,4 +1,4 @@
-package org.psympla.parser.earley;
+package org.psympla.language.earley;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -39,9 +39,9 @@ public class Rule {
     this(Sequence.of(symbol, parameterLiteral));
   }
 
-  protected Rule(Pattern pattern, List<Pattern> production, Scope scope) {
+  protected Rule(Pattern pattern, List<Pattern> products, Scope scope) {
     this.pattern = pattern;
-    this.products = List.copyOf(production);
+    this.products = List.copyOf(products);
     this.scope = scope;
   }
 

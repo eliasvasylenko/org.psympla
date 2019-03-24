@@ -1,15 +1,16 @@
-package org.psympla.parser.earley;
+package org.psympla.language.earley;
 
 import java.util.Objects;
 
 import org.psympla.grammar.Rule;
+import org.psympla.language.earley.index.IndexedRule;
 
 //TODO value type & record
 public class LR0Item {
-  private final Rule rule;
+  private final IndexedRule rule;
   private final int dotPosition;
 
-  public LR0Item(Rule rule, int dotPosition) {
+  public LR0Item(IndexedRule rule, int dotPosition) {
     this.rule = rule;
     this.dotPosition = dotPosition;
   }

@@ -1,4 +1,4 @@
-package org.psympla.parser.earley;
+package org.psympla.language.earley;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.language.Designation;

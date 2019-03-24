@@ -1,4 +1,4 @@
-package org.psympla.parser.earley;
+package org.psympla.language.earley;
 
 import java.util.Optional;
 import java.util.SortedMap;

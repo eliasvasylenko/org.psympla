@@ -1,10 +1,10 @@
-package org.psympla.parser.earley;
+package org.psympla.language.earley;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.language.Designation;
 import org.psympla.language.Language;
+import org.psympla.language.earley.index.IndexedLanguage;
 import org.psympla.lexicon.Lexicon;
-import org.psympla.parser.earley.products.ProductionClosures;
 import org.psympla.semantics.Semantics;
 import org.psympla.semantics.Sign;
 
@@ -18,7 +18,7 @@ public class EarleyLanguage<C> implements Language<C> {
     this.grammar = grammar;
     this.semantics = semantics;
 
-    var productions = new ProductionClosures(grammar, lexicon);
+    var productions = new IndexedLanguage(grammar, lexicon);
   }
 
   @Override
