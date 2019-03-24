@@ -33,13 +33,13 @@ public abstract class IndexedRule {
       List<Pattern> products,
       Scope scope) {
     this.pattern = pattern;
-    this.items = IntStream
-        .rangeClosed(0, products.size())
-        .mapToObj(i -> new IndexedItem(indexedLanguage, new LR0Item(this, i)))
-        .collect(toList());
     this.products = IntStream
         .range(0, products.size())
         .mapToObj(i -> new IndexedProduct(new LR0Item(this, i), products.get(i)))
+        .collect(toList());
+    this.items = IntStream
+        .rangeClosed(0, products.size())
+        .mapToObj(i -> new IndexedItem(indexedLanguage, new LR0Item(this, i)))
         .collect(toList());
     this.scope = scope;
     this.index = index;
@@ -53,27 +53,27 @@ public abstract class IndexedRule {
     return pattern;
   }
 
-  public IndexedItem getItem(int index) {
+  public IndexedItem item(int index) {
     return items.get(index);
   }
 
-  public int getItemCount() {
+  public int itemCount() {
     return items.size();
   }
 
-  public Stream<IndexedItem> getItems() {
+  public Stream<IndexedItem> items() {
     return items.stream();
   }
 
-  public IndexedProduct getProduct(int index) {
+  public IndexedProduct product(int index) {
     return products.get(index);
   }
 
-  public int getProductCount() {
+  public int productCount() {
     return products.size();
   }
 
-  public Stream<IndexedProduct> getProducts() {
+  public Stream<IndexedProduct> products() {
     return products.stream();
   }
 

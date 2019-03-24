@@ -1,7 +1,10 @@
 package org.psympla.language.earley.index;
 
+import static java.util.stream.Collectors.joining;
+
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 //TODO value type & record
 public class LR0Item {
@@ -22,11 +25,11 @@ public class LR0Item {
   }
 
   public boolean isComplete() {
-    return rule.getProductCount() == dotPosition;
+    return rule.productCount() == dotPosition;
   }
 
   public Optional<IndexedProduct> nextProduct() {
-    return isComplete() ? Optional.empty() : Optional.of(rule.getProduct(dotPosition));
+    return isComplete() ? Optional.empty() : Optional.of(rule.product(dotPosition));
   }
 
   @Override
@@ -48,7 +51,11 @@ public class LR0Item {
 
   @Override
   public String toString() {
-    // TODO Auto-generated method stub
-    return 
+    return rule.pattern() + " -> " + toString(rule.products().limit(dotPosition)) + " . "
+        + toString(rule.products().skip(dotPosition));
+  }
+
+  private String toString(Stream<IndexedProduct> products) {
+    return products.map(Object::toString).collect(joining(" "));
   }
 }

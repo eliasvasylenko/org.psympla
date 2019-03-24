@@ -4,9 +4,7 @@ import static java.util.Collections.emptySet;
 import static org.psympla.language.earley.index.Nullability.NON_NULLABLE;
 import static org.psympla.language.earley.index.Nullability.NULL_COMPLETABLE;
 
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class IndexedItem {
   private final LR0Item item;
@@ -43,13 +41,5 @@ public class IndexedItem {
 
   public LR0Item item() {
     return item;
-  }
-
-  public Optional<LR0Item> prediction(LR0Item item) {
-    return Optional.ofNullable(predictions.get(item));
-  }
-
-  public Stream<LR0Item> predictions() {
-    return predictions.values().stream();
   }
 }

@@ -3,9 +3,8 @@ Bundle-Description: \
 	Implementation for processing languages based on the Earley algorithm
 
 Export-Package:\
-	org.psympla.parser.earley,\
-	org.psympla.parser.earley.products,\
-	org.psympla.parser.index
+	org.psympla.language.earley,\
+	org.psympla.language.earley.index
 
 -buildpath: \
 	org.psympla.constraints;version=snapshot,\
