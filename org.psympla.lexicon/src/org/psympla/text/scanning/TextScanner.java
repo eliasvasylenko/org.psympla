@@ -11,20 +11,19 @@ import org.psympla.symbol.Cell;
 import org.psympla.symbol.Nil;
 import org.psympla.symbol.Sequence;
 import org.psympla.symbol.Value;
-import org.psympla.text.Text;
 import org.psympla.text.TextUnit;
 
 public class TextScanner<C extends TextUnit> implements Scanner<C, Cell<Value<String>, Nil>> {
-  private final Function<? super Text<C>, ? extends IntStream> scan;
+  private final Function<? super Characters<C>, ? extends IntStream> scan;
 
-  public TextScanner(Function<? super Text<C>, ? extends IntStream> scan) {
+  public TextScanner(Function<? super Characters<C>, ? extends IntStream> scan) {
     this.scan = scan;
   }
 
   @Override
   public Stream<Scan<Cell<Value<String>, Nil>>> scan(Characters<C> characters) {
     return scan
-        .apply(new Text<>(characters))
+        .apply(characters)
         .mapToObj(
             i -> Scan
                 .forParameter(

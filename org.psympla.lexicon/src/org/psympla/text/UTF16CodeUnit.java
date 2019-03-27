@@ -1,9 +1,9 @@
 package org.psympla.text;
 
-public class CodePoint implements TextUnit {
+public class UTF16CodeUnit implements TextUnit {
   private final int codePoint;
 
-  public CodePoint(int codePoint) {
+  public UTF16CodeUnit(int codePoint) {
     this.codePoint = codePoint;
   }
 

@@ -19,6 +19,6 @@ public class TextPrinter<C extends TextUnit> implements Printer<C, Cell<Value<St
 
   @Override
   public Characters<C> print(Cell<Value<String>, Nil> parameter) {
-    return new Text<>(print.apply(parameter.car()));
+    return print.apply(parameter.car());
   }
 }
