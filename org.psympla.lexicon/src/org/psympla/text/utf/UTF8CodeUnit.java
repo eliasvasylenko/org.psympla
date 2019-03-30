@@ -1,4 +1,6 @@
-package org.psympla.text;
+package org.psympla.text.utf;
+
+import org.psympla.text.TextUnit;
 
 public class UTF8CodeUnit implements TextUnit {
   private final int codePoint;
