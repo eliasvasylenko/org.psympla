@@ -2,10 +2,10 @@ package org.psympla.language.earley;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.language.Designation;
-import org.psympla.lexicon.Characters;
 import org.psympla.lexicon.Lexicon;
 import org.psympla.semantics.Context;
 import org.psympla.semantics.Sign;
+import org.psympla.text.Text;
 
 public class EarleyDesignation<C, T> implements Designation<C, T> {
   private final Lexicon<C> lexicon;
@@ -24,14 +24,14 @@ public class EarleyDesignation<C, T> implements Designation<C, T> {
   }
 
   @Override
-  public T decode(Characters<C> encoding, Context context) {
+  public T decode(Text<C> encoding, Context context) {
     
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public Characters<C> encode(T information, Context context) {
+  public Text<C> encode(T information, Context context) {
     // TODO Auto-generated method stub
     return null;
   }

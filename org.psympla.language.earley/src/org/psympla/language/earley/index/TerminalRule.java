@@ -3,10 +3,10 @@ package org.psympla.language.earley.index;
 import java.util.List;
 
 import org.psympla.constraint.ValueType;
-import org.psympla.lexicon.Characters;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.pattern.Patterns;
 import org.psympla.pattern.Variable;
+import org.psympla.text.Text;
 
 /**
  * A synthetic rule representing a lexical class. The LHS is the terminal symbol
@@ -44,6 +44,6 @@ public class TerminalRule<C> extends IndexedRule {
   }
 
   public boolean isNullable() {
-    return lexicalClass.scan(Characters.empty()).findAny().isEmpty();
+    return lexicalClass.scan(Text.empty()).findAny().isEmpty();
   }
 }

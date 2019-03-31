@@ -11,6 +11,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.psympla.symbol.Symbol;
+import org.psympla.text.TextUnit;
 
 /**
  * A lexicon defines which tokens exist over a given character set.
@@ -24,11 +25,11 @@ import org.psympla.symbol.Symbol;
  *
  * @param <C>
  */
-public class Lexicon<C> {
-  private static final Lexicon<Object> EMPTY = new Lexicon<>(emptyList());
+public class Lexicon<C extends TextUnit> {
+  private static final Lexicon<?> EMPTY = new Lexicon<>(emptyList());
 
   @SuppressWarnings("unchecked")
-  public static final <C> Lexicon<C> empty() {
+  public static final <C extends TextUnit> Lexicon<C> empty() {
     return (Lexicon<C>) EMPTY;
   }
 

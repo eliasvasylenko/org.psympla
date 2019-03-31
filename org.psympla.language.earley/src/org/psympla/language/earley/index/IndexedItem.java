@@ -4,10 +4,11 @@ import static java.util.Collections.emptySet;
 import static org.psympla.language.earley.index.Nullability.NON_NULLABLE;
 import static org.psympla.language.earley.index.Nullability.NULL_COMPLETABLE;
 import static org.psympla.language.earley.index.Nullability.NULL_SCANNABLE;
-import static org.psympla.lexicon.Characters.empty;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.psympla.text.Text;
 
 public class IndexedItem {
   private final LR0Item item;
@@ -43,7 +44,7 @@ public class IndexedItem {
   }
 
   static IndexedItem terminal(TerminalRule<?> rule) {
-    boolean nullable = rule.lexicalClass().scan(empty()).findAny().isPresent();
+    boolean nullable = rule.lexicalClass().scan(Text.empty()).findAny().isPresent();
 
     return new IndexedItem(
         new LR0Item(rule, 0),

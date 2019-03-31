@@ -1,10 +1,10 @@
 package org.psympla.text.ascii;
 
-import static org.psympla.lexicon.CharacterConverter.toAndFrom;
+import static org.psympla.text.CharacterConverter.toAndFrom;
 
 import java.util.List;
 
-import org.psympla.lexicon.CharacterSet;
+import org.psympla.text.CharacterSet;
 import org.psympla.text.TextUnit;
 
 public class AsciiCharacter implements TextUnit {

@@ -7,11 +7,13 @@ import org.psympla.pattern.Pattern;
 import org.psympla.pattern.Patterns;
 import org.psympla.symbol.Sequence;
 import org.psympla.symbol.Symbol;
+import org.psympla.text.Text;
+import org.psympla.text.TextUnit;
 
 /*
  * The c
  */
-public interface LexicalClass<C, T extends Sequence> {
+public interface LexicalClass<C extends TextUnit, T extends Sequence> {
   Symbol symbol();
 
   Pattern parameter();
@@ -20,7 +22,7 @@ public interface LexicalClass<C, T extends Sequence> {
     return Patterns.cons(symbol(), parameter());
   }
 
-  Stream<Lexeme<C, T>> scan(Characters<C> characters);
+  Stream<Lexeme<C, T>> scan(Text<C> characters);
 
   Lexeme<C, T> print(Token<T> token);
 

@@ -1,4 +1,4 @@
-package org.psympla.lexicon;
+package org.psympla.text;
 
 import java.util.Arrays;
 import java.util.Collection;
