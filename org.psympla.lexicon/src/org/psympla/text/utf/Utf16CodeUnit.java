@@ -2,10 +2,10 @@ package org.psympla.text.utf;
 
 import org.psympla.text.TextUnit;
 
-public class UTF8CodeUnit implements TextUnit {
+public class Utf16CodeUnit implements TextUnit {
   private final int codePoint;
 
-  public UTF8CodeUnit(int codePoint) {
+  public Utf16CodeUnit(int codePoint) {
     this.codePoint = codePoint;
   }
 

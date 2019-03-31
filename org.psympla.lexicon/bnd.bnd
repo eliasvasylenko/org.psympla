@@ -2,7 +2,9 @@ Bundle-Name: Psympla :: Lexicon
 
 Export-Package: \
 	org.psympla.text,\
+	org.psympla.text.ascii,\
 	org.psympla.text.scanning,\
+	org.psympla.text.utf,\
 	org.psympla.lexicon,\
 	org.psympla.lexicon.scanning
 

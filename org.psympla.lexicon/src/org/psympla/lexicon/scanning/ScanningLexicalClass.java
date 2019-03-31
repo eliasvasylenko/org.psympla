@@ -1,5 +1,6 @@
 package org.psympla.lexicon.scanning;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.psympla.constraint.Scope;
@@ -36,9 +37,8 @@ public class ScanningLexicalClass<C extends TextUnit, T extends Sequence>
   }
 
   @Override
-  public Lexeme<C, T> print(Token<T> token) {
-    Text<C> characters = printer.print(token.value());
-    return new PrintingLexeme<>(this, characters, token);
+  public Optional<Lexeme<C, T>> print(Token<T> token) {
+    return printer.print(token.value()).map(text -> new PrintingLexeme<>(this, text, token));
   }
 
   @Override

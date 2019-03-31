@@ -4,7 +4,11 @@ import org.psympla.grammar.Grammar;
 import org.psympla.language.Language;
 import org.psympla.lexicon.Lexicon;
 import org.psympla.semantics.Semantics;
+import org.psympla.text.TextUnit;
 
 public interface LanguageEngine {
-  <C> Language<C> generate(Lexicon<C> lexicon, Grammar grammar, Semantics semantics);
+  <C extends TextUnit> Language<C> generate(
+      Lexicon<C> lexicon,
+      Grammar grammar,
+      Semantics semantics);
 }

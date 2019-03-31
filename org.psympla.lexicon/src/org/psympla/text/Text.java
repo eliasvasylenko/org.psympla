@@ -24,4 +24,8 @@ public interface Text<C extends TextUnit> {
       }
     };
   }
+
+  default boolean startsWith(Text<C> textValue) {
+    throw new UnsupportedOperationException();
+  }
 }

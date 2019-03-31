@@ -7,7 +7,6 @@ import org.psympla.lexicon.scanning.ScanningLexicalClass;
 import org.psympla.pattern.Pattern;
 import org.psympla.pattern.Variable;
 import org.psympla.symbol.Cell;
-import org.psympla.symbol.LexicalItem;
 import org.psympla.symbol.Nil;
 import org.psympla.symbol.Sequence;
 import org.psympla.symbol.Symbol;
@@ -17,10 +16,7 @@ import org.psympla.text.TextUnit;
 public class RegexLexicalClass<C extends TextUnit>
     extends ScanningLexicalClass<C, Cell<Value<String>, Nil>> {
   public RegexLexicalClass(Symbol symbol, String pattern) {
-    super(
-        symbol,
-        new TextScanner<>(input -> input.match(pattern).stream().mapToInt(i -> i)),
-        new TextPrinter<>(LexicalItem::toString));
+    super(symbol, null, null);
   }
 
   public Pattern instance(String parameter) {

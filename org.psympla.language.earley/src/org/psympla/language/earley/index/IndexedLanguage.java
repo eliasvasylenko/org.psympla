@@ -30,10 +30,6 @@ public class IndexedLanguage<C> {
     });
   }
 
-  private void markNullable(IndexedItem item) {
-    item.markNullable();
-  }
-
   public NonterminalRule nonterminalRule(int index) {
     return nonterminalRules.get(index);
   }

@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.psympla.lexicon.Lexicon;
 import org.psympla.symbol.Symbol;
-import org.psympla.text.CodePoint;
 import org.psympla.text.scanning.LiteralLexicalClass;
 import org.psympla.text.scanning.RegexLexicalClass;
+import org.psympla.text.utf.UtfCodePoint;
 
-public class ExpressionLexicon extends Lexicon<CodePoint> {
+public class ExpressionLexicon extends Lexicon<UtfCodePoint> {
   public static class OperatorSymbol extends Symbol {
     public OperatorSymbol(String id) {
       super(id);
@@ -37,12 +37,12 @@ public class ExpressionLexicon extends Lexicon<CodePoint> {
   }
 
   @SuppressWarnings("unchecked")
-  public RegexLexicalClass<CodePoint> variable() {
-    return (RegexLexicalClass<CodePoint>) getLexicalClass(VARIABLE);
+  public RegexLexicalClass<UtfCodePoint> variable() {
+    return (RegexLexicalClass<UtfCodePoint>) getLexicalClass(VARIABLE);
   }
 
   @SuppressWarnings("unchecked")
-  public LiteralLexicalClass<CodePoint> operator(OperatorSymbol symbol) {
-    return (LiteralLexicalClass<CodePoint>) getLexicalClass(symbol);
+  public LiteralLexicalClass<UtfCodePoint> operator(OperatorSymbol symbol) {
+    return (LiteralLexicalClass<UtfCodePoint>) getLexicalClass(symbol);
   }
 }

@@ -7,6 +7,7 @@ import org.psympla.lexicon.LexicalClass;
 import org.psympla.pattern.Patterns;
 import org.psympla.pattern.Variable;
 import org.psympla.text.Text;
+import org.psympla.text.TextUnit;
 
 /**
  * A synthetic rule representing a lexical class. The LHS is the terminal symbol
@@ -17,7 +18,7 @@ import org.psympla.text.Text;
  *
  * @param <C>
  */
-public class TerminalRule<C> extends IndexedRule {
+public class TerminalRule<C extends TextUnit> extends IndexedRule {
   private static final Variable LEXEME = Patterns.variable("T");
 
   private final LexicalClass<C, ?> lexicalClass;

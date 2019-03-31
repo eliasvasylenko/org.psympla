@@ -3,7 +3,7 @@ package org.psympla.text;
 import java.util.Iterator;
 import java.util.function.Function;
 
-public abstract class CharacterConverter<C, D> {
+public abstract class CharacterConverter<C extends TextUnit, D extends TextUnit> {
   private final CharacterSet<D> characterSet;
 
   public CharacterConverter(CharacterSet<D> characterSet) {
@@ -18,7 +18,7 @@ public abstract class CharacterConverter<C, D> {
 
   public abstract C assemble(Iterator<D> characters);
 
-  public static <C, D> CharacterConverter<C, D> toAndFrom(
+  public static <C extends TextUnit, D extends TextUnit> CharacterConverter<C, D> toAndFrom(
       CharacterSet<D> characterSet,
       Function<C, Iterator<D>> dissembleTo,
       Function<Iterator<D>, C> assembleFrom) {

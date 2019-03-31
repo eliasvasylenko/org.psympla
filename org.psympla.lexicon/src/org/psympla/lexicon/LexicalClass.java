@@ -1,5 +1,6 @@
 package org.psympla.lexicon;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.psympla.constraint.Scope;
@@ -24,7 +25,7 @@ public interface LexicalClass<C extends TextUnit, T extends Sequence> {
 
   Stream<Lexeme<C, T>> scan(Text<C> characters);
 
-  Lexeme<C, T> print(Token<T> token);
+  Optional<Lexeme<C, T>> print(Token<T> token);
 
   default Pattern instance(T parameter) {
     return Patterns.literal(symbol().consOnto(parameter));

@@ -3,8 +3,9 @@ package org.psympla.language;
 import org.psympla.semantics.Context;
 import org.psympla.semantics.Sign;
 import org.psympla.text.Text;
+import org.psympla.text.TextUnit;
 
-public interface Designation<C, T> {
+public interface Designation<C extends TextUnit, T> {
   Sign<T> sign();
 
   default T decode(Text<C> encoding) {

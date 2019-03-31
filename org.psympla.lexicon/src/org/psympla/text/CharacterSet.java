@@ -13,9 +13,7 @@ import java.util.Optional;
  *
  * @param <C>
  */
-public class CharacterSet<C> {
-  public static final CharacterSet<Byte> BYTES = new CharacterSet<>();
-
+public class CharacterSet<C extends TextUnit> {
   private final Map<CharacterSet<?>, CharacterConverter<C, ?>> converters = new HashMap<>();
 
   public CharacterSet(Collection<? extends CharacterConverter<C, ?>> converters) {
@@ -30,7 +28,16 @@ public class CharacterSet<C> {
   }
 
   @SuppressWarnings("unchecked")
-  <D> Optional<CharacterConverter<C, D>> converting(CharacterSet<D> characterSet) {
+  public <D extends TextUnit> Optional<CharacterConverter<C, D>> converting(
+      CharacterSet<D> characterSet) {
     return Optional.ofNullable((CharacterConverter<C, D>) converters.get(characterSet));
+  }
+
+  public String toString(Text<C> text) {
+    return null;
+  }
+
+  public Text<C> fromString(String string) {
+    return null;
   }
 }

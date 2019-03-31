@@ -3,14 +3,13 @@ package org.psympla.example.expression;
 import static org.psympla.example.expression.ExpressionSemantics.EXPRESSION;
 
 import org.psympla.language.earley.EarleyLanguage;
-import org.psympla.text.CodePoint;
-import org.psympla.text.Text;
+import org.psympla.text.utf.UtfCodePoint;
 
-public class ExpressionLanguage extends EarleyLanguage<CodePoint> {
+public class ExpressionLanguage extends EarleyLanguage<UtfCodePoint> {
   public static void main(String... args) {
     Expression expression = new ExpressionLanguage()
         .designation(EXPRESSION)
-        .decode(new Text<>("a + b * c"));
+        .decode(UtfCodePoint.CODE_POINTS.fromString("a + b * c"));
     System.out.println(expression);
   }
 
