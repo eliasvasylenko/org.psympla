@@ -6,11 +6,15 @@ import org.psympla.language.Language;
 import org.psympla.language.engine.LanguageEngine;
 import org.psympla.lexicon.Lexicon;
 import org.psympla.semantics.Semantics;
+import org.psympla.text.TextUnit;
 
 @Component
 public class EarleyLanguageEngine implements LanguageEngine {
   @Override
-  public <C> Language<C> generate(Lexicon<C> lexicon, Grammar grammar, Semantics semantics) {
+  public <C extends TextUnit> Language<C> generate(
+      Lexicon<C> lexicon,
+      Grammar grammar,
+      Semantics semantics) {
     return new EarleyLanguage<>(lexicon, grammar, semantics);
   }
 }

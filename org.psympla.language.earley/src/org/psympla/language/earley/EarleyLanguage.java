@@ -7,8 +7,9 @@ import org.psympla.language.earley.index.IndexedLanguage;
 import org.psympla.lexicon.Lexicon;
 import org.psympla.semantics.Semantics;
 import org.psympla.semantics.Sign;
+import org.psympla.text.TextUnit;
 
-public class EarleyLanguage<C> implements Language<C> {
+public class EarleyLanguage<C extends TextUnit> implements Language<C> {
   private final Lexicon<C> lexicon;
   private final Grammar grammar;
   private final Semantics semantics;
@@ -18,7 +19,7 @@ public class EarleyLanguage<C> implements Language<C> {
     this.grammar = grammar;
     this.semantics = semantics;
 
-    var productions = new IndexedLanguage(grammar, lexicon);
+    var productions = new IndexedLanguage<>(grammar, lexicon);
   }
 
   @Override

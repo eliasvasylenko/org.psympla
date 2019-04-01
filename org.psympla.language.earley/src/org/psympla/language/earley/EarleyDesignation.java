@@ -6,8 +6,9 @@ import org.psympla.lexicon.Lexicon;
 import org.psympla.semantics.Context;
 import org.psympla.semantics.Sign;
 import org.psympla.text.Text;
+import org.psympla.text.TextUnit;
 
-public class EarleyDesignation<C, T> implements Designation<C, T> {
+public class EarleyDesignation<C extends TextUnit, T> implements Designation<C, T> {
   private final Lexicon<C> lexicon;
   private final Grammar grammar;
   private final Sign<T> sign;

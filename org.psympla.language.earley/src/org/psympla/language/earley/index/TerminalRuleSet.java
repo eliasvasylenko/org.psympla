@@ -1,7 +1,10 @@
 package org.psympla.language.earley.index;
 
+import org.psympla.text.TextUnit;
+
 // TODO value type?
-public class TerminalRuleSet<C> extends IndexedBitSet<IndexedLanguage<C>, TerminalRule<C>> {
+public class TerminalRuleSet<C extends TextUnit>
+    extends IndexedBitSet<IndexedLanguage<C>, TerminalRule<C>> {
   TerminalRuleSet(IndexedLanguage<C> indexedRules) {
     super(indexedRules);
   }

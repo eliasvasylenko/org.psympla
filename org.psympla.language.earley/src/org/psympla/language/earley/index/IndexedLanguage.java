@@ -8,8 +8,9 @@ import java.util.stream.Stream;
 
 import org.psympla.grammar.Grammar;
 import org.psympla.lexicon.Lexicon;
+import org.psympla.text.TextUnit;
 
-public class IndexedLanguage<C> {
+public class IndexedLanguage<C extends TextUnit> {
   private final List<NonterminalRule> nonterminalRules;
   private final List<TerminalRule<C>> terminalRules;
 

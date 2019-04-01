@@ -15,6 +15,7 @@ import org.psympla.constraint.Match;
 import org.psympla.lexicon.LexicalClass;
 import org.psympla.pattern.Pattern;
 import org.psympla.symbol.Symbol;
+import org.psympla.text.TextUnit;
 
 /**
  * An index to quickly find potentially matching rules for a term, including
@@ -25,7 +26,7 @@ import org.psympla.symbol.Symbol;
  *
  * @param <C>
  */
-public class RuleMatcher<C> {
+public class RuleMatcher<C extends TextUnit> {
   private final Map<Symbol, TerminalRule<C>> terminals = new HashMap<>();
   private final Map<Symbol, List<NonterminalRule>> sequences = new HashMap<>();
   private final Map<Symbol, List<NonterminalRule>> singles = new HashMap<>();
