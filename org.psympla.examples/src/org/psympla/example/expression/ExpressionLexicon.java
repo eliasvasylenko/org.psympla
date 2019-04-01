@@ -1,5 +1,7 @@
 package org.psympla.example.expression;
 
+import static org.psympla.text.utf.UtfCodePoint.CODE_POINTS;
+
 import java.util.List;
 
 import org.psympla.lexicon.Lexicon;
@@ -28,12 +30,12 @@ public class ExpressionLexicon extends Lexicon<UtfCodePoint> {
         List
             .of(
                 new RegexLexicalClass<>(VARIABLE, "[A-Za-z]"),
-                new LiteralLexicalClass<>(MULTIPLY, "\\*"),
-                new LiteralLexicalClass<>(DIVIDE, "/"),
-                new LiteralLexicalClass<>(ADD, "+"),
-                new LiteralLexicalClass<>(SUBTRACT, "-"),
-                new LiteralLexicalClass<>(OPEN_BRACKET, "("),
-                new LiteralLexicalClass<>(CLOSE_BRACKET, ")")));
+                new LiteralLexicalClass<>(CODE_POINTS, MULTIPLY, "\\*"),
+                new LiteralLexicalClass<>(CODE_POINTS, DIVIDE, "/"),
+                new LiteralLexicalClass<>(CODE_POINTS, ADD, "+"),
+                new LiteralLexicalClass<>(CODE_POINTS, SUBTRACT, "-"),
+                new LiteralLexicalClass<>(CODE_POINTS, OPEN_BRACKET, "("),
+                new LiteralLexicalClass<>(CODE_POINTS, CLOSE_BRACKET, ")")));
   }
 
   @SuppressWarnings("unchecked")

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * 
@@ -16,7 +17,10 @@ import java.util.Optional;
 public class CharacterSet<C extends TextUnit> {
   private final Map<CharacterSet<?>, CharacterConverter<C, ?>> converters = new HashMap<>();
 
-  public CharacterSet(Collection<? extends CharacterConverter<C, ?>> converters) {
+  public CharacterSet(
+      Function<Text<C>, String> toString,
+      Function<String, Text<C>> fromString,
+      Collection<? extends CharacterConverter<C, ?>> converters) {
     for (var converter : converters) {
       this.converters.put(converter.characterSet(), converter);
     }

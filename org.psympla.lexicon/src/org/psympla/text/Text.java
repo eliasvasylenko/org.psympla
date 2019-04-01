@@ -1,5 +1,9 @@
 package org.psympla.text;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
 /**
  * 
  * 
@@ -7,7 +11,7 @@ package org.psympla.text;
  *
  * @param <C>
  */
-public interface Text<C extends TextUnit> {
+public interface Text<C extends TextUnit> extends Iterable<C> {
   Text<C> subSequence(int from, int to);
 
   default Text<C> subSequence(int to) {
@@ -22,10 +26,38 @@ public interface Text<C extends TextUnit> {
           throw new IndexOutOfBoundsException();
         return this;
       }
+
+      @Override
+      public Iterator<C> iterator() {
+        return new Iterator<C>() {
+          @Override
+          public boolean hasNext() {
+            return false;
+          }
+
+          @Override
+          public C next() {
+            throw new NoSuchElementException();
+          }
+        };
+      }
     };
   }
 
-  default boolean startsWith(Text<C> textValue) {
-    throw new UnsupportedOperationException();
+  default boolean startsWith(Text<C> that) {
+    var thisIterator = this.iterator();
+    var thatIterator = that.iterator();
+
+    while (thatIterator.hasNext()) {
+      if (!thisIterator.hasNext()) {
+        return false;
+      }
+
+      if (!Objects.equals(thisIterator.next(), thatIterator.next())) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
