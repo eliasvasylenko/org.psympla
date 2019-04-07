@@ -1,0 +1,13 @@
+Bundle-Name: Topiello :: Semantics
+Bundle-Description: \
+	API for defining semantic relations between grammars and information
+
+Export-Package: \
+	org.topiello.semantics,\
+	org.topiello.semantics.type
+
+-buildpath: \
+	org.topiello.grammar;version=snapshot,\
+	org.topiello.lexicon;version=snapshot,\
+	org.topiello.pattern;version=snapshot,\
+	org.topiello.symbol;version=snapshot

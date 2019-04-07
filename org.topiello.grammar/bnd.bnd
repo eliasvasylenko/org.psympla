@@ -1,0 +1,8 @@
+Bundle-Name: Topiello :: Grammar
+
+Export-Package: org.topiello.grammar
+
+-buildpath: \
+	org.topiello.constraints;version=snapshot,\
+	org.topiello.symbol;version=snapshot,\
+	org.topiello.pattern;version=snapshot

@@ -170,7 +170,7 @@ task aggregateJavadoc(type: Javadoc) {
 apply plugin: "org.ajoberstar.github-pages"
 
 githubPages {
-  repoUri = "https://github.com/StrangeSkies/org.psympla.git"
+  repoUri = "https://github.com/StrangeSkies/org.topiello.git"
   if (project.hasProperty("githubUser") && project.hasProperty("githubPassword")) {
     credentials.setUsername githubUser
     credentials.setPassword githubPassword

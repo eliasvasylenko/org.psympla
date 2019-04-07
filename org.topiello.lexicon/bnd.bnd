@@ -1,0 +1,14 @@
+Bundle-Name: Topiello :: Lexicon
+
+Export-Package: \
+	org.topiello.text,\
+	org.topiello.text.ascii,\
+	org.topiello.text.scanning,\
+	org.topiello.text.utf,\
+	org.topiello.lexicon,\
+	org.topiello.lexicon.scanning
+
+-buildpath: \
+	org.topiello.constraints;version=snapshot,\
+	org.topiello.symbol;version=snapshot,\
+	org.topiello.pattern;version=snapshot

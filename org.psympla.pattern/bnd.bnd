@@ -1,7 +1,0 @@
-Bundle-Name: Psympla :: Pattern
-
-Export-Package:\
-	org.psympla.pattern
-
--buildpath:\
-	org.psympla.symbol;version=snapshot

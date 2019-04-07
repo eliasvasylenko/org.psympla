@@ -1,8 +1,0 @@
-Bundle-Name: Psympla :: Constraints
-
-Export-Package:\
-	org.psympla.constraint
-
--buildpath:\
-	org.psympla.symbol;version=snapshot,\
-	org.psympla.pattern;version=snapshot

@@ -1,0 +1,10 @@
+Bundle-Name: Strange Skies :: Text
+Bundle-Description: \
+	Common Java utilities for dealing with text.
+
+Export-Package: org.topiello.meta
+
+-buildpath: \
+	org.topiello.grammar;version=snapshot,\
+	org.topiello.lexicon;version=snapshot,\
+	org.topiello.symbol;version=snapshot

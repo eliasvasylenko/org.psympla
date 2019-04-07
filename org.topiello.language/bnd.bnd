@@ -1,0 +1,11 @@
+Bundle-Name: Topiello :: Language
+Bundle-Description: \
+	API for defining and processing languages
+
+Export-Package: \
+	org.topiello.language
+
+-buildpath: \
+	org.topiello.grammar;version=snapshot,\
+	org.topiello.lexicon;version=snapshot,\
+	org.topiello.semantics;version=snapshot

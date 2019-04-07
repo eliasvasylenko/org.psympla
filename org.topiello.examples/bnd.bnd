@@ -1,0 +1,16 @@
+Bundle-Name: Topiello :: Examples
+Bundle-Description: \
+	Example topiello grammars
+
+Export-Package: \
+	org.topiello.example.expression
+
+-buildpath: \
+	org.topiello.constraints;version=snapshot,\
+	org.topiello.grammar;version=snapshot,\
+	org.topiello.language;version=snapshot,\
+	org.topiello.language.earley;version=snapshot,\
+	org.topiello.lexicon;version=snapshot,\
+	org.topiello.pattern;version=snapshot,\
+	org.topiello.semantics;version=snapshot,\
+	org.topiello.symbol;version=snapshot

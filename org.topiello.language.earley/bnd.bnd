@@ -1,0 +1,17 @@
+Bundle-Name: Topiello :: Language :: Earley
+Bundle-Description: \
+	Implementation for processing languages based on the Earley algorithm
+
+Export-Package:\
+	org.topiello.language.earley,\
+	org.topiello.language.earley.index
+
+-buildpath: \
+	org.topiello.constraints;version=snapshot,\
+	org.topiello.grammar;version=snapshot,\
+	org.topiello.language;version=snapshot,\
+	org.topiello.language.engine;version=snapshot,\
+	org.topiello.lexicon;version=snapshot,\
+	org.topiello.pattern;version=snapshot,\
+	org.topiello.semantics;version=snapshot,\
+	org.topiello.symbol;version=snapshot

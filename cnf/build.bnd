@@ -20,24 +20,24 @@ copyright.year			=	${tstamp;yyyy}
 copyright				=	Copyright (c) ${copyright.holder.name} (2014, ${copyright.year}). All Rights Reserved.
 
 # Maven info. The maven artifactId defaults to Bundle-SymbolicName
--groupid:	org.psympla
+-groupid:	org.topiello
 -pom:		version=${versionmask;===s;${@version}}-SNAPSHOT
 
-psympla-version: 0.0.0
-psympla-version-ceiling: 1.0.0
+topiello-version: 0.0.0
+topiello-version-ceiling: 1.0.0
 
-Bundle-Version:		${psympla-version}.${tstamp}
+Bundle-Version:		${topiello-version}.${tstamp}
 
 Bundle-Vendor:		Strange Skies http://strangeskies.co.uk/
 Bundle-Copyright:	${copyright}
 Bundle-License:\
 	LGPL;\
 	link					=	http://www.gnu.org/licenses/
-Bundle-DocURL:		https://github.com/StrangeSkies/org.psympla/wiki
+Bundle-DocURL:		https://github.com/StrangeSkies/org.topiello/wiki
 Bundle-SCM:\
-	url						=	https://github.com/strangeskies/org.psympla, \
-	connection				=	scm:git:https://github.com/strangeskies/org.psympla.git, \
-	developerConnection		=	scm:git:git@github.com:strangeskies/org.psympla.git
+	url						=	https://github.com/strangeskies/org.topiello, \
+	connection				=	scm:git:https://github.com/strangeskies/org.topiello.git, \
+	developerConnection		=	scm:git:git@github.com:strangeskies/org.topiello.git
 Bundle-Developers:\
     eliasvasylenko;\
         email				=	eliasvasylenko@gmail.com; \
