@@ -20,7 +20,7 @@ public class LiteralLexicalClass<C extends TextUnit>
   private final String value;
 
   public LiteralLexicalClass(CharacterSet<C> characterSet, Symbol symbol, String value) {
-    this(characterSet, symbol, value, characterSet.fromString(value));
+    this(characterSet, symbol, value, characterSet.fromChars(value));
   }
 
   private LiteralLexicalClass(

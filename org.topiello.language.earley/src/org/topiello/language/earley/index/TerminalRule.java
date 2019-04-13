@@ -3,6 +3,7 @@ package org.topiello.language.earley.index;
 import java.util.List;
 
 import org.topiello.constraint.ValueType;
+import org.topiello.grammar.Rule;
 import org.topiello.lexicon.LexicalClass;
 import org.topiello.pattern.Patterns;
 import org.topiello.pattern.Variable;
@@ -18,13 +19,13 @@ import org.topiello.text.TextUnit;
  *
  * @param <C>
  */
-public class TerminalRule<C extends TextUnit> extends IndexedRule {
+public class TerminalRule<T extends Rule<?>, C extends TextUnit> extends IndexedRule<T> {
   private static final Variable LEXEME = Patterns.variable("T");
 
   private final LexicalClass<C, ?> lexicalClass;
   private final List<IndexedItem> items;
 
-  TerminalRule(int index, IndexedLanguage<C> indexedLanguage, LexicalClass<C, ?> lexicalClass) {
+  TerminalRule(int index, IndexedLanguage<T, C> indexedLanguage, LexicalClass<C, ?> lexicalClass) {
     super(
         index,
         indexedLanguage,

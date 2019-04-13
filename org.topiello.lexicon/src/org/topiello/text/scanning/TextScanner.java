@@ -33,7 +33,7 @@ public class TextScanner<C extends TextUnit> implements Scanner<C, Cell<Value<St
             i -> Scan
                 .forParameter(
                     i,
-                    new Value<String>(characterSet.toString(characters.subSequence(i)))
+                    new Value<>(characterSet.toChars(characters.subSequence(i)).toString())
                         .consOnto(Sequence.empty())));
   }
 }

@@ -3,18 +3,14 @@ package org.topiello.lexicon;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.topiello.constraint.Scope;
-import org.topiello.pattern.Pattern;
 import org.topiello.pattern.Patterns;
-import org.topiello.symbol.Sequence;
-import org.topiello.symbol.Symbol;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 
 /*
  * The c
  */
-public interface LexicalClass<C extends TextUnit, T extends Sequence> {
+public interface LexicalClass<C extends TextUnit, T> {
   Symbol symbol();
 
   Pattern parameter();

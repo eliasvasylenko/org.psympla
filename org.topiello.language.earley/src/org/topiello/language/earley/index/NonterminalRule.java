@@ -19,11 +19,11 @@ import org.topiello.grammar.Rule;
  * @param <C>
  */
 // TODO value type?
-public class NonterminalRule extends IndexedRule {
+public class NonterminalRule<T extends Rule<?>> extends IndexedRule<T> {
   private final List<IndexedItem> items;
 
-  NonterminalRule(int index, IndexedLanguage<?> indexedLanguage, Rule rule) {
-    super(index, indexedLanguage, rule.pattern(), rule.scope(), rule.products().collect(toList()));
+  NonterminalRule(int index, IndexedLanguage<T, ?> indexedLanguage, Rule<?> rule) {
+    super(index, indexedLanguage, rule.variable(), rule.products().collect(toList()));
 
     items = concat(
         IntStream.range(0, productCount()).mapToObj(i -> IndexedItem.nonterminal(this, i)),

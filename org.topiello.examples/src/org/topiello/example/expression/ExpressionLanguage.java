@@ -9,7 +9,7 @@ public class ExpressionLanguage extends EarleyLanguage<UtfCodePoint> {
   public static void main(String... args) {
     Expression expression = new ExpressionLanguage()
         .designation(EXPRESSION)
-        .decode(UtfCodePoint.CODE_POINTS.fromString("a + b * c"));
+        .decode(UtfCodePoint.CODE_POINTS.fromChars("a + b * c"));
     System.out.println(expression);
   }
 

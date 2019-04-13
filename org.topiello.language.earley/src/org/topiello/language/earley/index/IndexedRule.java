@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.topiello.constraint.Scope;
+import org.topiello.grammar.Rule;
 import org.topiello.pattern.Pattern;
 
 /**
@@ -19,33 +20,30 @@ import org.topiello.pattern.Pattern;
  * @param <C>
  */
 // TODO value type?
-public abstract class IndexedRule {
-  private final IndexedLanguage<?> indexedLanguage;
+public abstract class IndexedRule<T extends Rule<?>> {
+  private final IndexedLanguage<T, ?> indexedLanguage;
   private final int index;
 
   private final Pattern pattern;
-  private final Scope scope;
 
   private final List<IndexedProduct> products;
 
   IndexedRule(
       int index,
-      IndexedLanguage<?> indexedLanguage,
+      IndexedLanguage<T, ?> indexedLanguage,
       Pattern pattern,
-      Scope scope,
       List<Pattern> products) {
     this.indexedLanguage = indexedLanguage;
     this.index = index;
 
     this.pattern = pattern;
-    this.scope = scope;
     this.products = IntStream
         .range(0, products.size())
         .mapToObj(i -> new IndexedProduct(new LR0Item(this, i), products.get(i)))
         .collect(toList());
   }
 
-  public IndexedLanguage<?> language() {
+  public IndexedLanguage<?, ?> language() {
     return indexedLanguage;
   }
 

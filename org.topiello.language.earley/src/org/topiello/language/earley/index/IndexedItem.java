@@ -18,13 +18,13 @@ public class IndexedItem {
 
   private Nullability nullability;
   private final Set<LR0Item> nullReachableItems;
-  private final TerminalRuleSet<?> nullReachableTerminals;
+  private final TerminalRuleSet<?, ?> nullReachableTerminals;
 
   private IndexedItem(
       LR0Item item,
       Nullability nullability,
       Set<LR0Item> nullReachableItems,
-      TerminalRuleSet<?> nullReachableTerminals) {
+      TerminalRuleSet<?, ?> nullReachableTerminals) {
     this.item = item;
 
     this.nullability = nullability;
@@ -35,7 +35,7 @@ public class IndexedItem {
     this.predictors = emptySet();
   }
 
-  static IndexedItem nonterminal(NonterminalRule rule, int dotPosition) {
+  static IndexedItem nonterminal(NonterminalRule<?> rule, int dotPosition) {
     return new IndexedItem(
         new LR0Item(rule, dotPosition),
         Nullability.NON_NULLABLE,
@@ -43,7 +43,7 @@ public class IndexedItem {
         rule.language().createTerminalRuleSet());
   }
 
-  static IndexedItem terminal(TerminalRule<?> rule) {
+  static IndexedItem terminal(TerminalRule<?, ?> rule) {
     boolean nullable = rule.lexicalClass().scan(Text.empty()).findAny().isPresent();
 
     return new IndexedItem(
@@ -53,7 +53,7 @@ public class IndexedItem {
         rule.language().createTerminalRuleSet());
   }
 
-  static IndexedItem complete(IndexedRule rule) {
+  static IndexedItem complete(IndexedRule<?> rule) {
     return new IndexedItem(
         new LR0Item(rule, rule.productCount()),
         NULL_COMPLETABLE,
@@ -78,7 +78,7 @@ public class IndexedItem {
     return nullReachableItems;
   }
 
-  public TerminalRuleSet<?> nullReachableTerminals() {
+  public TerminalRuleSet<?, ?> nullReachableTerminals() {
     return nullReachableTerminals;
   }
 

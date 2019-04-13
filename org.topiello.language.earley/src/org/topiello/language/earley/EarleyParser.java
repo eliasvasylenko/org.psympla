@@ -2,14 +2,13 @@ package org.topiello.language.earley;
 
 import java.util.Optional;
 
-import org.topiello.symbol.LexicalItem;
-import org.topiello.symbol.Symbol;
+import org.topiello.grammar.Rule;
 
-public class EarleyParser {
-  private final EarleyState state;
+public class EarleyParser<T extends Rule<V>, V> {
+  private final EarleyState<T, V> state;
 
-  public EarleyParser(Symbol startSymbol, Iterable<LexicalItem> items) {
-    state = new EarleyState(startSymbol);
+  public EarleyParser(V startSymbol) {
+    state = new EarleyState<>(startSymbol);
 
     Optional<EarleySet> nextSet;
     while ((nextSet = state.nextSet()).isPresent()) {

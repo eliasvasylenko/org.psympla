@@ -4,12 +4,12 @@ import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.topiello.symbol.Symbol;
+import org.topiello.grammar.Rule;
 
-public class EarleyState {
+public class EarleyState<T extends Rule<V>, V> {
   private final SortedMap<Integer, EarleySet> sets = new TreeMap<>();
 
-  public EarleyState(Symbol startSymbol) {
+  public EarleyState(V startSymbol) {
     addSet(0);
   }
 

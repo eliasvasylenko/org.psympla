@@ -12,18 +12,18 @@ import org.topiello.lexicon.Lexicon;
 import org.topiello.text.TextUnit;
 
 public class IndexedLanguage<T extends Rule<?>, C extends TextUnit> {
-  private final List<NonterminalRule> nonterminalRules;
-  private final List<TerminalRule<C>> terminalRules;
+  private final List<NonterminalRule<T>> nonterminalRules;
+  private final List<TerminalRule<T, C>> terminalRules;
 
   public IndexedLanguage(Grammar<T> grammar, Lexicon<C> lexicon) {
     var rules = grammar.getRules().collect(toList());
     nonterminalRules = range(0, rules.size())
-        .mapToObj(i -> new NonterminalRule(i, this, rules.get(i)))
+        .mapToObj(i -> new NonterminalRule<>(i, this, rules.get(i)))
         .collect(toList());
 
     var lexicalClasses = lexicon.getLexicalClasses().collect(toList());
     terminalRules = range(0, lexicalClasses.size())
-        .mapToObj(i -> new TerminalRule<C>(i, this, lexicalClasses.get(i)))
+        .mapToObj(i -> new TerminalRule<T, C>(i, this, lexicalClasses.get(i)))
         .collect(toList());
 
     rules().flatMap(IndexedRule::items).forEach(item -> {
@@ -32,11 +32,11 @@ public class IndexedLanguage<T extends Rule<?>, C extends TextUnit> {
     });
   }
 
-  public NonterminalRule nonterminalRule(int index) {
+  public NonterminalRule<T> nonterminalRule(int index) {
     return nonterminalRules.get(index);
   }
 
-  public TerminalRule<C> terminalRule(int index) {
+  public TerminalRule<T, C> terminalRule(int index) {
     return terminalRules.get(index);
   }
 
@@ -48,23 +48,23 @@ public class IndexedLanguage<T extends Rule<?>, C extends TextUnit> {
     return terminalRules.size();
   }
 
-  public Stream<NonterminalRule> nonterminalRules() {
+  public Stream<NonterminalRule<T>> nonterminalRules() {
     return nonterminalRules.stream();
   }
 
-  public Stream<TerminalRule<C>> terminalRules() {
+  public Stream<TerminalRule<T, C>> terminalRules() {
     return terminalRules.stream();
   }
 
-  public Stream<IndexedRule> rules() {
+  public Stream<IndexedRule<T>> rules() {
     return Stream.concat(nonterminalRules(), terminalRules());
   }
 
-  public TerminalRuleSet<?> createTerminalRuleSet() {
+  public TerminalRuleSet<T, C> createTerminalRuleSet() {
     return new TerminalRuleSet<>(this);
   }
 
-  public NonterminalRuleSet createNonterminalRuleSet() {
-    return new NonterminalRuleSet(this);
+  public NonterminalRuleSet<T> createNonterminalRuleSet() {
+    return new NonterminalRuleSet<>(this);
   }
 }

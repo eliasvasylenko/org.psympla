@@ -23,6 +23,6 @@ public class TextPrinter<C extends TextUnit> implements Printer<C, Cell<Value<St
   @Override
   public Optional<Text<C>> print(Cell<Value<String>, Nil> parameter) {
     var string = parameter.car().get();
-    return print.test(string) ? Optional.of(characterSet.fromString(string)) : Optional.empty();
+    return print.test(string) ? Optional.of(characterSet.fromChars(string)) : Optional.empty();
   }
 }

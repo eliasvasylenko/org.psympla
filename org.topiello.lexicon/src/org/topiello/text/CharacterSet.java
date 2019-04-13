@@ -15,12 +15,16 @@ import java.util.function.Function;
  * @param <C>
  */
 public class CharacterSet<C extends TextUnit> {
+  private final Function<? super Text<C>, ? extends CharSequence> toChars;
+  private final Function<? super CharSequence, ? extends Text<C>> fromChars;
   private final Map<CharacterSet<?>, CharacterConverter<C, ?>> converters = new HashMap<>();
 
   public CharacterSet(
-      Function<Text<C>, String> toString,
-      Function<String, Text<C>> fromString,
+      Function<? super Text<C>, ? extends CharSequence> toChars,
+      Function<? super CharSequence, ? extends Text<C>> fromChars,
       Collection<? extends CharacterConverter<C, ?>> converters) {
+    this.toChars = toChars;
+    this.fromChars = fromChars;
     for (var converter : converters) {
       this.converters.put(converter.characterSet(), converter);
     }
@@ -28,10 +32,10 @@ public class CharacterSet<C extends TextUnit> {
 
   @SafeVarargs
   public CharacterSet(
-      Function<Text<C>, String> toString,
-      Function<String, Text<C>> fromString,
+      Function<? super Text<C>, ? extends CharSequence> toChars,
+      Function<? super CharSequence, ? extends Text<C>> fromChars,
       CharacterConverter<C, ?>... converters) {
-    this(toString, fromString, Arrays.asList(converters));
+    this(toChars, fromChars, Arrays.asList(converters));
   }
 
   @SuppressWarnings("unchecked")
@@ -40,11 +44,11 @@ public class CharacterSet<C extends TextUnit> {
     return Optional.ofNullable((CharacterConverter<C, D>) converters.get(characterSet));
   }
 
-  public String toString(Text<C> text) {
-    return null;
+  public CharSequence toChars(Text<C> text) {
+    return toChars.apply(text);
   }
 
-  public Text<C> fromString(String string) {
-    return null;
+  public Text<C> fromChars(CharSequence string) {
+    return fromChars.apply(string);
   }
 }

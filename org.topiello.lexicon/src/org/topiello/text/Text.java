@@ -3,6 +3,7 @@ package org.topiello.text;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * 
@@ -12,6 +13,35 @@ import java.util.Objects;
  * @param <C>
  */
 public interface Text<C extends TextUnit> extends Iterable<C> {
+  static <C extends TextUnit> Text<C> fromStream(Stream<C> stream) {
+    return new Text<C>() {
+      @Override
+      public Text<C> subSequence(int from, int to) {
+        return stream;
+      }
+
+      @Override
+      public Iterator<C> iterator() {
+        return new Iterator<C>() {
+          @Override
+          public boolean hasNext() {
+            return false;
+          }
+
+          @Override
+          public C next() {
+            throw new NoSuchElementException();
+          }
+        };
+      }
+
+      @Override
+      public Stream<C> stream() {
+        return Stream.empty();
+      }
+    };
+  }
+
   Text<C> subSequence(int from, int to);
 
   default Text<C> subSequence(int to) {
@@ -41,6 +71,11 @@ public interface Text<C extends TextUnit> extends Iterable<C> {
           }
         };
       }
+
+      @Override
+      public Stream<C> stream() {
+        return Stream.empty();
+      }
     };
   }
 
@@ -60,4 +95,6 @@ public interface Text<C extends TextUnit> extends Iterable<C> {
 
     return true;
   }
+
+  Stream<C> stream();
 }
