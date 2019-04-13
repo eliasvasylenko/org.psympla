@@ -17,7 +17,7 @@ public interface Text<C extends TextUnit> extends Iterable<C> {
     return new Text<C>() {
       @Override
       public Text<C> subSequence(int from, int to) {
-        return stream;
+        return null; // TODO
       }
 
       @Override

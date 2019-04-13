@@ -3,17 +3,16 @@ package org.topiello.lexicon.scanning;
 import org.topiello.lexicon.Lexeme;
 import org.topiello.lexicon.LexicalClass;
 import org.topiello.lexicon.Token;
-import org.topiello.symbol.Sequence;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 
-public class PrintingLexeme<C extends TextUnit, T extends Sequence> implements Lexeme<C, T> {
-  private final ScanningLexicalClass<C, T> lexicalClass;
+public class PrintingLexeme<T, C extends TextUnit> implements Lexeme<T, C> {
+  private final ScanningLexicalClass<T, C> lexicalClass;
   private final Text<C> characters;
   private final Token<T> token;
 
   protected PrintingLexeme(
-      ScanningLexicalClass<C, T> lexicalClass,
+      ScanningLexicalClass<T, C> lexicalClass,
       Text<C> characters,
       Token<T> token) {
     this.lexicalClass = lexicalClass;
@@ -22,7 +21,7 @@ public class PrintingLexeme<C extends TextUnit, T extends Sequence> implements L
   }
 
   @Override
-  public LexicalClass<C, T> lexicalClass() {
+  public LexicalClass<T, C> lexicalClass() {
     return lexicalClass;
   }
 

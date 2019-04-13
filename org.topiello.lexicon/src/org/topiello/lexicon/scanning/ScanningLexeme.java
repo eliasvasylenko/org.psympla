@@ -3,18 +3,17 @@ package org.topiello.lexicon.scanning;
 import org.topiello.lexicon.Lexeme;
 import org.topiello.lexicon.LexicalClass;
 import org.topiello.lexicon.Token;
-import org.topiello.symbol.Sequence;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 
-public class ScanningLexeme<C extends TextUnit, T extends Sequence> implements Lexeme<C, T> {
-  private final ScanningLexicalClass<C, T> lexicalClass;
+public class ScanningLexeme<T, C extends TextUnit> implements Lexeme<T, C> {
+  private final ScanningLexicalClass<T, C> lexicalClass;
   private final Text<C> characters;
   private final Scan<T> scan;
   private Token<T> token;
 
   protected ScanningLexeme(
-      ScanningLexicalClass<C, T> lexicalClass,
+      ScanningLexicalClass<T, C> lexicalClass,
       Text<C> characters,
       Scan<T> scan) {
     this.lexicalClass = lexicalClass;
@@ -23,7 +22,7 @@ public class ScanningLexeme<C extends TextUnit, T extends Sequence> implements L
   }
 
   @Override
-  public LexicalClass<C, T> lexicalClass() {
+  public LexicalClass<T, C> lexicalClass() {
     return lexicalClass;
   }
 
@@ -35,7 +34,7 @@ public class ScanningLexeme<C extends TextUnit, T extends Sequence> implements L
   @Override
   public Token<T> evaluate() {
     if (token == null) {
-      token = new Token<>(lexicalClass.symbol(), scan.evaluate());
+      token = new Token<>(scan.evaluate());
     }
     return token;
   }

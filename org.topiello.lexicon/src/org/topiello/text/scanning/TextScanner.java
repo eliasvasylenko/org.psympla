@@ -4,12 +4,12 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.sound.midi.Sequence;
+
 import org.topiello.lexicon.scanning.Scan;
 import org.topiello.lexicon.scanning.Scanner;
 import org.topiello.symbol.Cell;
 import org.topiello.symbol.Nil;
-import org.topiello.symbol.Sequence;
-import org.topiello.symbol.Value;
 import org.topiello.text.CharacterSet;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;

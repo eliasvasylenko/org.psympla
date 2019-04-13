@@ -4,32 +4,28 @@ import static org.topiello.pattern.Patterns.literal;
 
 import java.util.stream.IntStream;
 
+import javax.sound.midi.Sequence;
+
 import org.topiello.lexicon.scanning.ScanningLexicalClass;
-import org.topiello.pattern.Pattern;
-import org.topiello.symbol.Cell;
-import org.topiello.symbol.Nil;
-import org.topiello.symbol.Sequence;
-import org.topiello.symbol.Symbol;
-import org.topiello.symbol.Value;
 import org.topiello.text.CharacterSet;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 
-public class LiteralLexicalClass<C extends TextUnit>
-    extends ScanningLexicalClass<C, Cell<Value<String>, Nil>> {
+public abstract class LiteralLexicalClass<T, C extends TextUnit>
+    extends ScanningLexicalClass<T, C> {
   private final String value;
 
-  public LiteralLexicalClass(CharacterSet<C> characterSet, Symbol symbol, String value) {
-    this(characterSet, symbol, value, characterSet.fromChars(value));
+  public LiteralLexicalClass(CharacterSet<C> characterSet, T variable, String value) {
+    this(characterSet, variable, value, characterSet.fromChars(value));
   }
 
   private LiteralLexicalClass(
       CharacterSet<C> characterSet,
-      Symbol symbol,
+      T variable,
       String stringValue,
       Text<C> textValue) {
     super(
-        symbol,
+        variable,
         new TextScanner<>(
             characterSet,
             input -> input.startsWith(textValue)
@@ -46,4 +42,8 @@ public class LiteralLexicalClass<C extends TextUnit>
   public Value<String> value() {
     return new Value<>(this.value);
   }
+
+  public abstract T getVariable(String string);
+
+  public abstract String getVariable(T variable);
 }

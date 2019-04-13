@@ -4,7 +4,6 @@ import java.util.stream.Stream;
 
 import org.topiello.lexicon.Lexeme;
 import org.topiello.lexicon.LexicalClass;
-import org.topiello.symbol.Sequence;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 
@@ -22,6 +21,6 @@ import org.topiello.text.TextUnit;
  *
  * @param <C>
  */
-public interface Scanner<C extends TextUnit, T extends Sequence> {
+public interface Scanner<T, C extends TextUnit> {
   Stream<Scan<T>> scan(Text<C> characters);
 }

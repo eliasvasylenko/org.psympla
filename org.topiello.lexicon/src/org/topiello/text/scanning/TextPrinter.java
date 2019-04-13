@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import org.topiello.lexicon.scanning.Printer;
 import org.topiello.symbol.Cell;
 import org.topiello.symbol.Nil;
-import org.topiello.symbol.Value;
 import org.topiello.text.CharacterSet;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
