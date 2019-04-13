@@ -32,7 +32,6 @@
  */
 package org.topiello.grammar;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
@@ -40,35 +39,29 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Grammar {
-  private static final Grammar EMPTY = new Grammar(emptyList());
+public class Grammar<T extends Rule<?>> {
+  private final List<T> rules;
 
-  public static final Grammar empty() {
-    return EMPTY;
-  }
-
-  private final List<Rule> rules;
-
-  protected Grammar(Collection<? extends Rule> rules) {
+  protected Grammar(Collection<? extends T> rules) {
     this(new ArrayList<>(rules));
   }
 
-  private Grammar(List<Rule> rules) {
+  private Grammar(List<T> rules) {
     this.rules = rules;
   }
 
-  public Grammar withRule(Rule rule) {
+  public Grammar<T> withRule(T rule) {
     return withRules(singleton(rule));
   }
 
-  public Grammar withRules(Collection<? extends Rule> rules) {
-    var newRules = new ArrayList<Rule>(this.rules.size() + rules.size());
+  public Grammar<T> withRules(Collection<? extends T> rules) {
+    var newRules = new ArrayList<T>(this.rules.size() + rules.size());
     newRules.addAll(this.rules);
     rules.forEach(newRules::add);
-    return new Grammar(newRules);
+    return new Grammar<>(newRules);
   }
 
-  public Stream<Rule> getRules() {
+  public Stream<T> getRules() {
     return rules.stream();
   }
 }

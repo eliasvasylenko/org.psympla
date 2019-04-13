@@ -7,14 +7,15 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.topiello.grammar.Grammar;
+import org.topiello.grammar.Rule;
 import org.topiello.lexicon.Lexicon;
 import org.topiello.text.TextUnit;
 
-public class IndexedLanguage<C extends TextUnit> {
+public class IndexedLanguage<T extends Rule<?>, C extends TextUnit> {
   private final List<NonterminalRule> nonterminalRules;
   private final List<TerminalRule<C>> terminalRules;
 
-  public IndexedLanguage(Grammar grammar, Lexicon<C> lexicon) {
+  public IndexedLanguage(Grammar<T> grammar, Lexicon<C> lexicon) {
     var rules = grammar.getRules().collect(toList());
     nonterminalRules = range(0, rules.size())
         .mapToObj(i -> new NonterminalRule(i, this, rules.get(i)))

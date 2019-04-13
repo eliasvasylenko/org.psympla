@@ -1,55 +1,30 @@
 package org.topiello.grammar;
 
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
-import static org.topiello.pattern.Patterns.literal;
-import static org.topiello.pattern.Patterns.sequence;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.topiello.constraint.Constraint;
-import org.topiello.constraint.Scope;
-import org.topiello.pattern.Pattern;
-import org.topiello.pattern.Patterns;
-import org.topiello.symbol.LexicalItem;
-import org.topiello.symbol.Sequence;
-import org.topiello.symbol.Symbol;
+public class Rule<T> {
+  private final T T;
+  private final List<T> products;
 
-public class Rule {
-  private final Pattern pattern;
-  private final List<Pattern> products;
-  private final Scope scope;
-
-  public Rule(Pattern pattern) {
-    this(pattern, List.of(), Scope.empty());
+  public Rule(T T) {
+    this(T, List.of());
   }
 
-  public Rule(LexicalItem patternLiteral) {
-    this(literal(patternLiteral));
-  }
-
-  public Rule(Symbol symbol, Pattern parameter) {
-    this(sequence(literal(symbol), parameter));
-  }
-
-  public Rule(Symbol symbol, LexicalItem parameterLiteral) {
-    this(Sequence.of(symbol, parameterLiteral));
-  }
-
-  protected Rule(Pattern pattern, List<Pattern> products, Scope scope) {
-    this.pattern = pattern;
+  protected Rule(T T, List<T> products) {
+    this.T = T;
     this.products = List.copyOf(products);
-    this.scope = scope;
   }
 
-  public Pattern pattern() {
-    return pattern;
+  public T T() {
+    return T;
   }
 
-  public Stream<Pattern> products() {
+  public Stream<T> products() {
     return products.stream();
   }
 
@@ -57,44 +32,28 @@ public class Rule {
     return products.size();
   }
 
-  public Pattern product(int index) {
+  public T product(int index) {
     return products.get(index);
   }
 
-  public Scope scope() {
-    return scope;
-  }
-
-  public Rule withProduct(LexicalItem product) {
+  public Rule<T> withProduct(T product) {
     return withProducts(product);
   }
 
-  public final Rule withProducts(LexicalItem... production) {
-    return withProducts(Stream.of(production).map(Patterns::literal).collect(toList()));
-  }
-
-  public Rule withProduct(Pattern product) {
-    return withProducts(product);
-  }
-
-  public final Rule withProducts(Pattern... production) {
+  @SafeVarargs
+  public final Rule<T> withProducts(T... production) {
     return withProducts(List.of(production));
   }
 
-  public Rule withProducts(Collection<? extends Pattern> production) {
-    List<Pattern> newProduction = new ArrayList<>(this.products.size() + production.size());
+  public Rule<T> withProducts(Collection<? extends T> production) {
+    List<T> newProduction = new ArrayList<>(this.products.size() + production.size());
     newProduction.addAll(this.products);
     newProduction.addAll(production);
-    return new Rule(pattern, newProduction, scope);
-  }
-
-  public Rule withConstraint(Constraint constraint) {
-    return new Rule(pattern, products, scope.withConstraint(constraint));
+    return new Rule<>(T, newProduction);
   }
 
   @Override
   public String toString() {
-    return pattern + " -> " + products.stream().map(Object::toString).collect(joining(" ")) + " : "
-        + scope;
+    return T + " -> " + products.stream().map(Object::toString).collect(joining(" "));
   }
 }
