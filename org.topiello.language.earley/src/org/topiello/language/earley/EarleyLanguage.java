@@ -4,10 +4,10 @@ import org.topiello.grammar.Grammar;
 import org.topiello.grammar.Rule;
 import org.topiello.language.Designation;
 import org.topiello.language.Language;
+import org.topiello.language.Sign;
 import org.topiello.language.earley.index.IndexedLanguage;
 import org.topiello.lexicon.Lexicon;
 import org.topiello.semantics.Semantics;
-import org.topiello.semantics.Sign;
 import org.topiello.text.TextUnit;
 
 public class EarleyLanguage<T extends Rule<?>, C extends TextUnit> implements Language<T, C> {

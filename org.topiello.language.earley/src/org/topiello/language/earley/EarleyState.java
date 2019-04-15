@@ -1,13 +1,14 @@
 package org.topiello.language.earley;
 
+import java.util.Map.Entry;
+import java.util.NavigableMap;
 import java.util.Optional;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.topiello.grammar.Rule;
 
 public class EarleyState<T extends Rule<V>, V> {
-  private final SortedMap<Integer, EarleySet> sets = new TreeMap<>();
+  private final NavigableMap<Integer, EarleySet> sets = new TreeMap<>();
 
   public EarleyState(V startSymbol) {
     addSet(0);
@@ -20,8 +21,6 @@ public class EarleyState<T extends Rule<V>, V> {
   }
 
   public Optional<EarleySet> nextSet() {
-    return sets.isEmpty()
-        ? Optional.empty()
-        : Optional.of(sets.entrySet().iterator().next().getValue());
+    return Optional.ofNullable(sets.pollFirstEntry()).map(Entry::getValue);
   }
 }

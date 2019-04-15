@@ -1,7 +1,5 @@
 package org.topiello.language;
 
-import org.topiello.semantics.Context;
-import org.topiello.semantics.Sign;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 

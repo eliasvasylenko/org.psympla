@@ -1,7 +1,6 @@
 package org.topiello.example.expression;
 
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 import static org.topiello.example.expression.ExpressionLexicon.ADD;
 import static org.topiello.example.expression.ExpressionLexicon.DIVIDE;
 import static org.topiello.example.expression.ExpressionLexicon.MULTIPLY;
@@ -11,12 +10,12 @@ import static org.topiello.pattern.Patterns.variable;
 
 import java.util.Collection;
 
+import org.topiello.language.Sign;
 import org.topiello.semantics.Denotation;
 import org.topiello.semantics.Designation;
 import org.topiello.semantics.Semantics;
-import org.topiello.semantics.Sign;
-import org.topiello.semantics.Unknown;
-import org.topiello.symbol.Value;
+
+import com.sun.org.apache.bcel.internal.classfile.Unknown;
 
 /*
  * TODO parity between typing information in programming API and data format.

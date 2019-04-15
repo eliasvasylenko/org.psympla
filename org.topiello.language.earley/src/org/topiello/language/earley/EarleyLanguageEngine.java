@@ -15,7 +15,7 @@ public class EarleyLanguageEngine implements LanguageEngine {
   public <T extends Rule<?>, C extends TextUnit> Language<T, C> generate(
       Lexicon<T, C> lexicon,
       Grammar<T> grammar,
-      Semantics semantics) {
+      Semantics<T> semantics) {
     return new EarleyLanguage<>(lexicon, grammar, semantics);
   }
 }

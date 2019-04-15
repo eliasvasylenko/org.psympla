@@ -6,6 +6,4 @@ Export-Package: \
 	org.topiello.language
 
 -buildpath: \
-	org.topiello.grammar;version=snapshot,\
-	org.topiello.lexicon;version=snapshot,\
-	org.topiello.semantics;version=snapshot
+	org.topiello.text;version=snapshot

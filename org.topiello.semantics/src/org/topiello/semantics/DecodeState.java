@@ -2,7 +2,7 @@ package org.topiello.semantics;
 
 import java.util.stream.Stream;
 
-import org.topiello.symbol.LexicalItem;
+import org.topiello.language.Sign;
 
 public interface DecodeState {
   <T> T get(Sign<T> signifier);
@@ -14,6 +14,4 @@ public interface DecodeState {
   <T> Stream<T> getAll(Sign<T> signifier);
 
   <U> U getContext(Class<U> type);
-
-  <U extends LexicalItem> U getInstantiation(Unknown<U> pattern);
 }

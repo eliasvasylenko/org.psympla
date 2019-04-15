@@ -2,10 +2,10 @@ package org.topiello.language.earley;
 
 import org.topiello.grammar.Grammar;
 import org.topiello.grammar.Rule;
+import org.topiello.language.Context;
 import org.topiello.language.Designation;
+import org.topiello.language.Sign;
 import org.topiello.lexicon.Lexicon;
-import org.topiello.semantics.Context;
-import org.topiello.semantics.Sign;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 

@@ -8,6 +8,4 @@ Export-Package: \
 
 -buildpath: \
 	org.topiello.grammar;version=snapshot,\
-	org.topiello.lexicon;version=snapshot,\
-	org.topiello.pattern;version=snapshot,\
-	org.topiello.symbol;version=snapshot
+	org.topiello.language;version=snapshot

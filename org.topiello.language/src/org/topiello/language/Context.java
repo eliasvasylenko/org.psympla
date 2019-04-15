@@ -1,4 +1,4 @@
-package org.topiello.semantics;
+package org.topiello.language;
 
 public interface Context {
   <T> T getContext(Class<T> type);

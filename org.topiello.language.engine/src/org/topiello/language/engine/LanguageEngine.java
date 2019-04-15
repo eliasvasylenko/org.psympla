@@ -11,5 +11,5 @@ public interface LanguageEngine {
   <T extends Rule<?>, C extends TextUnit> Language<T, C> generate(
       Lexicon<T, C> lexicon,
       Grammar<T> grammar,
-      Semantics semantics);
+      Semantics<T> semantics);
 }
