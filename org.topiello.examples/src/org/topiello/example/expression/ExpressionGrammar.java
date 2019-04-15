@@ -8,18 +8,14 @@ import static org.topiello.example.expression.ExpressionLexicon.MULTIPLY;
 import static org.topiello.example.expression.ExpressionLexicon.OPEN_BRACKET;
 import static org.topiello.example.expression.ExpressionLexicon.SUBTRACT;
 import static org.topiello.example.expression.ExpressionLexicon.VARIABLE;
-import static org.topiello.pattern.Patterns.cons;
-import static org.topiello.pattern.Patterns.variable;
-import static org.topiello.pattern.Patterns.wildcard;
 
 import java.util.List;
 
-import org.topiello.grammar.Grammar;
-import org.topiello.grammar.Rule;
-import org.topiello.symbol.Sequence;
-import org.topiello.symbol.Symbol;
+import org.topiello.grammar.contextfree.ContextFreeGrammar;
+import org.topiello.grammar.contextfree.ContextFreeRule;
+import org.topiello.grammar.contextfree.Symbol;
 
-public class ExpressionGrammar extends Grammar {
+public class ExpressionGrammar extends ContextFreeGrammar {
   public static final Symbol BINARY_OPERATOR = new Symbol("binary-operator");
   public static final Symbol EXPRESSION = new Symbol("expression");
 
@@ -27,25 +23,17 @@ public class ExpressionGrammar extends Grammar {
     super(rules(lexicon));
   }
 
-  private static List<Rule> rules(ExpressionLexicon lexicon) {
+  private static List<ContextFreeRule> rules(ExpressionLexicon lexicon) {
     return asList(
 
-        new Rule(EXPRESSION).withProduct(cons(VARIABLE, wildcard())),
+        new ContextFreeRule(EXPRESSION).withProduct(VARIABLE),
 
-        new Rule(BINARY_OPERATOR, variable("Op"))
-            .withProduct(EXPRESSION)
-            .withProduct(cons(variable("Op"), wildcard()))
-            .withProduct(EXPRESSION),
+        new ContextFreeRule(EXPRESSION).withProducts(EXPRESSION, MULTIPLY, EXPRESSION),
+        new ContextFreeRule(EXPRESSION).withProducts(EXPRESSION, DIVIDE, EXPRESSION),
+        new ContextFreeRule(EXPRESSION).withProducts(EXPRESSION, ADD, EXPRESSION),
+        new ContextFreeRule(EXPRESSION).withProducts(EXPRESSION, SUBTRACT, EXPRESSION),
 
-        new Rule(EXPRESSION).withProduct(Sequence.of(BINARY_OPERATOR, MULTIPLY)),
-        new Rule(EXPRESSION).withProduct(Sequence.of(BINARY_OPERATOR, DIVIDE)),
-        new Rule(EXPRESSION).withProduct(Sequence.of(BINARY_OPERATOR, ADD)),
-        new Rule(EXPRESSION).withProduct(Sequence.of(BINARY_OPERATOR, SUBTRACT)),
-
-        new Rule(EXPRESSION)
-            .withProduct(OPEN_BRACKET)
-            .withProduct(EXPRESSION)
-            .withProduct(CLOSE_BRACKET)
+        new ContextFreeRule(EXPRESSION).withProducts(OPEN_BRACKET, EXPRESSION, CLOSE_BRACKET)
 
     );
   }

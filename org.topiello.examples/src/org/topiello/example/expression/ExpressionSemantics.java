@@ -36,9 +36,7 @@ import com.sun.org.apache.bcel.internal.classfile.Unknown;
  * ;
  */
 public class ExpressionSemantics implements Semantics<ContextFreeRule> {
-  public static final Sign<Expression> EXPRESSION = new Sign<>(ExpressionGrammar.EXPRESSION);
-
-  private static final Unknown<Value<String>> VARIABLE_NAME = new Unknown<>("Name", null);
+  public static final Sign<Expression> EXPRESSION = new Sign<>();
 
   public ExpressionSemantics(ExpressionGrammar grammar, ExpressionLexicon lexicon) {
     super(denotations(grammar, lexicon));

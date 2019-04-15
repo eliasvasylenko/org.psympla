@@ -42,16 +42,16 @@ public class ContextFreeRule implements Rule<Symbol> {
     return products.get(index);
   }
 
-  public Rule<Symbol> withProduct(Symbol product) {
+  public ContextFreeRule withProduct(Symbol product) {
     return withProducts(product);
   }
 
   @SafeVarargs
-  public final Rule<Symbol> withProducts(Symbol... production) {
+  public final ContextFreeRule withProducts(Symbol... production) {
     return withProducts(List.of(production));
   }
 
-  public Rule<Symbol> withProducts(Collection<? extends Symbol> production) {
+  public ContextFreeRule withProducts(Collection<? extends Symbol> production) {
     List<Symbol> newProduction = new ArrayList<>(this.products.size() + production.size());
     newProduction.addAll(this.products);
     newProduction.addAll(production);
