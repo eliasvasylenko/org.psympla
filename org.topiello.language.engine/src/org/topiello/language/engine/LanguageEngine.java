@@ -8,8 +8,8 @@ import org.topiello.semantics.Semantics;
 import org.topiello.text.TextUnit;
 
 public interface LanguageEngine {
-  <T, C extends TextUnit> Language<T, C> generate(
+  <T extends Rule<?>, C extends TextUnit> Language<T, C> generate(
       Lexicon<T, C> lexicon,
-      Grammar<Rule<T>> grammar,
+      Grammar<T> grammar,
       Semantics semantics);
 }

@@ -1,4 +1,4 @@
-package org.topiello.grammar;
+package org.topiello.grammar.contextfree;
 
 import static java.util.stream.Collectors.joining;
 
@@ -7,26 +7,28 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class ContextFreeRule<T> implements Rule<T> {
-  private final T variable;
-  private final List<T> products;
+import org.topiello.grammar.Rule;
 
-  public ContextFreeRule(T variable) {
+public class ContextFreeRule implements Rule<Symbol> {
+  private final Symbol variable;
+  private final List<Symbol> products;
+
+  public ContextFreeRule(Symbol variable) {
     this(variable, List.of());
   }
 
-  protected ContextFreeRule(T variable, List<T> products) {
+  protected ContextFreeRule(Symbol variable, List<Symbol> products) {
     this.variable = variable;
     this.products = List.copyOf(products);
   }
 
   @Override
-  public T variable() {
+  public Symbol variable() {
     return variable;
   }
 
   @Override
-  public Stream<T> products() {
+  public Stream<Symbol> products() {
     return products.stream();
   }
 
@@ -36,24 +38,24 @@ public class ContextFreeRule<T> implements Rule<T> {
   }
 
   @Override
-  public T product(int index) {
+  public Symbol product(int index) {
     return products.get(index);
   }
 
-  public Rule<T> withProduct(T product) {
+  public Rule<Symbol> withProduct(Symbol product) {
     return withProducts(product);
   }
 
   @SafeVarargs
-  public final Rule<T> withProducts(T... production) {
+  public final Rule<Symbol> withProducts(Symbol... production) {
     return withProducts(List.of(production));
   }
 
-  public Rule<T> withProducts(Collection<? extends T> production) {
-    List<T> newProduction = new ArrayList<>(this.products.size() + production.size());
+  public Rule<Symbol> withProducts(Collection<? extends Symbol> production) {
+    List<Symbol> newProduction = new ArrayList<>(this.products.size() + production.size());
     newProduction.addAll(this.products);
     newProduction.addAll(production);
-    return new ContextFreeRule<>(variable, newProduction);
+    return new ContextFreeRule(variable, newProduction);
   }
 
   @Override

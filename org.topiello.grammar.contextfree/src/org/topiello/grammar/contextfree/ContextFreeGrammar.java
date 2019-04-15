@@ -30,7 +30,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.grammar;
+package org.topiello.grammar.contextfree;
 
 import static java.util.Collections.singleton;
 
@@ -39,31 +39,31 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.sun.org.apache.xerces.internal.xni.grammars.Grammar;
+import org.topiello.grammar.Grammar;
 
-public class ContextFreeGrammar<T> implements Grammar<ContextFreeRule<T>> {
-  private final List<T> rules;
+public class ContextFreeGrammar implements Grammar<ContextFreeRule> {
+  private final List<ContextFreeRule> rules;
 
-  protected ContextFreeGrammar(Collection<? extends T> rules) {
+  protected ContextFreeGrammar(Collection<? extends ContextFreeRule> rules) {
     this(new ArrayList<>(rules));
   }
 
-  private ContextFreeGrammar(List<T> rules) {
+  private ContextFreeGrammar(List<ContextFreeRule> rules) {
     this.rules = rules;
   }
 
-  public ContextFreeGrammar<T> withRule(T rule) {
+  public ContextFreeGrammar withRule(ContextFreeRule rule) {
     return withRules(singleton(rule));
   }
 
-  public ContextFreeGrammar<T> withRules(Collection<? extends T> rules) {
-    var newRules = new ArrayList<T>(this.rules.size() + rules.size());
+  public ContextFreeGrammar withRules(Collection<? extends ContextFreeRule> rules) {
+    var newRules = new ArrayList<ContextFreeRule>(this.rules.size() + rules.size());
     newRules.addAll(this.rules);
     rules.forEach(newRules::add);
-    return new ContextFreeGrammar<>(newRules);
+    return new ContextFreeGrammar(newRules);
   }
 
-  public Stream<T> getRules() {
+  public Stream<ContextFreeRule> getRules() {
     return rules.stream();
   }
 }

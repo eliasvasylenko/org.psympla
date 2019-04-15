@@ -1,4 +1,4 @@
-package org.topiello.language.earley.index;
+package org.topiello.pattern.impl;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Stream.concat;

@@ -4,13 +4,13 @@ import static org.topiello.text.utf.UtfCodePoint.CODE_POINTS;
 
 import java.util.List;
 
+import org.topiello.grammar.contextfree.Symbol;
 import org.topiello.lexicon.Lexicon;
-import org.topiello.symbol.Symbol;
 import org.topiello.text.scanning.LiteralLexicalClass;
 import org.topiello.text.scanning.RegexLexicalClass;
 import org.topiello.text.utf.UtfCodePoint;
 
-public class ExpressionLexicon extends Lexicon<UtfCodePoint> {
+public class ExpressionLexicon extends Lexicon<Symbol, UtfCodePoint> {
   public static class OperatorSymbol extends Symbol {
     public OperatorSymbol(String id) {
       super(id);

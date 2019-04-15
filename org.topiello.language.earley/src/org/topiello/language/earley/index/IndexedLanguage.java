@@ -15,7 +15,7 @@ public class IndexedLanguage<T extends Rule<?>, C extends TextUnit> {
   private final List<NonterminalRule<T>> nonterminalRules;
   private final List<TerminalRule<T, C>> terminalRules;
 
-  public IndexedLanguage(Grammar<T> grammar, Lexicon<C> lexicon) {
+  public IndexedLanguage(Grammar<T> grammar, Lexicon<T, C> lexicon) {
     var rules = grammar.getRules().collect(toList());
     nonterminalRules = range(0, rules.size())
         .mapToObj(i -> new NonterminalRule<>(i, this, rules.get(i)))
