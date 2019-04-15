@@ -10,6 +10,7 @@ import static org.topiello.pattern.Patterns.variable;
 
 import java.util.Collection;
 
+import org.topiello.grammar.contextfree.ContextFreeRule;
 import org.topiello.language.Sign;
 import org.topiello.semantics.Denotation;
 import org.topiello.semantics.Designation;
@@ -34,7 +35,7 @@ import com.sun.org.apache.bcel.internal.classfile.Unknown;
  * 
  * ;
  */
-public class ExpressionSemantics extends Semantics {
+public class ExpressionSemantics implements Semantics<ContextFreeRule> {
   public static final Sign<Expression> EXPRESSION = new Sign<>(ExpressionGrammar.EXPRESSION);
 
   private static final Unknown<Value<String>> VARIABLE_NAME = new Unknown<>("Name", null);

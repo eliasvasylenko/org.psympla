@@ -10,5 +10,6 @@ Export-Package: \
 	org.topiello.language;version=snapshot,\
 	org.topiello.language.earley;version=snapshot,\
 	org.topiello.lexicon;version=snapshot,\
+	org.topiello.text;version=snapshot,\
 	org.topiello.semantics;version=snapshot,\
 	org.topiello.grammar.contextfree;version=snapshot

@@ -2,10 +2,11 @@ package org.topiello.example.expression;
 
 import static org.topiello.example.expression.ExpressionSemantics.EXPRESSION;
 
+import org.topiello.grammar.contextfree.ContextFreeRule;
 import org.topiello.language.earley.EarleyLanguage;
 import org.topiello.text.utf.UtfCodePoint;
 
-public class ExpressionLanguage extends EarleyLanguage<UtfCodePoint> {
+public class ExpressionLanguage extends EarleyLanguage<ContextFreeRule, UtfCodePoint> {
   public static void main(String... args) {
     Expression expression = new ExpressionLanguage()
         .designation(EXPRESSION)
