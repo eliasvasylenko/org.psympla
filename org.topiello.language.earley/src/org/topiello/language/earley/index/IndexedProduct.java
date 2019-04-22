@@ -1,22 +1,22 @@
 package org.topiello.language.earley.index;
 
-import org.topiello.pattern.Pattern;
+import org.topiello.grammar.Product;
 
 //TODO value type & record
-public class IndexedProduct {
+public class IndexedProduct<T> {
   private final LR0Item index;
-  private final Pattern pattern;
+  private final Product<T> product;
 
-  public IndexedProduct(LR0Item item, Pattern pattern) {
+  public IndexedProduct(LR0Item item, Product<T> product) {
     this.index = item;
-    this.pattern = pattern;
+    this.product = product;
   }
 
   public LR0Item index() {
     return index;
   }
 
-  public Pattern pattern() {
-    return pattern;
+  public Product<T> product() {
+    return product;
   }
 }

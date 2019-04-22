@@ -2,7 +2,6 @@ package org.topiello.language.earley.index;
 
 import java.util.List;
 
-import org.topiello.constraint.ValueType;
 import org.topiello.grammar.Rule;
 import org.topiello.lexicon.LexicalClass;
 import org.topiello.text.Text;
@@ -22,12 +21,7 @@ public class TerminalRule<T extends Rule<?>, C extends TextUnit> extends Indexed
   private final List<IndexedItem> items;
 
   TerminalRule(int index, IndexedLanguage<T, C> indexedLanguage, LexicalClass<C, ?> lexicalClass) {
-    super(
-        index,
-        indexedLanguage,
-        lexicalClass.pattern(),
-        lexicalClass.scope().withConstraint(new ValueType<>(LEXEME, String.class)),
-        List.of(LEXEME));
+    super(index, indexedLanguage, lexicalClass.variable(), List.of(LEXEME));
     this.lexicalClass = lexicalClass;
     this.items = List.of(IndexedItem.terminal(this), IndexedItem.complete(this));
   }

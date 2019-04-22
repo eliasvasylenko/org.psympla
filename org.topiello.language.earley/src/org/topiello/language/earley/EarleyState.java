@@ -11,13 +11,11 @@ public class EarleyState<T extends Rule<V>, V> {
   private final NavigableMap<Integer, EarleySet> sets = new TreeMap<>();
 
   public EarleyState(V startSymbol) {
-    addSet(0);
+    getSet(0).addItem(lr0Item, 0);
   }
 
-  private EarleySet addSet(int i) {
-    EarleySet set = new EarleySet(i);
-    sets.put(i, set);
-    return set;
+  private EarleySet getSet(int i) {
+    return sets.computeIfAbsent(i, EarleySet::new);
   }
 
   public Optional<EarleySet> nextSet() {

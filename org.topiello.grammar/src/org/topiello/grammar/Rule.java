@@ -1,13 +1,17 @@
 package org.topiello.grammar;
 
-import java.util.stream.Stream;
-
+/**
+ * 
+ * @author Elias N Vasylenko
+ *
+ * @param <T>
+ *          the type attached to the node that appears in the parse tree for
+ *          this rule.
+ */
 public interface Rule<T> {
-  T variable();
-
-  Stream<T> products();
+  Variable<? extends T> variable();
 
   int length();
 
-  T product(int index);
+  Product<? extends T> product(int index);
 }

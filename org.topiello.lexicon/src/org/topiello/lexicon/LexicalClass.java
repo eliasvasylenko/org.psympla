@@ -10,7 +10,7 @@ import org.topiello.text.TextUnit;
  * The c
  */
 public interface LexicalClass<T, C extends TextUnit> {
-  T variable();
+  Variable<? extends T> variable();
 
   Stream<Lexeme<T, C>> scan(Text<C> characters);
 

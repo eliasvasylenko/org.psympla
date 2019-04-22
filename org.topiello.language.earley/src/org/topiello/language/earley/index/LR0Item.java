@@ -56,12 +56,12 @@ public class LR0Item {
 
   @Override
   public String toString() {
-    return rule.pattern() + ARROW_STRING
+    return rule.var() + ARROW_STRING
         + rule.products().limit(dotPosition).collect(productString()) + DOT_STRING
         + rule.products().skip(dotPosition).collect(productString()) + COLON_STRING + rule.scope();
   }
 
-  private Collector<IndexedProduct, ?, String> productString() {
-    return mapping(p -> p.pattern().toString(), joining(" "));
+  private Collector<IndexedProduct<?>, ?, String> productString() {
+    return mapping(p -> p.product().toString(), joining(" "));
   }
 }
