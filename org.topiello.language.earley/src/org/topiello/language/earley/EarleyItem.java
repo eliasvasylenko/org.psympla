@@ -9,6 +9,9 @@ import org.topiello.language.earley.index.LR0Item;
 public class EarleyItem {
   private static final int INITIAL_PREDICTOR_LIST_SIZE = 8;
 
+  /*
+   * TODO should this be an LR0 item or just a Variable?
+   */
   private final LR0Item lr0Item;
   private final EarleyItem advancedFrom;
   private final List<EarleyItem> predictors; // if we completed from an earlier item, we share

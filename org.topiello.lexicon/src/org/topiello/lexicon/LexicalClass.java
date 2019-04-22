@@ -9,8 +9,8 @@ import org.topiello.text.TextUnit;
 /*
  * The c
  */
-public interface LexicalClass<T, C extends TextUnit> {
-  Variable<? extends T> variable();
+public interface LexicalClass<T extends Variable, C extends TextUnit> {
+  T variable();
 
   Stream<Lexeme<T, C>> scan(Text<C> characters);
 

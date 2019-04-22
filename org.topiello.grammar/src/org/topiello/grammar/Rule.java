@@ -8,8 +8,8 @@ package org.topiello.grammar;
  *          the type attached to the node that appears in the parse tree for
  *          this rule.
  */
-public interface Rule<T> {
-  Variable<? extends T> variable();
+public interface Rule<T extends Variable> {
+  T variable();
 
   int length();
 

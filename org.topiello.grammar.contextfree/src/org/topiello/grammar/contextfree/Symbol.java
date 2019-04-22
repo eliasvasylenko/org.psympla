@@ -3,7 +3,7 @@ package org.topiello.grammar.contextfree;
 import org.topiello.grammar.Product;
 import org.topiello.grammar.Variable;
 
-public class Symbol implements Variable<Symbol>, Product<Symbol> {
+public class Symbol implements Variable, Product<Symbol> {
   private final String name;
 
   public Symbol(String name) {

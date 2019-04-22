@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.joining;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.topiello.grammar.Rule;
 
@@ -25,11 +24,6 @@ public class ContextFreeRule implements Rule<Symbol> {
   @Override
   public Symbol variable() {
     return variable;
-  }
-
-  @Override
-  public Stream<Symbol> products() {
-    return products.stream();
   }
 
   @Override

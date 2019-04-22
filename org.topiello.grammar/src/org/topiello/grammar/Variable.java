@@ -1,3 +1,3 @@
 package org.topiello.grammar;
 
-public interface Variable<T> {}
+public interface Variable {}
