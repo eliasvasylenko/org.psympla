@@ -24,14 +24,14 @@ public abstract class IndexedRule<T extends Rule<?>> {
   private final IndexedLanguage<T, ?> indexedLanguage;
   private final int index;
 
-  private final Variable<?> variable;
+  private final T variable;
 
   private final List<IndexedProduct<?>> products;
 
   IndexedRule(
       int index,
       IndexedLanguage<T, ?> indexedLanguage,
-      Variable<T> variable,
+      T variable,
       List<Product<?>> products) {
     this.indexedLanguage = indexedLanguage;
     this.index = index;

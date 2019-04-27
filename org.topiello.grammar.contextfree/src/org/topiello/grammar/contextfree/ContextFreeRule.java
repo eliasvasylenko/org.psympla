@@ -1,24 +1,25 @@
 package org.topiello.grammar.contextfree;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.topiello.grammar.Rule;
 
 public class ContextFreeRule implements Rule<Symbol> {
   private final Symbol variable;
-  private final List<Symbol> products;
+  private final List<ContextFreeProduct> products;
 
   public ContextFreeRule(Symbol variable) {
     this(variable, List.of());
   }
 
-  protected ContextFreeRule(Symbol variable, List<Symbol> products) {
+  protected ContextFreeRule(Symbol variable, List<ContextFreeProduct> products) {
     this.variable = variable;
-    this.products = List.copyOf(products);
+    this.products = products;
   }
 
   @Override
@@ -32,7 +33,7 @@ public class ContextFreeRule implements Rule<Symbol> {
   }
 
   @Override
-  public Symbol product(int index) {
+  public ContextFreeProduct product(int index) {
     return products.get(index);
   }
 
@@ -46,10 +47,11 @@ public class ContextFreeRule implements Rule<Symbol> {
   }
 
   public ContextFreeRule withProducts(Collection<? extends Symbol> production) {
-    List<Symbol> newProduction = new ArrayList<>(this.products.size() + production.size());
-    newProduction.addAll(this.products);
-    newProduction.addAll(production);
-    return new ContextFreeRule(variable, newProduction);
+    return new ContextFreeRule(
+        variable,
+        Stream
+            .concat(products.stream(), production.stream().map(ContextFreeProduct::new))
+            .collect(toList()));
   }
 
   @Override

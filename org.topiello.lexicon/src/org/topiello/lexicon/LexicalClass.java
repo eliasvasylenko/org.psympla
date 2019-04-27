@@ -9,7 +9,7 @@ import org.topiello.text.TextUnit;
 /*
  * The c
  */
-public interface LexicalClass<T extends Variable, C extends TextUnit> {
+public interface LexicalClass<T, C extends TextUnit> {
   T variable();
 
   Stream<Lexeme<T, C>> scan(Text<C> characters);

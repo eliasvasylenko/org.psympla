@@ -21,7 +21,7 @@ public class TerminalRule<T extends Rule<?>, C extends TextUnit> extends Indexed
   private final List<IndexedItem> items;
 
   TerminalRule(int index, IndexedLanguage<T, C> indexedLanguage, LexicalClass<C, ?> lexicalClass) {
-    super(index, indexedLanguage, lexicalClass.variable(), List.of(LEXEME));
+    super(index, indexedLanguage, lexicalClass.variable());
     this.lexicalClass = lexicalClass;
     this.items = List.of(IndexedItem.terminal(this), IndexedItem.complete(this));
   }
