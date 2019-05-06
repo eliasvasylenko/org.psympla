@@ -10,10 +10,18 @@ import org.topiello.grammar.Rule;
 import org.topiello.language.earley.index.LR0Item;
 
 public class EarleyState<T extends Rule<V>, V> {
-  private class StartRule implements Rule<Void> {
+  private static final Object ACCEPT_SYMBOL = new Object();
+
+  private static class StartRule<T> implements Rule<Object> {
+    private final Product<T> startProduct;
+
+    public StartRule(Product<T> startProduct) {
+      this.startProduct = startProduct;
+    }
+
     @Override
-    public Void variable() {
-      return null;
+    public Object variable() {
+      return ACCEPT_SYMBOL;
     }
 
     @Override
@@ -22,16 +30,15 @@ public class EarleyState<T extends Rule<V>, V> {
     }
 
     @Override
-    public Product<? extends Void> product(int index) {
-      // TODO Auto-generated method stub
-      return null;
+    public Product<T> product(int index) {
+      return startProduct;
     }
   }
 
   private final NavigableMap<Integer, EarleySet> sets = new TreeMap<>();
 
   public EarleyState(Product<T> startProduct) {
-    getSet(0).getItem(new LR0Item(new StartRule(startProduct), 0));
+    getSet(0).getItem(new LR0Item(new StartRule<>(startProduct), 0));
   }
 
   private EarleySet getSet(int i) {

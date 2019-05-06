@@ -13,5 +13,5 @@ public interface Rule<T> {
 
   int length();
 
-  Product<? extends T> product(int index);
+  Product<?> product(int index);
 }

@@ -32,8 +32,55 @@
  */
 package org.topiello.grammar;
 
+import static java.util.Arrays.asList;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
-public interface Grammar<T extends Rule<?>> {
-  Stream<? extends T> getRules();
+/**
+ * Constraints on solution to build grammars:
+ * 
+ * - Products must only relate to a single grammar.
+ * 
+ * - Grammar must be immutable.
+ * 
+ * - To resolve products against grammar, we may want to build an index for the
+ * grammar. This index should only be built once when the grammar is done.
+ * 
+ * - Grammars can depend on other grammars
+ * 
+ * - Dependencies between grammars cannot be circular.
+ * 
+ * Have a grammar builder? Or have a grammar be a builder for an AST? Grammar
+ * subtype controls types of rules which can be added, need special products to
+ * call out to other existing grammars.
+ * 
+ * 
+ * @author Elias N Vasylenko
+ *
+ */
+public interface Grammar {
+  private Grammar(Set<Rule<?>> rules) {
+    this.rules = rules;
+  }
+
+  public Grammar(Collection<? extends Rule<?>> rules) {
+    this.rules = Set.copyOf(rules);
+  }
+
+  public Grammar(Rule<?>... rules) {
+    this(asList(rules));
+  }
+
+  public Stream<Rule<?>> getRules() {
+    return rules.stream();
+  }
+
+  public Grammar withRule(Rule<?> rule) {
+    var rules = new HashSet<>(this.rules);
+    rules.add(rule);
+    return new Grammar(rules);
+  }
 }
