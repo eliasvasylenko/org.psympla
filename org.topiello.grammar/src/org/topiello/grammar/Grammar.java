@@ -57,11 +57,11 @@ import java.util.stream.Stream;
  * subtype controls types of rules which can be added, need special products to
  * call out to other existing grammars.
  * 
- * 
  * @author Elias N Vasylenko
- *
  */
-public interface Grammar {
+public class Grammar<T extends Rule<?>> {
+  private final Set<Rule<?>> rules;
+
   private Grammar(Set<Rule<?>> rules) {
     this.rules = rules;
   }
@@ -74,7 +74,7 @@ public interface Grammar {
     this(asList(rules));
   }
 
-  public Stream<Rule<?>> getRules() {
+  public Stream<T> getRules() {
     return rules.stream();
   }
 

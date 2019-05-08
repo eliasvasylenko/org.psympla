@@ -12,13 +12,12 @@ import org.topiello.lexicon.Lexicon;
 import org.topiello.text.TextUnit;
 
 public class IndexedLanguage<T extends Rule<?>, C extends TextUnit> {
-  private final List<NonterminalRule<T>> nonterminalRules;
-  private final List<TerminalRule<T, C>> terminalRules;
+  private final List<IndexedRule<T>> rules;
 
   public IndexedLanguage(Grammar<T> grammar, Lexicon<T, C> lexicon) {
     var rules = grammar.getRules().collect(toList());
-    nonterminalRules = range(0, rules.size())
-        .mapToObj(i -> new NonterminalRule<>(i, this, rules.get(i)))
+    this.rules = range(0, rules.size())
+        .mapToObj(i -> new IndexedRule<T>(i, this, rules.get(i)))
         .collect(toList());
 
     var lexicalClasses = lexicon.getLexicalClasses().collect(toList());
@@ -32,39 +31,19 @@ public class IndexedLanguage<T extends Rule<?>, C extends TextUnit> {
     });
   }
 
-  public NonterminalRule<T> nonterminalRule(int index) {
-    return nonterminalRules.get(index);
+  public IndexedRule<T> rule(int index) {
+    return rules.get(index);
   }
 
-  public TerminalRule<T, C> terminalRule(int index) {
-    return terminalRules.get(index);
-  }
-
-  public int nonterminalRuleCount() {
-    return nonterminalRules.size();
-  }
-
-  public int terminalRuleCount() {
-    return terminalRules.size();
-  }
-
-  public Stream<NonterminalRule<T>> nonterminalRules() {
-    return nonterminalRules.stream();
-  }
-
-  public Stream<TerminalRule<T, C>> terminalRules() {
-    return terminalRules.stream();
+  public int ruleCount() {
+    return rules.size();
   }
 
   public Stream<IndexedRule<T>> rules() {
-    return Stream.concat(nonterminalRules(), terminalRules());
+    return rules.stream();
   }
 
-  public TerminalRuleSet<T, C> createTerminalRuleSet() {
-    return new TerminalRuleSet<>(this);
-  }
-
-  public NonterminalRuleSet<T> createNonterminalRuleSet() {
-    return new NonterminalRuleSet<>(this);
+  public RuleSet<T> createRuleSet() {
+    return new RuleSet<>(this);
   }
 }

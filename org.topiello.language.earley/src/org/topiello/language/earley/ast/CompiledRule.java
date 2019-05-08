@@ -1,5 +1,3 @@
 package org.topiello.language.earley.ast;
 
-public class CompiledRule extends EarleyNode {
-  public 
-}
+public class CompiledRule extends TopielloNode {}

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.topiello.language.earley.index.LR0Item;
-import org.topiello.language.earley.index.NonterminalRuleSet;
+import org.topiello.language.earley.index.RuleSet;
 import org.topiello.language.earley.index.TerminalRuleSet;
 
 public class EarleySet {
@@ -15,7 +15,7 @@ public class EarleySet {
    * Closure of null-predicted items, i.e. items with start position at the
    * current input position.
    */
-  private final NonterminalRuleSet<?> predictedNonterminals;
+  private final RuleSet<?> predictedNonterminals;
   private final TerminalRuleSet<?, ?> predictedTerminals;
 
   /*

@@ -13,15 +13,15 @@ public class LR0Item {
   private static final String DOT_STRING = " . ";
   private static final String COLON_STRING = " : ";
 
-  private final IndexedRule rule;
+  private final IndexedRule<?> rule;
   private final int dotPosition;
 
-  public LR0Item(IndexedRule rule, int dotPosition) {
+  public LR0Item(IndexedRule<?> rule, int dotPosition) {
     this.rule = rule;
     this.dotPosition = dotPosition;
   }
 
-  public IndexedRule rule() {
+  public IndexedRule<?> rule() {
     return rule;
   }
 
@@ -33,7 +33,7 @@ public class LR0Item {
     return rule.productCount() == dotPosition;
   }
 
-  public Optional<IndexedProduct> nextProduct() {
+  public Optional<IndexedProduct<?>> nextProduct() {
     return isComplete() ? Optional.empty() : Optional.of(rule.product(dotPosition));
   }
 
@@ -56,9 +56,9 @@ public class LR0Item {
 
   @Override
   public String toString() {
-    return rule.var() + ARROW_STRING
+    return rule.variable() + ARROW_STRING
         + rule.products().limit(dotPosition).collect(productString()) + DOT_STRING
-        + rule.products().skip(dotPosition).collect(productString()) + COLON_STRING + rule.scope();
+        + rule.products().skip(dotPosition).collect(productString()) + COLON_STRING;
   }
 
   private Collector<IndexedProduct<?>, ?, String> productString() {
