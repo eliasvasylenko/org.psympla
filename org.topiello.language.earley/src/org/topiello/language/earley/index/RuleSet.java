@@ -1,9 +1,9 @@
 package org.topiello.language.earley.index;
 
-import org.topiello.grammar.Rule;
+import org.topiello.grammar.Product;
 
 // TODO value type?
-public class RuleSet<T extends Rule<?>>
+public class RuleSet<T extends Product>
     extends IndexedBitSet<IndexedLanguage<T, ?>, IndexedRule<T>> {
   RuleSet(IndexedLanguage<T, ?> indexedRules) {
     super(indexedRules);

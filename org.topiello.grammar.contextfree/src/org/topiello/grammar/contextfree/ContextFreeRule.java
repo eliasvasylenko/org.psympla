@@ -11,13 +11,13 @@ import org.topiello.grammar.Rule;
 
 public class ContextFreeRule implements Rule<Symbol> {
   private final Symbol variable;
-  private final List<ContextFreeProduct> products;
+  private final List<Symbol> products;
 
   public ContextFreeRule(Symbol variable) {
     this(variable, List.of());
   }
 
-  protected ContextFreeRule(Symbol variable, List<ContextFreeProduct> products) {
+  protected ContextFreeRule(Symbol variable, List<Symbol> products) {
     this.variable = variable;
     this.products = products;
   }
@@ -33,7 +33,7 @@ public class ContextFreeRule implements Rule<Symbol> {
   }
 
   @Override
-  public ContextFreeProduct product(int index) {
+  public Symbol product(int index) {
     return products.get(index);
   }
 
@@ -49,9 +49,7 @@ public class ContextFreeRule implements Rule<Symbol> {
   public ContextFreeRule withProducts(Collection<? extends Symbol> production) {
     return new ContextFreeRule(
         variable,
-        Stream
-            .concat(products.stream(), production.stream().map(ContextFreeProduct::new))
-            .collect(toList()));
+        Stream.concat(products.stream(), production.stream()).collect(toList()));
   }
 
   @Override

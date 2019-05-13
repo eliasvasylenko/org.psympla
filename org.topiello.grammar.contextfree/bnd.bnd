@@ -3,4 +3,5 @@ Bundle-Name: Topiello :: Grammar :: Context Free
 Export-Package: org.topiello.grammar.contextfree
 
 -buildpath: \
-	org.topiello.grammar;version=snapshot
+	org.topiello.grammar;version=snapshot,\
+	org.topiello.text;version=snapshot

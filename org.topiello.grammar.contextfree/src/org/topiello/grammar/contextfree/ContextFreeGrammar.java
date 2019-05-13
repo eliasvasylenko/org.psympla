@@ -40,8 +40,10 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.topiello.grammar.Grammar;
+import org.topiello.grammar.Rule;
+import org.topiello.grammar.Terminal;
 
-public class ContextFreeGrammar implements Grammar<ContextFreeRule> {
+public class ContextFreeGrammar implements Grammar<Symbol> {
   private final List<ContextFreeRule> rules;
 
   protected ContextFreeGrammar(Collection<? extends ContextFreeRule> rules) {
@@ -63,7 +65,20 @@ public class ContextFreeGrammar implements Grammar<ContextFreeRule> {
     return new ContextFreeGrammar(newRules);
   }
 
+  @Override
   public Stream<ContextFreeRule> getRules() {
     return rules.stream();
+  }
+
+  @Override
+  public Stream<? extends Rule<Symbol>> getMatchingRules(Symbol product) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Stream<? extends Terminal<?>> getMatchingTerminals(Symbol product) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

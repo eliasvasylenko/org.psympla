@@ -1,6 +1,6 @@
 package org.topiello.grammar;
 
-public interface Product<T> {
+public interface Product {
   /*
    * TODO this is the area to calculate which variables may be matched by the
    * product

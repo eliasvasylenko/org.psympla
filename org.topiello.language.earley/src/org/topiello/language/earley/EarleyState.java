@@ -7,20 +7,21 @@ import java.util.TreeMap;
 
 import org.topiello.grammar.Product;
 import org.topiello.grammar.Rule;
+import org.topiello.grammar.Variable;
 import org.topiello.language.earley.index.LR0Item;
 
-public class EarleyState<T extends Rule<V>, V> {
-  private static final Object ACCEPT_SYMBOL = new Object();
+public class EarleyState<T extends Product> {
+  private static final Variable ACCEPT_SYMBOL = new Variable() {};
 
-  private static class StartRule<T> implements Rule<Object> {
-    private final Product<T> startProduct;
+  private static class StartRule<T extends Product> implements Rule<T> {
+    private final T startProduct;
 
-    public StartRule(Product<T> startProduct) {
+    public StartRule(T startProduct) {
       this.startProduct = startProduct;
     }
 
     @Override
-    public Object variable() {
+    public Variable variable() {
       return ACCEPT_SYMBOL;
     }
 
@@ -30,14 +31,17 @@ public class EarleyState<T extends Rule<V>, V> {
     }
 
     @Override
-    public Product<T> product(int index) {
+    public T product(int index) {
+      if (index != 0) {
+        throw new IndexOutOfBoundsException();
+      }
       return startProduct;
     }
   }
 
   private final NavigableMap<Integer, EarleySet> sets = new TreeMap<>();
 
-  public EarleyState(Product<T> startProduct) {
+  public EarleyState(T startProduct) {
     getSet(0).getItem(new LR0Item(new StartRule<>(startProduct), 0));
   }
 

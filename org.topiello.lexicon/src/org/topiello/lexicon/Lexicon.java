@@ -2,8 +2,6 @@ package org.topiello.lexicon;
 
 import java.util.stream.Stream;
 
-import org.topiello.text.TextUnit;
-
 /**
  * A lexicon defines which tokens exist over a given character set.
  * <p>
@@ -16,6 +14,6 @@ import org.topiello.text.TextUnit;
  *
  * @param <C>
  */
-public interface Lexicon<T, C extends TextUnit> {
-  Stream<LexicalClass<? extends T, C>> getLexicalClasses();
+public interface Lexicon<T extends LexicalClass<?, ?>> {
+  Stream<T> getLexicalClasses();
 }

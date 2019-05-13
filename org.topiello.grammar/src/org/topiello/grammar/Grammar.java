@@ -32,11 +32,6 @@
  */
 package org.topiello.grammar;
 
-import static java.util.Arrays.asList;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -59,28 +54,10 @@ import java.util.stream.Stream;
  * 
  * @author Elias N Vasylenko
  */
-public class Grammar<T extends Rule<?>> {
-  private final Set<Rule<?>> rules;
+public interface Grammar<T extends Product> {
+  Stream<? extends Rule<T>> getRules();
 
-  private Grammar(Set<Rule<?>> rules) {
-    this.rules = rules;
-  }
+  Stream<? extends Rule<T>> getMatchingRules(T product);
 
-  public Grammar(Collection<? extends Rule<?>> rules) {
-    this.rules = Set.copyOf(rules);
-  }
-
-  public Grammar(Rule<?>... rules) {
-    this(asList(rules));
-  }
-
-  public Stream<T> getRules() {
-    return rules.stream();
-  }
-
-  public Grammar withRule(Rule<?> rule) {
-    var rules = new HashSet<>(this.rules);
-    rules.add(rule);
-    return new Grammar(rules);
-  }
+  Stream<? extends Terminal<?>> getMatchingTerminals(T product);
 }

@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collector;
 
+import org.topiello.grammar.Product;
+
 //TODO value type & record
 public class LR0Item {
   private static final String ARROW_STRING = " -> ";
@@ -33,7 +35,7 @@ public class LR0Item {
     return rule.productCount() == dotPosition;
   }
 
-  public Optional<IndexedProduct<?>> nextProduct() {
+  public Optional<Product> nextProduct() {
     return isComplete() ? Optional.empty() : Optional.of(rule.product(dotPosition));
   }
 
@@ -56,12 +58,11 @@ public class LR0Item {
 
   @Override
   public String toString() {
-    return rule.variable() + ARROW_STRING
-        + rule.products().limit(dotPosition).collect(productString()) + DOT_STRING
-        + rule.products().skip(dotPosition).collect(productString()) + COLON_STRING;
+    return rule.rule() + ARROW_STRING + rule.products().limit(dotPosition).collect(productString())
+        + DOT_STRING + rule.products().skip(dotPosition).collect(productString()) + COLON_STRING;
   }
 
-  private Collector<IndexedProduct<?>, ?, String> productString() {
-    return mapping(p -> p.product().toString(), joining(" "));
+  private Collector<Product, ?, String> productString() {
+    return mapping(p -> p.toString(), joining(" "));
   }
 }

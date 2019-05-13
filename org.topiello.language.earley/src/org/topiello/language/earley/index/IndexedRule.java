@@ -1,12 +1,14 @@
 package org.topiello.language.earley.index;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.IntStream.range;
 import static java.util.stream.Stream.concat;
 
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.topiello.grammar.Product;
 import org.topiello.grammar.Rule;
 
 /**
@@ -19,41 +21,29 @@ import org.topiello.grammar.Rule;
  * @param <C>
  */
 // TODO value type?
-public class IndexedRule<T extends Rule<?>> {
-  private final IndexedLanguage<T, ?> indexedLanguage;
+public class IndexedRule<T extends Product> {
   private final int index;
 
-  private final Object variable;
+  private final Rule<T> rule;
 
-  private final List<IndexedProduct<?>> products;
   private final List<IndexedItem> items;
 
-  IndexedRule(int index, IndexedLanguage<T, ?> indexedLanguage, T rule) {
-    this.indexedLanguage = indexedLanguage;
+  IndexedRule(int index, IndexedLanguage<T, ?> indexedLanguage, Rule<T> rule) {
     this.index = index;
 
-    this.variable = rule.variable();
-
-    this.products = IntStream
-        .range(0, rule.length())
-        .mapToObj(i -> new IndexedProduct<>(new LR0Item(this, i), rule.product(i)))
-        .collect(toList());
+    this.rule = rule;
 
     this.items = concat(
-        IntStream.range(0, rule.length()).mapToObj(i -> new IndexedItem(this, i)),
-        Stream.of(IndexedItem.complete(this))).collect(toList());
-  }
-
-  public IndexedLanguage<?, ?> language() {
-    return indexedLanguage;
+        IntStream.range(0, rule.length()).mapToObj(i -> new IndexedItem(indexedLanguage, this, i)),
+        Stream.of(IndexedItem.complete(indexedLanguage, this))).collect(toList());
   }
 
   public int index() {
     return index;
   }
 
-  public Object variable() {
-    return variable;
+  public Rule<T> rule() {
+    return rule;
   }
 
   public IndexedItem item(int index) {
@@ -68,15 +58,15 @@ public class IndexedRule<T extends Rule<?>> {
     return items.stream();
   }
 
-  public IndexedProduct<?> product(int index) {
-    return products.get(index);
+  public Product product(int index) {
+    return rule.product(index);
   }
 
   public int productCount() {
-    return products.size();
+    return rule.length();
   }
 
-  public Stream<IndexedProduct<?>> products() {
-    return products.stream();
+  public Stream<Product> products() {
+    return range(0, productCount()).mapToObj(rule::product);
   }
 }

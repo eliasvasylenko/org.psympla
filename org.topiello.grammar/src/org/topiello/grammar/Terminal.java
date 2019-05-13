@@ -1,5 +1,7 @@
 package org.topiello.grammar;
 
+import org.topiello.text.TextUnit;
+
 /**
  * 
  * @author Elias N Vasylenko
@@ -8,10 +10,6 @@ package org.topiello.grammar;
  *          the type attached to the node that appears in the parse tree for
  *          this rule.
  */
-public interface Rule<T extends Product> {
+public interface Terminal<C extends TextUnit> {
   Variable variable();
-
-  int length();
-
-  T product(int index);
 }

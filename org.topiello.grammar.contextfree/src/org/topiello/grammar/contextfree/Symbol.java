@@ -1,6 +1,9 @@
 package org.topiello.grammar.contextfree;
 
-public class Symbol {
+import org.topiello.grammar.Product;
+import org.topiello.grammar.Variable;
+
+public class Symbol implements Product, Variable {
   private final String name;
 
   public Symbol(String name) {

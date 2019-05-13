@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.topiello.language.earley.index.LR0Item;
+import org.topiello.language.earley.index.TerminalSet;
 import org.topiello.language.earley.index.RuleSet;
-import org.topiello.language.earley.index.TerminalRuleSet;
 
 public class EarleySet {
   private final int inputPosition;
@@ -16,7 +16,7 @@ public class EarleySet {
    * current input position.
    */
   private final RuleSet<?> predictedNonterminals;
-  private final TerminalRuleSet<?, ?> predictedTerminals;
+  private final TerminalSet<?> predictedTerminals;
 
   /*
    * Items from scanning or completion, with start position earlier to the current
