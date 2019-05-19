@@ -1,0 +1,3 @@
+Bundle-Name: Topiello :: Pattern :: Symbol
+
+Export-Package: org.topiello.pattern.symbol

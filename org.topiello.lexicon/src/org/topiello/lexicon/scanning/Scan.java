@@ -2,17 +2,17 @@ package org.topiello.lexicon.scanning;
 
 import java.util.function.Function;
 
-import org.topiello.lexicon.Lexeme;
-import org.topiello.lexicon.LexicalClass;
 import org.topiello.lexicon.Token;
+import org.topiello.lexicon.LexicalClass;
+import org.topiello.lexicon.Variable;
 
 /**
  * A scan is the unit of output of a {@link Scanner}, which defines the behavior
  * of a {@link LexicalClass}. In particular, each scan instantiates a
- * {@link Lexeme} which belongs to that class.
+ * {@link Token} which belongs to that class.
  * <p>
- * In turn a lexeme may be {@link Lexeme#evaluate() evaluated} to a
- * {@link Token}.
+ * In turn a lexeme may be {@link Token#evaluate() evaluated} to a
+ * {@link Variable}.
  * 
  * @author Elias N Vasylenko
  */

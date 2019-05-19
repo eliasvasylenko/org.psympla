@@ -1,8 +1,0 @@
-Bundle-Name: Topiello :: Constraints
-
-Export-Package:\
-	org.topiello.constraint
-
--buildpath:\
-	org.topiello.symbol;version=snapshot,\
-	org.topiello.pattern;version=snapshot

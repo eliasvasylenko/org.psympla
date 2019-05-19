@@ -4,4 +4,5 @@ Export-Package: org.topiello.grammar.contextfree
 
 -buildpath: \
 	org.topiello.grammar;version=snapshot,\
+	org.topiello.lexicon;version=snapshot,\
 	org.topiello.text;version=snapshot

@@ -1,13 +1,12 @@
 package org.topiello.lexicon;
 
-public class Token<T> {
-  private final T value;
+import org.topiello.text.Text;
+import org.topiello.text.TextUnit;
 
-  public Token(T value) {
-    this.value = value;
-  }
+public interface Token<T, C extends TextUnit> {
+  LexicalClass<T, C> lexicalClass();
 
-  public T value() {
-    return value;
-  }
+  Text<C> lexeme();
+
+  Variable<T> evaluate();
 }

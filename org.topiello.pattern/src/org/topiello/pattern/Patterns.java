@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.topiello.symbol.LexicalItem;
-import org.topiello.symbol.Sequence;
+import org.topiello.pattern.symbol.LexicalItem;
+import org.topiello.pattern.symbol.Sequence;
 
 /**
  * 

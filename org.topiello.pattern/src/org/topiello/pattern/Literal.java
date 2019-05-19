@@ -1,6 +1,6 @@
 package org.topiello.pattern;
 
-import org.topiello.symbol.LexicalItem;
+import org.topiello.pattern.symbol.LexicalItem;
 
 public class Literal implements Pattern {
   private final LexicalItem lexicalItem;

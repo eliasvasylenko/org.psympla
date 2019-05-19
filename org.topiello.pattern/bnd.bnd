@@ -4,4 +4,4 @@ Export-Package:\
 	org.topiello.pattern
 
 -buildpath:\
-	org.topiello.symbol;version=snapshot
+	org.topiello.pattern.symbol;version=snapshot

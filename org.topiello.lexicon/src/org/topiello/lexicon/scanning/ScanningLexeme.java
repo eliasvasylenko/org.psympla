@@ -1,16 +1,16 @@
 package org.topiello.lexicon.scanning;
 
-import org.topiello.lexicon.Lexeme;
-import org.topiello.lexicon.LexicalClass;
 import org.topiello.lexicon.Token;
+import org.topiello.lexicon.LexicalClass;
+import org.topiello.lexicon.Variable;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 
-public class ScanningLexeme<T, C extends TextUnit> implements Lexeme<T, C> {
+public class ScanningLexeme<T, C extends TextUnit> implements Token<T, C> {
   private final ScanningLexicalClass<T, C> lexicalClass;
   private final Text<C> characters;
   private final Scan<T> scan;
-  private Token<T> token;
+  private Variable<T> token;
 
   protected ScanningLexeme(
       ScanningLexicalClass<T, C> lexicalClass,
@@ -27,14 +27,14 @@ public class ScanningLexeme<T, C extends TextUnit> implements Lexeme<T, C> {
   }
 
   @Override
-  public Text<C> characters() {
+  public Text<C> lexeme() {
     return characters;
   }
 
   @Override
-  public Token<T> evaluate() {
+  public Variable<T> evaluate() {
     if (token == null) {
-      token = new Token<>(scan.evaluate());
+      token = new Variable<>(scan.evaluate());
     }
     return token;
   }

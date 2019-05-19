@@ -42,8 +42,10 @@ import java.util.stream.Stream;
 import org.topiello.grammar.Grammar;
 import org.topiello.grammar.Rule;
 import org.topiello.grammar.Terminal;
+import org.topiello.lexicon.Lexicon;
+import org.topiello.text.TextUnit;
 
-public class ContextFreeGrammar implements Grammar<Symbol> {
+public class ContextFreeGrammar<C extends TextUnit> implements Grammar<Symbol, C> {
   private final List<ContextFreeRule> rules;
 
   protected ContextFreeGrammar(Collection<? extends ContextFreeRule> rules) {
@@ -54,15 +56,22 @@ public class ContextFreeGrammar implements Grammar<Symbol> {
     this.rules = rules;
   }
 
-  public ContextFreeGrammar withRule(ContextFreeRule rule) {
+  public ContextFreeGrammar<C> withRule(ContextFreeRule rule) {
     return withRules(singleton(rule));
   }
 
-  public ContextFreeGrammar withRules(Collection<? extends ContextFreeRule> rules) {
+  public ContextFreeGrammar<C> withRules(Collection<? extends ContextFreeRule> rules) {
     var newRules = new ArrayList<ContextFreeRule>(this.rules.size() + rules.size());
     newRules.addAll(this.rules);
     rules.forEach(newRules::add);
-    return new ContextFreeGrammar(newRules);
+    return new ContextFreeGrammar<>(newRules);
+  }
+
+  public ContextFreeGrammar<C> withTerminals(Lexicon<Symbol, C> lexicon) {
+    var newRules = new ArrayList<ContextFreeRule>(this.rules.size() + rules.size());
+    newRules.addAll(this.rules);
+    rules.forEach(newRules::add);
+    return new ContextFreeGrammar<>(newRules);
   }
 
   @Override
@@ -77,7 +86,13 @@ public class ContextFreeGrammar implements Grammar<Symbol> {
   }
 
   @Override
-  public Stream<? extends Terminal<?>> getMatchingTerminals(Symbol product) {
+  public Stream<? extends Terminal<C>> getTerminals() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Stream<? extends Terminal<C>> getMatchingTerminals(Symbol product) {
     // TODO Auto-generated method stub
     return null;
   }

@@ -34,6 +34,8 @@ package org.topiello.grammar;
 
 import java.util.stream.Stream;
 
+import org.topiello.text.TextUnit;
+
 /**
  * Constraints on solution to build grammars:
  * 
@@ -54,10 +56,12 @@ import java.util.stream.Stream;
  * 
  * @author Elias N Vasylenko
  */
-public interface Grammar<T extends Product> {
+public interface Grammar<T extends Product, C extends TextUnit> {
   Stream<? extends Rule<T>> getRules();
 
   Stream<? extends Rule<T>> getMatchingRules(T product);
 
-  Stream<? extends Terminal<?>> getMatchingTerminals(T product);
+  Stream<? extends Terminal<C>> getTerminals();
+
+  Stream<? extends Terminal<C>> getMatchingTerminals(T product);
 }

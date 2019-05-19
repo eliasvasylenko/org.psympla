@@ -2,7 +2,7 @@ package org.topiello.lexicon.scanning;
 
 import java.util.stream.Stream;
 
-import org.topiello.lexicon.Lexeme;
+import org.topiello.lexicon.Token;
 import org.topiello.lexicon.LexicalClass;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
@@ -15,7 +15,7 @@ import org.topiello.text.TextUnit;
  * <p>
  * A scanner is intended to be used in order to define the behavior of a
  * {@link LexicalClass lexical class}, where each scan would be associated with
- * a {@link Lexeme lexeme} of that class.
+ * a {@link Token lexeme} of that class.
  * 
  * @author Elias N Vasylenko
  *
