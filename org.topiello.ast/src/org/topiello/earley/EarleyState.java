@@ -5,7 +5,6 @@ import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
 
-import org.topiello.ast.index.LR0Item;
 import org.topiello.grammar.Product;
 import org.topiello.grammar.Rule;
 import org.topiello.grammar.Variable;
@@ -42,11 +41,11 @@ public class EarleyState<T extends Product> {
   private final NavigableMap<Integer, EarleySet> sets = new TreeMap<>();
 
   public EarleyState(T startProduct) {
-    getSet(0).getItem(new LR0Item(new StartRule<>(startProduct), 0));
+    // getSet(0).getItem(new LR0Item(new StartRule<>(startProduct), 0));
   }
 
-  private EarleySet getSet(int i) {
-    return sets.computeIfAbsent(i, EarleySet::new);
+  private EarleySet getSet(int index) {
+    return sets.computeIfAbsent(index, i -> new EarleySet(null, i));
   }
 
   public Optional<EarleySet> nextSet() {

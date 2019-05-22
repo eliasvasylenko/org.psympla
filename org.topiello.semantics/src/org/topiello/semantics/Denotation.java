@@ -1,6 +1,6 @@
 package org.topiello.semantics;
 
-import org.topiello.grammar.Rule;
+import org.topiello.grammar.Product;
 import org.topiello.language.Sign;
 
 /**
@@ -11,13 +11,18 @@ import org.topiello.language.Sign;
  *
  * @param <T>
  */
-public class Denotation<T, U extends Rule<?>> {
+public class Denotation<T, U extends Product> {
   private final Sign<? super T> sign;
   private final Class<T> type;
   private final Encoder<T> encoder;
   private final Decoder<T> decoder;
 
-  public Denotation(Sign<? super T> sign, Class<T> type, Encoder<T> encoder, Decoder<T> decoder) {
+  public Denotation(
+      Sign<? super T> sign,
+      U product,
+      Class<T> type,
+      Encoder<T> encoder,
+      Decoder<T> decoder) {
     this.sign = sign;
     this.type = type;
     this.encoder = encoder;

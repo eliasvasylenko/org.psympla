@@ -12,4 +12,6 @@ public interface EncodeState {
   <U> EncodeState putAll(Sign<U> signifier, @SuppressWarnings("unchecked") U... information);
 
   <U> EncodeState putAll(Sign<U> signifier, Collection<? extends U> information);
+
+  EncodeState putTerminal(String name);
 }

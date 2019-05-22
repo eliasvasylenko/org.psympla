@@ -14,4 +14,6 @@ public interface DecodeState {
   <T> Stream<T> getAll(Sign<T> signifier);
 
   <U> U getContext(Class<U> type);
+
+  String getTerminal();
 }

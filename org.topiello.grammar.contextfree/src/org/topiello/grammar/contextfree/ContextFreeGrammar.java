@@ -46,14 +46,22 @@ import org.topiello.lexicon.Lexicon;
 import org.topiello.text.TextUnit;
 
 public class ContextFreeGrammar<C extends TextUnit> implements Grammar<Symbol, C> {
+  private final Lexicon<Symbol, C> lexicon;
   private final List<ContextFreeRule> rules;
 
-  protected ContextFreeGrammar(Collection<? extends ContextFreeRule> rules) {
-    this(new ArrayList<>(rules));
+  protected ContextFreeGrammar(
+      Lexicon<Symbol, C> lexicon,
+      Collection<? extends ContextFreeRule> rules) {
+    this(lexicon, new ArrayList<>(rules));
   }
 
-  private ContextFreeGrammar(List<ContextFreeRule> rules) {
+  private ContextFreeGrammar(Lexicon<Symbol, C> lexicon, List<ContextFreeRule> rules) {
+    this.lexicon = lexicon;
     this.rules = rules;
+  }
+
+  public static <C extends TextUnit> ContextFreeGrammar<C> over(Lexicon<Symbol, C> lexicon) {
+    return new ContextFreeGrammar<>(lexicon, List.of());
   }
 
   public ContextFreeGrammar<C> withRule(ContextFreeRule rule) {
@@ -64,14 +72,7 @@ public class ContextFreeGrammar<C extends TextUnit> implements Grammar<Symbol, C
     var newRules = new ArrayList<ContextFreeRule>(this.rules.size() + rules.size());
     newRules.addAll(this.rules);
     rules.forEach(newRules::add);
-    return new ContextFreeGrammar<>(newRules);
-  }
-
-  public ContextFreeGrammar<C> withTerminals(Lexicon<Symbol, C> lexicon) {
-    var newRules = new ArrayList<ContextFreeRule>(this.rules.size() + rules.size());
-    newRules.addAll(this.rules);
-    rules.forEach(newRules::add);
-    return new ContextFreeGrammar<>(newRules);
+    return new ContextFreeGrammar<>(lexicon, newRules);
   }
 
   @Override

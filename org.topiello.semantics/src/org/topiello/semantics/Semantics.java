@@ -2,8 +2,8 @@ package org.topiello.semantics;
 
 import java.util.stream.Stream;
 
-import org.topiello.grammar.Rule;
+import org.topiello.grammar.Product;
 
-public interface Semantics<U extends Rule<?>> {
-  Stream<Denotation<?, U>> getDenotation(U rule);
+public interface Semantics<U extends Product> {
+  Stream<? extends Denotation<?, U>> getDenotation(U rule);
 }

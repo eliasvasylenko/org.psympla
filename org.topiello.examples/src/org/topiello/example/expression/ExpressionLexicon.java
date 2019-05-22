@@ -24,22 +24,22 @@ public class ExpressionLexicon extends ContextFreeLexicon<UtfCodePoint> {
 
   public ExpressionLexicon() {
     super(
-        new ContextFreeLexicalClass<>(CODE_POINTS, "[A-Za-z]", v),
-        new ContextFreeLexicalClass<>(CODE_POINTS, "\\*", MULTIPLY),
-        new ContextFreeLexicalClass<>(CODE_POINTS, "/", DIVIDE),
-        new ContextFreeLexicalClass<>(CODE_POINTS, "+", ADD),
-        new ContextFreeLexicalClass<>(CODE_POINTS, "-", SUBTRACT),
-        new ContextFreeLexicalClass<>(CODE_POINTS, "(", OPEN_BRACKET),
-        new ContextFreeLexicalClass<>(CODE_POINTS, ")", CLOSE_BRACKET));
+        new ContextFreeLexicalClass.Regex<>(CODE_POINTS, VARIABLE, "[A-Za-z]"),
+        new ContextFreeLexicalClass.Literal<>(CODE_POINTS, MULTIPLY, "\\*"),
+        new ContextFreeLexicalClass.Literal<>(CODE_POINTS, DIVIDE, "/"),
+        new ContextFreeLexicalClass.Literal<>(CODE_POINTS, ADD, "+"),
+        new ContextFreeLexicalClass.Literal<>(CODE_POINTS, SUBTRACT, "-"),
+        new ContextFreeLexicalClass.Literal<>(CODE_POINTS, OPEN_BRACKET, "("),
+        new ContextFreeLexicalClass.Literal<>(CODE_POINTS, CLOSE_BRACKET, ")"));
   }
 
   @SuppressWarnings("unchecked")
-  public ContextFreeLexicalClass<Symbol, UtfCodePoint> variable() {
-    return (ContextFreeLexicalClass<UtfCodePoint>) getLexicalClass(VARIABLE);
+  public ContextFreeLexicalClass.Regex<UtfCodePoint> variable() {
+    return (ContextFreeLexicalClass.Regex<UtfCodePoint>) getLexicalClass(VARIABLE).get();
   }
 
   @SuppressWarnings("unchecked")
-  public ContextFreeLexicalClass<Symbol, UtfCodePoint> operator(OperatorSymbol symbol) {
-    return (ContextFreeLexicalClass<, UtfCodePoint>) getLexicalClass(symbol);
+  public ContextFreeLexicalClass.Literal<UtfCodePoint> operator(OperatorSymbol symbol) {
+    return (ContextFreeLexicalClass.Literal<UtfCodePoint>) getLexicalClass(symbol).get();
   }
 }

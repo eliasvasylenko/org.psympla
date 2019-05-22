@@ -6,9 +6,9 @@ Export-Package: \
 	org.topiello.example.expression
 
 -buildpath: \
+	org.topiello.ast;version=snapshot,\
 	org.topiello.grammar;version=snapshot,\
 	org.topiello.language;version=snapshot,\
-	org.topiello.language.earley;version=snapshot,\
 	org.topiello.lexicon;version=snapshot,\
 	org.topiello.text;version=snapshot,\
 	org.topiello.semantics;version=snapshot,\

@@ -3,14 +3,13 @@ Bundle-Description: \
 	Implementation for processing languages based on the Earley algorithm
 
 Export-Package: \
-	org.topiello.earley,\
-	org.topiello.ast.index
+	org.topiello.ast,\
+	org.topiello.ast.index,\
+	org.topiello.earley
 
 -buildpath: \
-	org.topiello.constraints;version=snapshot,\
 	org.topiello.grammar;version=snapshot,\
 	org.topiello.language;version=snapshot,\
-	org.topiello.language.engine;version=snapshot,\
 	org.topiello.lexicon;version=snapshot,\
 	org.topiello.text;version=snapshot,\
 	org.topiello.semantics;version=snapshot
