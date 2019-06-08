@@ -1,6 +1,0 @@
-Bundle-Name: Topiello :: Grammar
-
-Export-Package: org.topiello.grammar
-
--buildpath: \
-	org.topiello.text;version=snapshot

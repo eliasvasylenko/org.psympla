@@ -1,6 +1,0 @@
-Bundle-Name: Topiello :: Text
-
-Export-Package: \
-	org.topiello.text,\
-	org.topiello.text.ascii,\
-	org.topiello.text.utf

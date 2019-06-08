@@ -1,7 +1,0 @@
-Bundle-Name: Topiello :: Pattern
-
-Export-Package:\
-	org.topiello.pattern
-
--buildpath:\
-	org.topiello.pattern.symbol;version=snapshot

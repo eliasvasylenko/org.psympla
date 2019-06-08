@@ -1,8 +1,0 @@
-Bundle-Name: Topiello :: Lexicon
-
-Export-Package: \
-	org.topiello.lexicon,\
-	org.topiello.lexicon.scanning
-
--buildpath: \
-	org.topiello.text;version=snapshot
