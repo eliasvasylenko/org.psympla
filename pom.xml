@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Topiello - Self-modifying AST for Early-like parsers and deparsers
+    Copyright © 2018 Strange Skies (elias@vasylenko.uk)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -9,7 +28,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<description>Topiello project</description>
+	<name>Topiello</name>
+	<description>Self-modifying AST for Early-like parsers and deparsers</description>
 
 	<licenses>
 		<license>
@@ -18,6 +38,8 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<inceptionYear>2018</inceptionYear>
 
 	<organization>
 		<name>Strange Skies</name>
@@ -364,7 +386,42 @@
 						</execution>
 					</executions>
 				</plugin>
+
+				<plugin>
+					<groupId>com.mycila</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>3.0</version>
+					<configuration>
+						<header>com/mycila/maven/plugin/license/templates/LGPL-3.txt</header>
+						<properties>
+							<owner>Strange Skies</owner>
+							<email>elias@vasylenko.uk</email>
+						</properties>
+						<excludes>
+							<exclude>**/README</exclude>
+							<exclude>src/test/resources/**</exclude>
+							<exclude>src/main/resources/**</exclude>
+						</excludes>
+						<mapping>
+							<java>SLASHSTAR_STYLE</java>
+						</mapping>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 </project>
