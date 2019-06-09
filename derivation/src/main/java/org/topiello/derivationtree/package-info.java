@@ -1,5 +1,5 @@
 /*
- * Topiello AST - The parser AST API
+ * Topiello Derivation - API for describing parse forests, deparse forests, and derivation trees
  * Copyright © 2018 Strange Skies (elias@vasylenko.uk)
  *
  * This program is free software: you can redistribute it and/or modify
