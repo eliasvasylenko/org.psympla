@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Topiello Lexicon - An API for creating simple lexicons to be consumed by grammars
+    Topiello Derivation GLSP - The derivation-glsp API bundle - built using OSGi enRoute R7
     Copyright © 2018 Strange Skies (elias@vasylenko.uk)
 
     This program is free software: you can redistribute it and/or modify
@@ -24,15 +24,15 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.topiello</groupId>
 		<artifactId>topiello</artifactId>
+		<groupId>org.topiello</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>lexicon</artifactId>
+	<artifactId>derivation-glsp</artifactId>
 
-	<name>Topiello Lexicon</name>
-	<description>An API for creating simple lexicons to be consumed by grammars</description>
+	<name>Topiello Derivation GLSP</name>
+	<description>The derivation-glsp API bundle - built using OSGi enRoute R7</description>
 
 	<dependencies>
 		<dependency>
@@ -42,10 +42,6 @@
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>osgi.annotation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.topiello</groupId>
-			<artifactId>text</artifactId>
 		</dependency>
 	</dependencies>
 
