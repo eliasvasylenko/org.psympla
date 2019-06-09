@@ -68,15 +68,16 @@
 
 	<modules>
 		<module>ast</module>
+		<module>derivation</module>
 		<module>examples</module>
 		<module>grammar</module>
-		<module>grammar.contextfree</module>
+		<module>contextfree-grammar</module>
 		<module>language</module>
 		<module>lexicon</module>
 		<module>pattern</module>
-		<module>pattern.constraint</module>
-		<module>pattern.grammar</module>
-		<module>pattern.symbol</module>
+		<module>pattern-constraint</module>
+		<module>pattern-grammar</module>
+		<module>pattern-symbol</module>
 		<module>semantics</module>
 		<module>text</module>
 	</modules>
@@ -117,6 +118,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.topiello</groupId>
+				<artifactId>derivation</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.topiello</groupId>
 				<artifactId>examples</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
@@ -127,7 +133,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.topiello</groupId>
-				<artifactId>grammar.contextfree</artifactId>
+				<artifactId>contextfree-grammar</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -147,17 +153,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.topiello</groupId>
-				<artifactId>pattern.constraint</artifactId>
+				<artifactId>pattern-constraint</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.topiello</groupId>
-				<artifactId>pattern.grammar</artifactId>
+				<artifactId>pattern-grammar</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.topiello</groupId>
-				<artifactId>pattern.symbol</artifactId>
+				<artifactId>pattern-symbol</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -256,7 +262,7 @@
 					<version>${bnd.version}</version>
 					<configuration>
 						<bnd><![CDATA[
-							Bundle-SymbolicName: ${project.groupId}.${project.artifactId}
+							Bundle-SymbolicName: ${project.groupId}.${replace;${project.artifactId};-;.}
 							-sources: true
 							-contract: *
 						]]></bnd>

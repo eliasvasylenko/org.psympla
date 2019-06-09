@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Topiello AST - The parser AST API
+    Topiello Pattern Symbol - Symbols for pattern matching grammars to match over
     Copyright © 2018 Strange Skies (elias@vasylenko.uk)
 
     This program is free software: you can redistribute it and/or modify
@@ -30,10 +30,10 @@
 		<relativePath>..</relativePath>
 	</parent>
 
-	<artifactId>ast</artifactId>
+	<artifactId>pattern-symbol</artifactId>
 
-	<name>Topiello AST</name>
-	<description>The parser AST API</description>
+	<name>Topiello Pattern Symbol</name>
+	<description>Symbols for pattern matching grammars to match over</description>
 
 	<dependencies>
 		<dependency>
@@ -43,18 +43,6 @@
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>osgi.annotation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.topiello</groupId>
-			<artifactId>grammar</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.topiello</groupId>
-			<artifactId>text</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.topiello</groupId>
-			<artifactId>derivation</artifactId>
 		</dependency>
 	</dependencies>
 

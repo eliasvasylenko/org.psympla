@@ -23,11 +23,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.topiello.ast.GrammarNode;
-import org.topiello.derivation.ParseNode;
 import org.topiello.earley.EarleyState;
 import org.topiello.grammar.Product;
 import org.topiello.grammar.Rule;
 import org.topiello.grammar.Variable;
+import org.topiello.parseforest.ParseNode;
 import org.topiello.text.Text;
 import org.topiello.text.TextUnit;
 

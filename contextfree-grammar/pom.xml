@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Topiello Pattern Symbol - Symbols for pattern matching grammars to match over
+    Topiello Context-Free Grammar - A basic context-free grammar implementation
     Copyright © 2018 Strange Skies (elias@vasylenko.uk)
 
     This program is free software: you can redistribute it and/or modify
@@ -30,10 +30,10 @@
 		<relativePath>..</relativePath>
 	</parent>
 
-	<artifactId>pattern.symbol</artifactId>
+	<artifactId>contextfree-grammar</artifactId>
 
-	<name>Topiello Pattern Symbol</name>
-	<description>Symbols for pattern matching grammars to match over</description>
+	<name>Topiello Context-Free Grammar</name>
+	<description>A basic context-free grammar implementation</description>
 
 	<dependencies>
 		<dependency>
@@ -43,6 +43,18 @@
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>osgi.annotation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.topiello</groupId>
+			<artifactId>text</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.topiello</groupId>
+			<artifactId>grammar</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.topiello</groupId>
+			<artifactId>lexicon</artifactId>
 		</dependency>
 	</dependencies>
 

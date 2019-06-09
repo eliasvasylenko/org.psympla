@@ -15,17 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.ast;
-
-import java.util.Set;
-
-import org.topiello.grammar.Product;
-import org.topiello.parseforest.ParseNode;
-import org.topiello.text.Text;
-import org.topiello.text.TextUnit;
-
-public interface GrammarNode<T extends Product, C extends TextUnit> {
-  Set<? extends RuleNode> getRules();
-
-  ParseNode parse(T product, Text<C> text);
-}
+@org.osgi.annotation.bundle.Export
+@org.osgi.annotation.versioning.Version("1.0.0")
+package org.topiello.parseforest;

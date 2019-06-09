@@ -20,7 +20,7 @@ package org.topiello.earley;
 import java.util.List;
 
 import org.topiello.ast.ItemNode;
-import org.topiello.derivation.ParseNode;
+import org.topiello.parseforest.ParseNode;
 
 public class EarleyItem {
   private static final int INITIAL_PREDICTOR_LIST_SIZE = 8;

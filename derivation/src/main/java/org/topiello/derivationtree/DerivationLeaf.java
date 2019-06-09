@@ -15,25 +15,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.derivation;
+package org.topiello.derivationtree;
 
-import org.topiello.grammar.Rule;
+import org.topiello.grammar.Terminal;
 
-// TODO value & record type
-public class LR0Item {
-  private final Rule<?> rule;
-  private final int dotPosition;
-
-  public LR0Item(Rule<?> rule, int dotPosition) {
-    this.rule = rule;
-    this.dotPosition = dotPosition;
-  }
-
-  public Rule<?> rule() {
-    return rule;
-  }
-
-  public int dotPosition() {
-    return dotPosition;
-  }
+public interface DerivationLeaf extends Derivation {
+  Terminal<?> terminal();
 }

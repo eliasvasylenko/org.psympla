@@ -54,7 +54,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.topiello</groupId>
-			<artifactId>pattern.symbol</artifactId>
+			<artifactId>pattern-symbol</artifactId>
 		</dependency>
 	</dependencies>
 
