@@ -1,5 +1,7 @@
 /*
  * Topiello Examples - Example Topiello grammars
+ *
+ * Copyright © 2018 Strange Skies (elias@vasylenko.uk)
  *     __   _______  ____           _       __     _      __       __
  *   ,`_ `,|__   __||  _ `.        / \     |  \   | |  ,-`__`¬  ,-`__`¬
  *  ( (_`-'   | |   | | ) |       / . \    | . \  | | / .`  `' / .`  `'
@@ -14,8 +16,6 @@
  *               _   `. \| ,.-^.`. | || +~-'    _   `. \
  *              \ \__.' /| |    \ \| | \ `.__,.\ \__.' /
  *               `.__.-` |_|    |_||_|  `-.__.J `.__.-`
- *
- * Copyright © 2018 Strange Skies (elias@vasylenko.uk)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
