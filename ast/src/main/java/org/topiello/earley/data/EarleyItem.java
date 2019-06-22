@@ -1,5 +1,5 @@
 /*
- * Topiello Derivation - API for describing parse forests, deparse forests, and derivation trees
+ * Topiello AST - The parser AST API
  *
  * Copyright © 2018 Strange Skies (elias@vasylenko.uk)
  *     __   _______  ____           _       __     _      __       __
@@ -30,8 +30,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.parseforest;
+package org.topiello.earley.data;
 
-public enum ParseDirection {
-  LEFT, RIGHT
+import java.util.List;
+
+import org.topiello.ast.ItemNode;
+import org.topiello.parseforest.LR0Item;
+import org.topiello.parseforest.ParseNode;
+
+public final class EarleyItem {
+  private static final int INITIAL_PREDICTOR_LIST_SIZE = 8;
+
+  private final ItemNode lr0Item;
+
+  private final ParseNode parseNode;
+  private final List<EarleyItem> predictors;
+
+  EarleyItem(ItemNode lr0Item, int from, int to) {
+    this.lr0Item = lr0Item;
+
+    this.parseNode = new ParseNode(lr0Item, from, to);
+    this.predictors = null;
+  }
+
+  EarleyItem(ItemNode lr0Item, EarleyItem advancedFrom, EarleyItem advancedOver) {
+    this.lr0Item = lr0Item;
+    
+    this.parseNode = new ParseNode(LR0Item, advancedFrom., rightExtent)
+    this.predictors = advancedFrom.predictors;
+  }
+
+  public ItemNode lr0Item() {
+    return lr0Item;
+  }
 }

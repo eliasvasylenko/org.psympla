@@ -38,7 +38,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.topiello.ast.GrammarNode;
-import org.topiello.earley.EarleyState;
+import org.topiello.earley.data.EarleyState;
 import org.topiello.grammar.Product;
 import org.topiello.grammar.Rule;
 import org.topiello.grammar.Variable;

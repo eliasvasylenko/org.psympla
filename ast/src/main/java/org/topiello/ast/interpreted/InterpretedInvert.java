@@ -32,7 +32,7 @@
  */
 package org.topiello.ast.interpreted;
 
-import org.topiello.earley.EarleyState;
+import org.topiello.earley.data.EarleyState;
 
 public class InterpretedInvert implements InterpretedEvaluate<Boolean> {
   private final InterpretedEvaluate<Boolean> child;

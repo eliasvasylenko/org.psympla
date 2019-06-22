@@ -32,7 +32,7 @@
  */
 package org.topiello.ast.interpreted;
 
-import org.topiello.earley.EarleyState;
+import org.topiello.earley.data.EarleyState;
 
 public class InterpretedConditionalThenElse implements InterpretedExecute {
   private final InterpretedEvaluate<Boolean> condition;

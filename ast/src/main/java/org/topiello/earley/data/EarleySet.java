@@ -30,23 +30,54 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.earley;
+package org.topiello.earley.data;
 
-import java.util.Map.Entry;
-import java.util.NavigableMap;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
-import org.topiello.grammar.Product;
+import org.topiello.ast.ItemNode;
 
-public class EarleyState<T extends Product> {
-  private final NavigableMap<Integer, EarleySet> sets = new TreeMap<>();
+public final class EarleySet {
+  private final int inputPosition;
 
-  public EarleySet getSet(int index) {
-    return sets.computeIfAbsent(index, i -> new EarleySet(i));
+  /*
+   * Closure of null-predicted items, i.e. items with start position at the
+   * current input position.
+   */
+  private final BitSet predictedNonterminals;
+  private final BitSet predictedTerminals;
+
+  /*
+   * Items from scanning or completion, with start position earlier to the current
+   * input position.
+   * 
+   * TODO we also need to index into these by source index
+   */
+  private final Map<ItemNode, EarleyItem> items;
+
+  public EarleySet(int inputPosition) {
+    this.inputPosition = inputPosition;
+    this.items = new HashMap<>();
+
+    this.predictedNonterminals = new BitSet();
+    this.predictedTerminals = new BitSet();
   }
 
-  public Optional<EarleySet> nextSet() {
-    return Optional.ofNullable(sets.pollFirstEntry()).map(Entry::getValue);
+  public int inputPosition() {
+    return inputPosition;
+  }
+
+  EarleyItem getItem(ItemNode lr0Item) {
+    return items.computeIfAbsent(lr0Item, EarleyItem::new);
+  }
+
+  EarleyItem advance(EarleyItem from, EarleyItem over) {
+    return getItem(((ItemNode.Specialized) from.lr0Item()).nextItem().get()).addSource(from, over);
+  }
+
+  public Stream<EarleyItem> nodes() {
+    return items.values().stream();
   }
 }

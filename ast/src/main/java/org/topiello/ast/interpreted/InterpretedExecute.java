@@ -33,7 +33,7 @@
 package org.topiello.ast.interpreted;
 
 import org.topiello.ast.ExecutableNode;
-import org.topiello.earley.EarleyState;
+import org.topiello.earley.data.EarleyState;
 
 public interface InterpretedExecute extends ExecutableNode {
   void execute(EarleyState<?> state);

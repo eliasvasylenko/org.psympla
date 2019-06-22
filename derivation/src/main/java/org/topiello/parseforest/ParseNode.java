@@ -34,8 +34,11 @@ package org.topiello.parseforest;
 
 import java.util.TreeMap;
 
+import org.topiello.grammar.Rule;
+
 public class ParseNode {
-  private final LR0Item item;
+  private final Rule<?> rule;
+  private final int dotPosition;
   private final int leftExtent;
   private final int rightExtent;
   private final TreeMap<Integer, PivotNode> pivots;

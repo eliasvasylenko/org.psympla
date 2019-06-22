@@ -30,41 +30,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.earley;
+package org.topiello.earley.data;
 
-import java.util.List;
+import java.util.Map.Entry;
+import java.util.NavigableMap;
+import java.util.Optional;
+import java.util.TreeMap;
 
-import org.topiello.ast.ItemNode;
-import org.topiello.parseforest.ParseNode;
+import org.topiello.grammar.Product;
 
-public class EarleyItem {
-  private static final int INITIAL_PREDICTOR_LIST_SIZE = 8;
+public final class EarleyState<T extends Product> {
+  private final NavigableMap<Integer, EarleySet> sets = new TreeMap<>();
 
-  private final ParseNode parseNode = null;
-
-  private final ItemNode lr0Item;
-
-  private final EarleyItem advancedFrom;
-  private final List<EarleyItem> predictors; // if we completed from an earlier item, we share
-                                             // this
-
-  EarleyItem(ItemNode lr0Item) {
-    this.lr0Item = lr0Item;
-    this.advancedFrom = null;
-    this.predictors = null;
+  public EarleySet getSet(int index) {
+    return sets.computeIfAbsent(index, i -> new EarleySet(i));
   }
 
-  EarleyItem(ItemNode lr0Item, EarleyItem advancedFrom) {
-    this.lr0Item = lr0Item;
-    this.advancedFrom = advancedFrom;
-    this.predictors = advancedFrom.predictors;
-  }
-
-  EarleyItem advance(EarleyItem completed) {
-    return new EarleyItem(((ItemNode.Specialized) lr0Item).nextItem().get(), this);
-  }
-
-  public ItemNode lr0Item() {
-    return lr0Item;
+  public Optional<EarleySet> nextSet() {
+    return Optional.ofNullable(sets.pollFirstEntry()).map(Entry::getValue);
   }
 }
