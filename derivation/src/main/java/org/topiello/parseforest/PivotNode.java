@@ -40,7 +40,7 @@ import java.util.List;
 public class PivotNode {
   private final int pivot;
   private final ParseNode adjacent;
-  private final List<ParseNode> derivations;
+  private final List<RuleNode> derivations;
 
   PivotNode(int pivot, ParseNode adjacent) {
     this.pivot = pivot;
@@ -56,7 +56,7 @@ public class PivotNode {
     return adjacent;
   }
 
-  public List<ParseNode> derivations() {
+  public List<RuleNode> derivations() {
     return Collections.unmodifiableList(derivations);
   }
 }

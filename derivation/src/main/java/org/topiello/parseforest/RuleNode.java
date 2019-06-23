@@ -1,5 +1,5 @@
 /*
- * Topiello AST - The parser AST API
+ * Topiello Derivation - API for describing parse forests, deparse forests, and derivation trees
  *
  * Copyright © 2018 Strange Skies (elias@vasylenko.uk)
  *     __   _______  ____           _       __     _      __       __
@@ -30,49 +30,30 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.ast.interpreted;
+package org.topiello.parseforest;
 
-import static java.util.Collections.unmodifiableSet;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import org.topiello.ast.GrammarNode;
-import org.topiello.earley.data.EarleyState;
-import org.topiello.grammar.Product;
 import org.topiello.grammar.Rule;
-import org.topiello.grammar.Variable;
-import org.topiello.parseforest.RuleNode;
-import org.topiello.text.Text;
-import org.topiello.text.TextUnit;
 
-public class InterpretedGrammar<T extends Product, C extends TextUnit>
-    implements GrammarNode<T, C> {
-  private static final Variable ACCEPT_SYMBOL = new Variable() {};
+public class RuleNode {
+  private final Rule<?> rule;
+  private final int leftExtent;
+  private final int rightExtent;
 
-  private final Set<InterpretedRule> rules = new HashSet<>();
-
-  private final InterpretedTopiello topiello;
-
-  public InterpretedGrammar(InterpretedTopiello topiello) {
-    this.topiello = topiello;
+  public RuleNode(Rule<?> rule, int leftExtent, int rightExtent) {
+    this.rule = rule;
+    this.leftExtent = leftExtent;
+    this.rightExtent = rightExtent;
   }
 
-  InterpretedRule addRule(InterpretedRule rule) {
-    rules.add(rule);
+  public Rule<?> rule() {
     return rule;
   }
 
-  @Override
-  public Set<InterpretedRule> getRules() {
-    return unmodifiableSet(rules);
+  public int leftExtent() {
+    return leftExtent;
   }
 
-  @Override
-  public RuleNode parse(T product, Text<C> text) {
-    var startRule = topiello.addAnonymousRule(this, new Rule<>(ACCEPT_SYMBOL, product));
-    var state = new EarleyState<>();
-    startRule.predicted().execute(state);
-    throw new UnsupportedOperationException();
+  public int rightExtent() {
+    return rightExtent;
   }
 }
