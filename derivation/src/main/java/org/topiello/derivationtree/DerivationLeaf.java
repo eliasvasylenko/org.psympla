@@ -32,8 +32,17 @@
  */
 package org.topiello.derivationtree;
 
-import org.topiello.grammar.Terminal;
+import org.topiello.text.Text;
 
-public interface DerivationLeaf extends Derivation {
-  Terminal<?> terminal();
+public class DerivationLeaf<T> extends Derivation<T> {
+  private final Text<?> text;
+
+  public DerivationLeaf(T instantiation, Text<?> text) {
+    super(instantiation);
+    this.text = text;
+  }
+
+  public Text<?> text() {
+    return text;
+  }
 }

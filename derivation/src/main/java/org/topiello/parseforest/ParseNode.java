@@ -32,16 +32,33 @@
  */
 package org.topiello.parseforest;
 
+import java.util.Map;
 import java.util.TreeMap;
 
-public class ParseNode {
-  private final TreeMap<Integer, PivotNode> pivots;
+import org.topiello.derivationtree.Extent;
 
-  public ParseNode() {
+public class ParseNode {
+  private final Extent extent;
+  private final int dotPosition;
+  private final Map<Integer, ParsePivot> pivots;
+
+  public ParseNode(Extent extent, int dotPosition) {
+    this.extent = extent;
+    this.dotPosition = dotPosition;
     this.pivots = new TreeMap<>();
   }
 
-  public PivotNode getPivot(int position) {
-    return pivots.computeIfAbsent(position, p -> new PivotNode(p, new ParseNode()));
+  public Extent getExtent() {
+    return extent;
+  }
+
+  public int getDotPosition() {
+    return dotPosition;
+  }
+
+  public ParsePivot getPivot(int position) {
+    var extent = new Extent(position, getExtent().right());
+    var intermediateNode = new ParseNode(extent, dotPosition + 1);
+    return pivots.computeIfAbsent(position, p -> new ParsePivot(p, intermediateNode));
   }
 }

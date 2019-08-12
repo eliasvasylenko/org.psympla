@@ -34,8 +34,8 @@ package org.topiello.example.expression;
 
 import static org.topiello.example.expression.ExpressionGrammar.EXPRESSION;
 
-import org.topiello.ast.GrammarNode;
 import org.topiello.ast.interpreted.InterpretedTopiello;
+import org.topiello.grammar.GrammarNode;
 import org.topiello.grammar.contextfree.Symbol;
 import org.topiello.text.utf.UtfCodePoint;
 

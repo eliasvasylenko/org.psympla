@@ -45,34 +45,7 @@ import java.util.stream.Stream;
  * @param <C>
  */
 public interface Text<C extends TextUnit> extends Iterable<C> {
-  static <C extends TextUnit> Text<C> fromStream(Stream<C> stream) {
-    return new Text<C>() {
-      @Override
-      public Text<C> subSequence(int from, int to) {
-        return null; // TODO
-      }
-
-      @Override
-      public Iterator<C> iterator() {
-        return new Iterator<C>() {
-          @Override
-          public boolean hasNext() {
-            return false;
-          }
-
-          @Override
-          public C next() {
-            throw new NoSuchElementException();
-          }
-        };
-      }
-
-      @Override
-      public Stream<C> stream() {
-        return Stream.empty();
-      }
-    };
-  }
+  long length();
 
   Text<C> subSequence(int from, int to);
 
@@ -102,6 +75,11 @@ public interface Text<C extends TextUnit> extends Iterable<C> {
             throw new NoSuchElementException();
           }
         };
+      }
+
+      @Override
+      public long length() {
+        return 0;
       }
 
       @Override

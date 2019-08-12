@@ -1,5 +1,5 @@
 /*
- * Topiello Derivation - API for describing parse forests, deparse forests, and derivation trees
+ * Topiello AST - The parser AST API
  *
  * Copyright © 2018 Strange Skies (elias@vasylenko.uk)
  *     __   _______  ____           _       __     _      __       __
@@ -30,30 +30,52 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.derivationtree;
+package org.topiello.earley.data;
 
-import java.util.List;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
-/**
- * A derivation tree describes an unambiguous and exact mapping between a
- * hierarchy of rule applications and the sequence of characters it derives.
- * 
- * To be unambiguous, text skipped by the lexer and not seen by the grammar must
- * also be present in some form.
- * 
- * @author eli
- *
- * @param <T>
- */
-public class DerivationTree<T> extends Derivation<T> {
-  private final List<Derivation<?>> derivations;
+public final class EarleySet {
+  private final int inputPosition;
 
-  public DerivationTree(T instantiation, List<Derivation<?>> derivations) {
-    super(instantiation);
-    this.derivations = List.copyOf(derivations);
+  /*
+   * Closure of null-predicted items, i.e. items with start position at the
+   * current input position.
+   */
+  private final BitSet predictedNonterminals;
+  private final BitSet predictedTerminals;
+
+  /*
+   * Items from scanning or completion, with start position earlier to the current
+   * input position.
+   * 
+   * TODO we also need to index into these by source index
+   */
+  private final Map<ItemNode, EarleyItem> items;
+
+  public EarleySet(int inputPosition) {
+    this.inputPosition = inputPosition;
+    this.items = new HashMap<>();
+
+    this.predictedNonterminals = new BitSet();
+    this.predictedTerminals = new BitSet();
   }
 
-  public Derivation<?> derivation(int productIndex) {
-    return derivations.get(0);
+  public int inputPosition() {
+    return inputPosition;
+  }
+
+  EarleyItem getItem(ItemNode lr0Item) {
+    return items.computeIfAbsent(lr0Item, EarleyItem::new);
+  }
+
+  EarleyItem advance(EarleyItem from, EarleyItem over) {
+    return getItem(((ItemNode.Specialized) from.lr0Item()).nextItem().get()).addSource(from, over);
+  }
+
+  public Stream<EarleyItem> nodes() {
+    return items.values().stream();
   }
 }

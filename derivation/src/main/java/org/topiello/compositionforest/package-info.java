@@ -30,30 +30,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.derivationtree;
-
-import java.util.List;
-
-/**
- * A derivation tree describes an unambiguous and exact mapping between a
- * hierarchy of rule applications and the sequence of characters it derives.
- * 
- * To be unambiguous, text skipped by the lexer and not seen by the grammar must
- * also be present in some form.
- * 
- * @author eli
- *
- * @param <T>
- */
-public class DerivationTree<T> extends Derivation<T> {
-  private final List<Derivation<?>> derivations;
-
-  public DerivationTree(T instantiation, List<Derivation<?>> derivations) {
-    super(instantiation);
-    this.derivations = List.copyOf(derivations);
-  }
-
-  public Derivation<?> derivation(int productIndex) {
-    return derivations.get(0);
-  }
-}
+@org.osgi.annotation.bundle.Export
+@org.osgi.annotation.versioning.Version("1.0.0")
+package org.topiello.compositionforest;

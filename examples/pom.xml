@@ -76,10 +76,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.topiello</groupId>
-			<artifactId>ast</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.topiello</groupId>
 			<artifactId>derivation</artifactId>
 		</dependency>
 	</dependencies>

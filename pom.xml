@@ -75,25 +75,21 @@
 	</scm>
 
 	<properties>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>12</maven.compiler.source>
+		<maven.compiler.target>12</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bnd.version>4.2.0</bnd.version>
 	</properties>
 
 	<modules>
-		<module>ast</module>
+		<module>contextfree-grammar</module>
 		<module>derivation</module>
 		<module>derivation-glsp</module>
 		<module>examples</module>
 		<module>grammar</module>
-		<module>contextfree-grammar</module>
 		<module>language</module>
 		<module>lexicon</module>
-		<module>pattern</module>
-		<module>pattern-constraint</module>
-		<module>pattern-grammar</module>
-		<module>pattern-symbol</module>
+		<module>parser</module>
 		<module>semantics</module>
 		<module>text</module>
 	</modules>
@@ -139,7 +135,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.topiello</groupId>
-				<artifactId>ast</artifactId>
+				<artifactId>contextfree-grammar</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -164,11 +160,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.topiello</groupId>
-				<artifactId>contextfree-grammar</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.topiello</groupId>
 				<artifactId>language</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
@@ -179,22 +170,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.topiello</groupId>
-				<artifactId>pattern</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.topiello</groupId>
-				<artifactId>pattern-constraint</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.topiello</groupId>
-				<artifactId>pattern-grammar</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.topiello</groupId>
-				<artifactId>pattern-symbol</artifactId>
+				<artifactId>parser</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

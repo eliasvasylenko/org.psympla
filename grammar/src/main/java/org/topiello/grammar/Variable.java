@@ -32,6 +32,6 @@
  */
 package org.topiello.grammar;
 
-public interface Variable {
+public interface Variable<T> {
 
 }

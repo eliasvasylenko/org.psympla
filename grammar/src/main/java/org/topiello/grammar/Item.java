@@ -1,5 +1,5 @@
 /*
- * Topiello Derivation - API for describing parse forests, deparse forests, and derivation trees
+ * Topiello AST - The parser AST API
  *
  * Copyright © 2018 Strange Skies (elias@vasylenko.uk)
  *     __   _______  ____           _       __     _      __       __
@@ -30,30 +30,24 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.derivationtree;
+package org.topiello.grammar;
 
-import java.util.List;
+import java.util.Optional;
 
-/**
- * A derivation tree describes an unambiguous and exact mapping between a
- * hierarchy of rule applications and the sequence of characters it derives.
- * 
- * To be unambiguous, text skipped by the lexer and not seen by the grammar must
- * also be present in some form.
- * 
- * @author eli
- *
- * @param <T>
- */
-public class DerivationTree<T> extends Derivation<T> {
-  private final List<Derivation<?>> derivations;
+import org.topiello.ast.ExecutableNode;
 
-  public DerivationTree(T instantiation, List<Derivation<?>> derivations) {
-    super(instantiation);
-    this.derivations = List.copyOf(derivations);
-  }
+public interface Item extends ExecutableNode {
+  Variable variable();
 
-  public Derivation<?> derivation(int productIndex) {
-    return derivations.get(0);
-  }
+  int dotPosition();
+
+  Product nextProduct();
+
+  Item previousItem();
+
+  ExecutableNode predicted();
+
+  Optional<Item> nextItem();
+
+  ExecutableNode advanced();
 }

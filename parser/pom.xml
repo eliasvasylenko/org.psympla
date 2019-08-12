@@ -44,10 +44,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>grammar</artifactId>
+	<artifactId>parser</artifactId>
 
-	<name>Topiello Grammar</name>
-	<description>The grammar API</description>
+	<name>Topiello Parser</name>
+	<description>The parser API</description>
 
 	<dependencies>
 		<dependency>

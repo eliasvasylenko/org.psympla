@@ -60,10 +60,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.topiello</groupId>
-			<artifactId>grammar</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.topiello</groupId>
 			<artifactId>text</artifactId>
 		</dependency>
 	</dependencies>

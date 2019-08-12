@@ -32,9 +32,7 @@
  */
 package org.topiello.grammar;
 
-import java.util.stream.Stream;
-
-import org.topiello.text.TextUnit;
+import org.topiello.ast.AstFactory;
 
 /* TODO
  * Constraints on solution to build grammars:
@@ -56,12 +54,28 @@ import org.topiello.text.TextUnit;
  * 
  * @author Elias N Vasylenko
  */
-public interface Grammar<T extends Product, C extends TextUnit> {
-  Stream<? extends Rule<T>> getRules();
+public class Grammar<T, V extends Variable<T>, P extends Product> {
+  private final GrammarClass<T, V, P> grammarClass;
+  private final AstFactory astFactory;
 
-  Stream<? extends Rule<T>> getMatchingRules(T product);
+  public Grammar(GrammarClass<T, V, P> grammarClass, AstFactory astFactory) {
+    this.grammarClass = grammarClass;
+    this.astFactory = astFactory;
+  }
 
-  Stream<? extends Terminal<C>> getTerminals();
+  public GrammarClass<T, V, P> getGrammarClass() {
+    return grammarClass;
+  }
 
-  Stream<? extends Terminal<C>> getMatchingTerminals(T product);
+  public AstFactory getAstFactory() {
+    return astFactory;
+  }
+
+  public Rule addRule(V variable, P... products) {
+
+  }
+
+  public Rule addTerminal(V variable) {
+
+  }
 }

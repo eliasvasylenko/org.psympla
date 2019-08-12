@@ -30,30 +30,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.derivationtree;
+package org.topiello.parseforest;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * A derivation tree describes an unambiguous and exact mapping between a
- * hierarchy of rule applications and the sequence of characters it derives.
- * 
- * To be unambiguous, text skipped by the lexer and not seen by the grammar must
- * also be present in some form.
- * 
- * @author eli
- *
- * @param <T>
- */
-public class DerivationTree<T> extends Derivation<T> {
-  private final List<Derivation<?>> derivations;
+// TODO value type and record
+public class ParsePivot {
+  private final int pivot;
+  private final ParseNode adjacent;
+  private final List<ParseNode> derivations;
 
-  public DerivationTree(T instantiation, List<Derivation<?>> derivations) {
-    super(instantiation);
-    this.derivations = List.copyOf(derivations);
+  ParsePivot(int pivot, ParseNode adjacent) {
+    this.pivot = pivot;
+    this.adjacent = adjacent;
+    this.derivations = new ArrayList<>();
   }
 
-  public Derivation<?> derivation(int productIndex) {
-    return derivations.get(0);
+  public int pivot() {
+    return pivot;
+  }
+
+  public ParseNode adjacent() {
+    return adjacent;
+  }
+
+  public List<ParseNode> derivations() {
+    return Collections.unmodifiableList(derivations);
   }
 }

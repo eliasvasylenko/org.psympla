@@ -32,4 +32,14 @@
  */
 package org.topiello.derivationtree;
 
-public interface Derivation {}
+public class Derivation<T> {
+  private final T instantiation;
+
+  public Derivation(T instantiation) {
+    this.instantiation = instantiation;
+  }
+
+  public T instantiation() {
+    return instantiation;
+  }
+}
