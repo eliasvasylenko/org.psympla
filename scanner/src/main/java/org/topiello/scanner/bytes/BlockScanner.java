@@ -6,20 +6,26 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import org.topiello.scanner.Cursor;
+import org.topiello.scanner.EndOfInputException;
+import org.topiello.scanner.InputPositionOutOfBoundsException;
 import org.topiello.scanner.ScanWindow;
 import org.topiello.scanner.Scanner;
-import org.topiello.scanner.ScannerClosedException;
 
 public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private InputBlock inputBlock;
   private ByteBuffer buffer;
+  private long inputPosition;
 
   public BlockScanner(BlockFeeder feeder) {
     this.inputBlock = feeder.open();
+    this.buffer = inputBlock.getReadBuffer();
+    this.inputPosition = inputBlock.startPosition() + (buffer != null ? buffer.position() : 0);
+    inputBlock.open();
   }
 
   public BlockScanner(BlockScanner blockScanner) {
     this.inputBlock = blockScanner.inputBlock;
+    this.inputPosition = blockScanner.inputPosition;
     this.buffer = blockScanner.buffer.duplicate();
     inputBlock.open();
   }
@@ -35,13 +41,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
 
   @Override
   public long inputPosition() {
-    if (buffer != null) {
-      return inputBlock.startPosition() + buffer.position();
-    } else if (inputBlock != null) {
-      return inputBlock.startPosition();
-    } else {
-      throw new ScannerClosedException();
-    }
+    return inputPosition;
   }
 
   @Override
@@ -56,9 +56,12 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   @Override
   public Cursor<Byte> advance() {
     if (prepareRead()) {
+      inputPosition++;
       var cursor = new Cursor<>(buffer.get());
-      completeRead();
-
+      if (buffer.position() == buffer.capacity()) {
+        inputBlock = inputBlock.next();
+        buffer = inputBlock.getReadBuffer();
+      }
       return cursor;
     } else {
       return new Cursor<>();
@@ -73,63 +76,65 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
       for (long i = 0; i < run; i++) {
         next = buffer.get();
         if (!condition.test(next)) {
-          buffer.position(buffer.position() - 1);
+          int bufferPosition = buffer.position() - 1;
+          buffer.position(bufferPosition);
+          inputPosition = inputBlock.startPosition() + bufferPosition;
           return new Cursor<>(next);
         }
       }
-      completeRead();
+      inputPosition += run;
+      if (buffer.position() == buffer.capacity()) {
+        inputBlock = inputBlock.next();
+        buffer = inputBlock.getReadBuffer();
+      }
     }
     return new Cursor<>();
   }
 
   @Override
   public Cursor<Byte> advanceTo(long inputPosition) {
-    // TODO Auto-generated method stub
-    return Scanner.super.advanceTo(inputPosition);
+    if (prepareRead(inputPosition)) {
+      return new Cursor<>(buffer.get(buffer.position()));
+    } else {
+      return new Cursor<>();
+    }
   }
 
-  /**
-   * Check the buffer before we read from it to see if it can be prepared for
-   * reading.
-   * <p>
-   * This methodd must return false if the scanner is at the end of the input.
-   * Otherwise it must return true, and prepare the buffer for reading, blocking
-   * to wait for input if necessary,
-   * 
-   * @return true if the buffer has been prepared for reading, false if the input
-   *         is complete
-   */
+  private boolean prepareRead(long inputPosition) {
+    int delta = (int) (inputPosition - this.inputPosition);
+    if (delta < 0) {
+      throw new InputPositionOutOfBoundsException(inputPosition);
+    }
+    if (buffer != null && delta < buffer.remaining()) {
+      buffer.position(buffer.position() + delta);
+      return true;
+    }
+    while (inputBlock.endPosition() >= inputPosition) {
+      inputBlock = inputBlock.next();
+    }
+    long preparedPosition = inputBlock.prepareTo(inputPosition);
+    if (preparedPosition < inputPosition) {
+      throw new EndOfInputException(inputPosition);
+    } else if (preparedPosition == inputPosition) {
+      return false;
+    }
+    this.inputPosition = inputPosition;
+
+  }
+
   private boolean prepareRead() {
-    buffer = inputBlock.prepareBuffer(buffer);
-    return buffer != null;
-  }
-
-  private void prepareBuffer() {
-    if (buffer == null) {
-      buffer = inputBlock.getBuffer().duplicate().flip();
-    } else if (buffer.hasRemaining()) {
-      return;
+    if (buffer != null && buffer.hasRemaining()) {
+      return true;
     }
-
-    buffer.limit(inputBlock.bufferLimit());
+    while (inputBlock.endPosition() >= inputPosition) {
+      inputBlock = inputBlock.next();
+    }
+    buffer = inputBlock.getReadBuffer();
     if (buffer.hasRemaining()) {
-      return;
-    }
-    // TODO feeder.advance(inputPosition());
-
-    buffer = inputBlock.getBuffer();
-
-    if (this.buffer.position() > 0) {
-      return this.buffer.duplicate().flip();
-    }
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  private void completeRead() {
-    if (buffer.position() == buffer.capacity()) {
-      inputBlock = inputBlock.nextBlock();
-      buffer = inputBlock.getBuffer();
+      return true;
+    } else {
+      close();
+      return false;
     }
   }
 

@@ -44,10 +44,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>parser</artifactId>
+	<artifactId>scanner</artifactId>
 
-	<name>Topiello Parser</name>
-	<description>The parser API</description>
+	<name>Topiello Scanner</name>
+	<description>The scanner API</description>
 
 	<dependencies>
 		<dependency>

@@ -11,6 +11,7 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
   private final ByteChannel byteChannel;
   private final int blockSize;
 
+  private volatile long inputPosition;
   private InputBlock inputBlock;
 
   public ByteChannelBlockFeeder(ByteChannel byteChannel, int blockSize) {
@@ -27,9 +28,17 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
    * Advance up to at least the given input position before returning.
    */
   @Override
-  public void advance(long inputPosition) {
+  public long feedTo(long inputPosition) {
+    if (inputPosition < this.inputPosition) {
+      return this.inputPosition;
+    }
+    synchronized (this) {
+      while (inputPosition >= this.inputPosition) {
+        wait();
+      }
+    }
     // TODO Auto-generated method stub
-
+    return this.inputPosition;
   }
 
   @Override

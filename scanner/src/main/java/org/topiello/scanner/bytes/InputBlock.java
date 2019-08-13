@@ -1,83 +1,62 @@
 package org.topiello.scanner.bytes;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class InputBlock {
   private final BlockFeeder feeder;
   private final long startPosition;
   private ByteBuffer buffer;
 
-  private volatile boolean isLast;
-  private volatile int referenceCount = 1;
+  private AtomicInteger referenceCount;
   private volatile InputBlock next;
 
   public InputBlock(BlockFeeder feeder) {
     this.feeder = feeder;
     this.startPosition = 0;
-    this.isLast = true;
+    this.referenceCount = new AtomicInteger(0);
   }
 
   InputBlock(BlockFeeder feeder, long startPosition) {
     this.feeder = feeder;
     this.startPosition = startPosition;
-    this.isLast = false;
+    this.referenceCount = new AtomicInteger(1);
   }
 
-  long startPosition() {
+  public long startPosition() {
     return startPosition;
   }
 
+  public long endPosition() {
+    feeder.feedTo(startPosition);
+    return startPosition + buffer.capacity();
+  }
+
   void open() {
-    referenceCount++;
+    referenceCount.incrementAndGet();
   }
 
   void close() {
-    if (--referenceCount == 0 && isLast) {
+    if (referenceCount.decrementAndGet() == 0) {
       feeder.close(this);
-      next.setLast();
-    }
-  }
-
-  private void setLast() {
-    isLast = true;
-    if (referenceCount == 0) {
-      feeder.close(this);
-      next.setLast();
-    }
-  }
-
-  int bufferLimit() {
-    return this.buffer.position();
-  }
-
-  ByteBuffer prepareBuffer(ByteBuffer buffer) {
-    if (buffer != null) {
-      if (buffer.hasRemaining()) {
-        return buffer;
+      if (next != null) {
+        next.close();
       }
-      if (this.buffer.position() == buffer.limit()
-          && !feeder.advance(startPosition + buffer.limit())) {
-        return null;
-      }
-      buffer.limit(this.buffer.position());
-      return buffer;
     }
-    if (this.buffer == null) {
-
-    }
-    if (this.buffer.position() > 0) {
-      return this.buffer.duplicate().flip();
-    }
-    // TODO Auto-generated method stub
-    return null;
   }
 
-  public ByteBuffer getBuffer() {
-    return buffer;
-  }
-
-  InputBlock nextBlock() {
+  InputBlock next() {
+    next.open();
+    close();
     return next;
+  }
+
+  long prepareTo(long inputPosition) {
+    return feeder.feedTo(inputPosition);
+  }
+
+  ByteBuffer getReadBuffer() {
+    return buffer == null ? null : buffer.duplicate().flip();
   }
 
   public void allocateBuffer(ByteBuffer buffer) {

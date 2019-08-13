@@ -90,6 +90,7 @@
 		<module>language</module>
 		<module>lexicon</module>
 		<module>parser</module>
+		<module>scanner</module>
 		<module>semantics</module>
 		<module>text</module>
 	</modules>
