@@ -14,7 +14,16 @@ public interface BlockFeeder {
    */
   public long feedTo(long inputPosition);
 
+  public long feedToBlock(int index);
+
   public InputBlock open();
 
+  /**
+   * Indicates that the given input block has been closed by all consumers. Calls
+   * to this method are guaranteed to be synchronized and sequential in the order
+   * that the blocks were allocated.
+   * 
+   * @param block
+   */
   public void close(InputBlock block);
 }
