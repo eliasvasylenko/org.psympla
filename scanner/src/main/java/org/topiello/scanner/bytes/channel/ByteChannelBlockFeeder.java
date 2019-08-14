@@ -34,7 +34,11 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
     }
     synchronized (this) {
       while (inputPosition >= this.inputPosition) {
-        wait();
+        try {
+          wait();
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
       }
     }
     // TODO Auto-generated method stub

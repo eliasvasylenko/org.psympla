@@ -26,7 +26,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   public BlockScanner(BlockScanner blockScanner) {
     this.inputBlock = blockScanner.inputBlock;
     this.inputPosition = blockScanner.inputPosition;
-    this.buffer = blockScanner.buffer.duplicate();
+    this.buffer = blockScanner.buffer == null ? null : blockScanner.buffer.duplicate();
     inputBlock.open();
   }
 
@@ -56,12 +56,9 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   @Override
   public Cursor<Byte> advance() {
     if (prepareRead()) {
-      inputPosition++;
       var cursor = new Cursor<>(buffer.get());
-      if (buffer.position() == buffer.capacity()) {
-        inputBlock = inputBlock.next();
-        buffer = inputBlock.getReadBuffer();
-      }
+      inputPosition++;
+      completeRead();
       return cursor;
     } else {
       return new Cursor<>();
@@ -83,10 +80,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
         }
       }
       inputPosition += run;
-      if (buffer.position() == buffer.capacity()) {
-        inputBlock = inputBlock.next();
-        buffer = inputBlock.getReadBuffer();
-      }
+      completeRead();
     }
     return new Cursor<>();
   }
@@ -105,13 +99,23 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
     if (delta < 0) {
       throw new InputPositionOutOfBoundsException(inputPosition);
     }
-    if (buffer != null && delta < buffer.remaining()) {
-      buffer.position(buffer.position() + delta);
-      return true;
+    if (buffer != null) {
+      if (delta < buffer.remaining()) {
+        buffer.position(buffer.position() + delta);
+        return true;
+      }
+    } else {
+      inputBlock.readyBuffer(0);
     }
     while (inputBlock.endPosition() >= inputPosition) {
       inputBlock = inputBlock.next();
+      inputBlock.readyBuffer(0);
     }
+
+    buffer = inputBlock.getReadBuffer();
+
+    // TODO correct to here
+    
     long preparedPosition = inputBlock.prepareTo(inputPosition);
     if (preparedPosition < inputPosition) {
       throw new EndOfInputException(inputPosition);
@@ -119,22 +123,31 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
       return false;
     }
     this.inputPosition = inputPosition;
-
   }
 
   private boolean prepareRead() {
-    if (buffer != null && buffer.hasRemaining()) {
-      return true;
+    if (buffer != null) {
+      if (buffer.hasRemaining()) {
+        return true;
+      }
+      inputBlock.readyBuffer(buffer.position() + 1);
+      buffer.limit(inputBlock.readyPosition());
+    } else {
+      inputBlock.readyBuffer(1);
+      buffer = inputBlock.getReadBuffer();
     }
-    while (inputBlock.endPosition() >= inputPosition) {
-      inputBlock = inputBlock.next();
-    }
-    buffer = inputBlock.getReadBuffer();
     if (buffer.hasRemaining()) {
       return true;
     } else {
       close();
       return false;
+    }
+  }
+
+  private void completeRead() {
+    if (buffer.position() == buffer.capacity()) {
+      inputBlock = inputBlock.next();
+      buffer = inputBlock.getReadBuffer();
     }
   }
 

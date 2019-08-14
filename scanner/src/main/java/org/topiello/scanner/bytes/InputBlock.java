@@ -28,8 +28,11 @@ public class InputBlock {
   }
 
   public long endPosition() {
-    feeder.feedTo(startPosition);
     return startPosition + buffer.capacity();
+  }
+
+  public int readyPosition() {
+    return buffer.limit();
   }
 
   void open() {
@@ -51,8 +54,16 @@ public class InputBlock {
     return next;
   }
 
-  long prepareTo(long inputPosition) {
-    return feeder.feedTo(inputPosition);
+  void readyBuffer(int limit) {
+    if (buffer == null) {
+      if (referenceCount.get() == 1) {
+        feeder.fillBlock(this, limit);
+      } else {
+        synchronized (this) {
+          feeder.fillBlock(this, limit);
+        }
+      }
+    }
   }
 
   ByteBuffer getReadBuffer() {
