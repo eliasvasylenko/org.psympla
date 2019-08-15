@@ -107,15 +107,16 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
     } else {
       inputBlock.readyBuffer(0);
     }
-    while (inputBlock.endPosition() >= inputPosition) {
+    while (delta >= buffer.capacity()) {
+      delta -= buffer.capacity();
+
       inputBlock = inputBlock.next();
       inputBlock.readyBuffer(0);
+      buffer = inputBlock.getReadBuffer();
     }
 
-    buffer = inputBlock.getReadBuffer();
-
     // TODO correct to here
-    
+
     long preparedPosition = inputBlock.prepareTo(inputPosition);
     if (preparedPosition < inputPosition) {
       throw new EndOfInputException(inputPosition);
@@ -131,7 +132,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
         return true;
       }
       inputBlock.readyBuffer(buffer.position() + 1);
-      buffer.limit(inputBlock.readyPosition());
+      buffer.limit(inputBlock.bufferLimit());
     } else {
       inputBlock.readyBuffer(1);
       buffer = inputBlock.getReadBuffer();

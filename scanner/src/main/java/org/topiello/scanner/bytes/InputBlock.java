@@ -27,12 +27,8 @@ public class InputBlock {
     return startPosition;
   }
 
-  public long endPosition() {
-    return startPosition + buffer.capacity();
-  }
-
-  public int readyPosition() {
-    return buffer.limit();
+  public int bufferLimit() {
+    return buffer != null ? buffer.position() : 0;
   }
 
   void open() {
