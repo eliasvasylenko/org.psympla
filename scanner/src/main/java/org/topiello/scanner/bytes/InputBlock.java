@@ -50,14 +50,28 @@ public class InputBlock {
     return next;
   }
 
-  void readyBuffer(int limit) {
+  void allocateBuffer() {
     if (buffer == null) {
       if (referenceCount.get() == 1) {
-        feeder.fillBlock(this, limit);
+        feeder.allocateBlock(this);
       } else {
         synchronized (this) {
-          feeder.fillBlock(this, limit);
+          feeder.allocateBlock(this);
         }
+      }
+    }
+  }
+
+  int readyBuffer(int limit) {
+    if (buffer.position() >= limit) {
+      return buffer.position();
+    }
+
+    if (referenceCount.get() == 1) {
+      return feeder.fillBlock(this, limit);
+    } else {
+      synchronized (this) {
+        return feeder.fillBlock(this, limit);
       }
     }
   }

@@ -6,15 +6,15 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import org.topiello.scanner.Cursor;
-import org.topiello.scanner.EndOfInputException;
 import org.topiello.scanner.InputPositionOutOfBoundsException;
 import org.topiello.scanner.ScanWindow;
 import org.topiello.scanner.Scanner;
+import org.topiello.scanner.ScannerClosedException;
 
 public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private InputBlock inputBlock;
   private ByteBuffer buffer;
-  private long inputPosition;
+  private volatile long inputPosition;
 
   public BlockScanner(BlockFeeder feeder) {
     this.inputBlock = feeder.open();
@@ -23,16 +23,38 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
     inputBlock.open();
   }
 
-  public BlockScanner(BlockScanner blockScanner) {
-    this.inputBlock = blockScanner.inputBlock;
-    this.inputPosition = blockScanner.inputPosition;
-    this.buffer = blockScanner.buffer == null ? null : blockScanner.buffer.duplicate();
+  private BlockScanner(InputBlock inputBlock, ByteBuffer buffer, long inputPosition) {
+    this.inputBlock = inputBlock;
+    this.buffer = buffer;
+    this.inputPosition = inputPosition;
     inputBlock.open();
   }
 
   @Override
   public void close() {
     if (inputBlock != null) {
+      /*
+       * 
+       * 
+       * TODO input block set to null .... currently still used by retained buffer
+       * window ...
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       * 
+       */
       inputBlock.close();
       inputBlock = null;
       buffer = null;
@@ -57,7 +79,6 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   public Cursor<Byte> advance() {
     if (prepareRead()) {
       var cursor = new Cursor<>(buffer.get());
-      inputPosition++;
       completeRead();
       return cursor;
     } else {
@@ -74,12 +95,10 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
         next = buffer.get();
         if (!condition.test(next)) {
           int bufferPosition = buffer.position() - 1;
-          buffer.position(bufferPosition);
-          inputPosition = inputBlock.startPosition() + bufferPosition;
+          completeRead(bufferPosition);
           return new Cursor<>(next);
         }
       }
-      inputPosition += run;
       completeRead();
     }
     return new Cursor<>();
@@ -87,43 +106,24 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
 
   @Override
   public Cursor<Byte> advanceTo(long inputPosition) {
-    if (prepareRead(inputPosition)) {
-      return new Cursor<>(buffer.get(buffer.position()));
-    } else {
-      return new Cursor<>();
-    }
-  }
-
-  private boolean prepareRead(long inputPosition) {
-    int delta = (int) (inputPosition - this.inputPosition);
-    if (delta < 0) {
+    if (inputPosition < this.inputPosition) {
       throw new InputPositionOutOfBoundsException(inputPosition);
     }
-    if (buffer != null) {
-      if (delta < buffer.remaining()) {
-        buffer.position(buffer.position() + delta);
-        return true;
+
+    while (prepareRead()) {
+      int bufferPosition = (int) (inputPosition - inputBlock.startPosition());
+      if (bufferPosition < buffer.limit()) {
+        completeRead(bufferPosition);
+        return peek();
       }
-    } else {
-      inputBlock.readyBuffer(0);
-    }
-    while (delta >= buffer.capacity()) {
-      delta -= buffer.capacity();
-
-      inputBlock = inputBlock.next();
-      inputBlock.readyBuffer(0);
-      buffer = inputBlock.getReadBuffer();
+      completeRead(buffer.limit());
     }
 
-    // TODO correct to here
-
-    long preparedPosition = inputBlock.prepareTo(inputPosition);
-    if (preparedPosition < inputPosition) {
-      throw new EndOfInputException(inputPosition);
-    } else if (preparedPosition == inputPosition) {
-      return false;
+    if (inputPosition > this.inputPosition) {
+      throw new InputPositionOutOfBoundsException(inputPosition);
     }
-    this.inputPosition = inputPosition;
+
+    return new Cursor<>();
   }
 
   private boolean prepareRead() {
@@ -131,12 +131,18 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
       if (buffer.hasRemaining()) {
         return true;
       }
-      inputBlock.readyBuffer(buffer.position() + 1);
+      inputBlock.readyBuffer(buffer.position());
       buffer.limit(inputBlock.bufferLimit());
-    } else {
-      inputBlock.readyBuffer(1);
+
+    } else if (inputBlock != null) {
+      inputBlock.allocateBuffer();
+      inputBlock.readyBuffer(0);
       buffer = inputBlock.getReadBuffer();
+
+    } else {
+      throw new ScannerClosedException();
     }
+
     if (buffer.hasRemaining()) {
       return true;
     } else {
@@ -146,34 +152,44 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   }
 
   private void completeRead() {
-    if (buffer.position() == buffer.capacity()) {
+    int bufferPosition = buffer.position();
+    inputPosition = inputBlock.startPosition() + bufferPosition;
+    if (bufferPosition == buffer.capacity()) {
       inputBlock = inputBlock.next();
       buffer = inputBlock.getReadBuffer();
     }
   }
 
+  private void completeRead(int bufferPosition) {
+    buffer.position(bufferPosition);
+    completeRead();
+  }
+
   @Override
   public Scanner<Byte, ByteBuffer> branch() {
-    return new BlockScanner(this);
+    var buffer = this.buffer == null ? null : this.buffer.duplicate();
+    return new BlockScanner(inputBlock, buffer, inputPosition);
   }
 
   @Override
   public ScanWindow<Byte, ByteBuffer> openWindow() {
-    return new BlockScanWindow();
+    var buffer = this.buffer == null ? null : this.buffer.duplicate().limit(this.buffer.position());
+    return new BlockScanWindow(buffer, inputPosition);
   }
 
   public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
     private ByteBuffer buffer;
-    private RetainedBlock retainedBlock;
+    private long retainedPosition;
 
-    public BlockScanWindow() {
-      // TODO Auto-generated constructor stub
+    public BlockScanWindow(ByteBuffer buffer, long retainedPosition) {
+      this.buffer = buffer;
+      this.retainedPosition = retainedPosition;
+      inputBlock.open();
     }
 
     @Override
     public void close() {
-      // TODO Auto-generated method stub
-
+      inputBlock.close();
     }
 
     @Override

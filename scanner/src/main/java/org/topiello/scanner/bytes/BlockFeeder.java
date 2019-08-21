@@ -1,6 +1,8 @@
 package org.topiello.scanner.bytes;
 
 public interface BlockFeeder {
+  public void allocateBlock(InputBlock inputBlock);
+
   public int fillBlock(InputBlock block, int limit);
 
   public InputBlock open();
