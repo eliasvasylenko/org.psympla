@@ -3,7 +3,7 @@ package org.topiello.scanner.bytes.channel;
 import java.nio.channels.ByteChannel;
 
 import org.topiello.scanner.bytes.BlockFeeder;
-import org.topiello.scanner.bytes.InputBlock;
+import org.topiello.scanner.bytes.ByteBlock;
 
 public class ByteChannelBlockFeeder implements BlockFeeder {
   public static final int DEFAULT_BLOCK_SIZE = 512;
@@ -12,12 +12,12 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
   private final int blockSize;
 
   private volatile long inputPosition;
-  private InputBlock inputBlock;
+  private ByteBlock inputBlock;
 
   public ByteChannelBlockFeeder(ByteChannel byteChannel, int blockSize) {
     this.byteChannel = byteChannel;
     this.blockSize = blockSize;
-    this.inputBlock = new InputBlock(this);
+    this.inputBlock = new ByteBlock(this);
   }
 
   public ByteChannelBlockFeeder(ByteChannel byteChannel) {
@@ -46,12 +46,12 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
   }
 
   @Override
-  public InputBlock open() {
+  public ByteBlock open() {
     return inputBlock;
   }
 
   @Override
-  public void close(InputBlock block) {
+  public void close(ByteBlock block) {
     // TODO Auto-generated method stub
 
   }
