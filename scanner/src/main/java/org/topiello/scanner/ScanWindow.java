@@ -20,14 +20,14 @@ public interface ScanWindow<C, T> extends AutoCloseable {
     return scanner().inputPosition() - retainedPosition();
   }
 
-  Stream<C> streamPositionInterval(long fromPosition, long toPosition);
+  Stream<C> streamInterval(long fromPosition, long toPosition);
 
   default Stream<C> streamOffsetInterval(long fromOffset, long toOffset) {
-    return streamPositionInterval(retainedPosition() + fromOffset, retainedPosition() + toOffset);
+    return streamInterval(retainedPosition() + fromOffset, retainedPosition() + toOffset);
   }
 
   default Stream<C> stream() {
-    return streamPositionInterval(retainedPosition(), scanner().inputPosition());
+    return streamInterval(retainedPosition(), scanner().inputPosition());
   }
 
   /**
@@ -36,7 +36,7 @@ public interface ScanWindow<C, T> extends AutoCloseable {
    * 
    * @return a text object containing the taken interval
    */
-  T takeToPosition(long position);
+  T takeTo(long position);
 
   /**
    * Take everything in the interval from the mark position to the given offset
@@ -45,7 +45,7 @@ public interface ScanWindow<C, T> extends AutoCloseable {
    * @return a text object containing the taken interval
    */
   default T takeToOffset(long offset) {
-    return takeToPosition(retainedPosition() + offset);
+    return takeTo(retainedPosition() + offset);
   }
 
   /**
@@ -55,17 +55,17 @@ public interface ScanWindow<C, T> extends AutoCloseable {
    * @return a text object containing the taken interval
    */
   default T take() {
-    return takeToPosition(scanner().inputPosition());
+    return takeTo(scanner().inputPosition());
   }
 
-  void discardToPosition(long position);
+  void discardTo(long position);
 
   /**
    * Set the mark position to the current input position, discarding everything
    * prior.
    */
   default void discardToOffset(long offset) {
-    discardToPosition(retainedPosition() + offset);
+    discardTo(retainedPosition() + offset);
   }
 
   /**
@@ -73,6 +73,6 @@ public interface ScanWindow<C, T> extends AutoCloseable {
    * prior.
    */
   default void discard() {
-    discardToPosition(scanner().inputPosition());
+    discardTo(scanner().inputPosition());
   }
 }

@@ -10,44 +10,52 @@ import org.topiello.scanner.Scanner;
 import org.topiello.scanner.ScannerClosedException;
 
 public class BlockScanner implements Scanner<Byte, ByteBuffer> {
-  private ByteBlock inputBlock;
+  private Block block;
   private ByteBuffer buffer;
 
   public BlockScanner(BlockFeeder feeder) {
     this(feeder.open());
   }
 
-  private BlockScanner(ByteBlock block) {
+  private BlockScanner(Block block) {
     this(block, block.getReadBuffer());
   }
 
   private BlockScanner(BlockScanner scanner) {
-    this(scanner.inputBlock, scanner.buffer == null ? null : scanner.buffer.duplicate());
+    this(scanner.block, scanner.buffer == null ? null : scanner.buffer.duplicate());
   }
 
-  private BlockScanner(ByteBlock inputBlock, ByteBuffer buffer) {
-    this.inputBlock = inputBlock;
+  private BlockScanner(Block inputBlock, ByteBuffer buffer) {
+    this.block = inputBlock;
     this.buffer = buffer;
     inputBlock.open();
   }
 
+  public ByteBuffer buffer() {
+    return buffer;
+  }
+
+  public Block block() {
+    return block;
+  }
+
   @Override
   public void close() {
-    if (inputBlock != null) {
-      inputBlock.close();
-      inputBlock = null;
+    if (block != null) {
+      block.close();
+      block = null;
       buffer = null;
     }
   }
 
   @Override
   public long inputPosition() {
-    if (inputBlock == null) {
+    if (block == null) {
       throw new ScannerClosedException();
     } else if (buffer == null) {
-      return inputBlock.startPosition();
+      return block.startPosition();
     } else {
-      return inputBlock.startPosition() + buffer.position();
+      return block.startPosition() + buffer.position();
     }
   }
 
@@ -118,13 +126,13 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
       if (buffer.hasRemaining()) {
         return true;
       }
-      inputBlock.readyBuffer(buffer.position());
-      buffer.limit(inputBlock.bufferLimit());
+      block.readyBuffer(buffer.position());
+      buffer.limit(block.bufferLimit());
 
-    } else if (inputBlock != null) {
-      inputBlock.allocateBuffer();
-      inputBlock.readyBuffer(0);
-      buffer = inputBlock.getReadBuffer();
+    } else if (block != null) {
+      block.allocateBuffer();
+      block.readyBuffer(0);
+      buffer = block.getReadBuffer();
 
     } else {
       return false;
@@ -141,8 +149,8 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private void completeRead() {
     int bufferPosition = buffer.position();
     if (bufferPosition == buffer.capacity()) {
-      inputBlock = inputBlock.next();
-      buffer = inputBlock.getReadBuffer();
+      block = block.next();
+      buffer = block.getReadBuffer();
     }
   }
 

@@ -3,21 +3,21 @@ package org.topiello.scanner.bytes;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ByteBlock {
+public class Block {
   private final BlockFeeder feeder;
   private final long startPosition;
   private ByteBuffer buffer;
 
   private AtomicInteger referenceCount;
-  private volatile ByteBlock next;
+  private volatile Block next;
 
-  public ByteBlock(BlockFeeder feeder) {
+  public Block(BlockFeeder feeder) {
     this.feeder = feeder;
     this.startPosition = 0;
     this.referenceCount = new AtomicInteger(0);
   }
 
-  ByteBlock(BlockFeeder feeder, long startPosition) {
+  Block(BlockFeeder feeder, long startPosition) {
     this.feeder = feeder;
     this.startPosition = startPosition;
     this.referenceCount = new AtomicInteger(1);
@@ -44,7 +44,7 @@ public class ByteBlock {
     }
   }
 
-  ByteBlock next() {
+  Block next() {
     next.open();
     close();
     return next;
@@ -80,8 +80,9 @@ public class ByteBlock {
     return buffer == null ? null : buffer.duplicate().flip();
   }
 
-  public void allocateBuffer(ByteBuffer buffer) {
+  public Block allocateBuffer(ByteBuffer buffer) {
     this.buffer = buffer.asReadOnlyBuffer();
-    this.next = new ByteBlock(feeder, startPosition + buffer.capacity());
+    this.next = new Block(feeder, startPosition + buffer.capacity());
+    return next;
   }
 }

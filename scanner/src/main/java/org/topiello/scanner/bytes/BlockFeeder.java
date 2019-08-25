@@ -1,11 +1,11 @@
 package org.topiello.scanner.bytes;
 
 public interface BlockFeeder {
-  public void allocateBlock(ByteBlock inputBlock);
+  public void allocateBlock(Block inputBlock);
 
-  public int fillBlock(ByteBlock block, int limit);
+  public int fillBlock(Block block, int limit);
 
-  public ByteBlock open();
+  public Block open();
 
   /**
    * Indicates that the given input block has been closed by all consumers. Calls
@@ -14,5 +14,5 @@ public interface BlockFeeder {
    * 
    * @param block
    */
-  public void close(ByteBlock block);
+  public void close(Block block);
 }

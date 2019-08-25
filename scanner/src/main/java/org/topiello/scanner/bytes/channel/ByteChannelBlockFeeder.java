@@ -3,7 +3,7 @@ package org.topiello.scanner.bytes.channel;
 import java.nio.channels.ByteChannel;
 
 import org.topiello.scanner.bytes.BlockFeeder;
-import org.topiello.scanner.bytes.ByteBlock;
+import org.topiello.scanner.bytes.Block;
 
 public class ByteChannelBlockFeeder implements BlockFeeder {
   public static final int DEFAULT_BLOCK_SIZE = 512;
@@ -12,25 +12,30 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
   private final int blockSize;
 
   private volatile long inputPosition;
-  private ByteBlock inputBlock;
+  private Block inputBlock;
+  private Block nextBlock;
 
   public ByteChannelBlockFeeder(ByteChannel byteChannel, int blockSize) {
     this.byteChannel = byteChannel;
     this.blockSize = blockSize;
-    this.inputBlock = new ByteBlock(this);
+    this.inputBlock = new Block(this);
   }
 
   public ByteChannelBlockFeeder(ByteChannel byteChannel) {
     this(byteChannel, DEFAULT_BLOCK_SIZE);
   }
 
-  /**
-   * Advance up to at least the given input position before returning.
-   */
   @Override
-  public long feedTo(long inputPosition) {
-    if (inputPosition < this.inputPosition) {
-      return this.inputPosition;
+  public void allocateBlock(Block nextBlock) {
+    if (this.nextBlock == nextBlock) {
+      nextBlock.allocateBuffer(buffer);
+    }
+  }
+
+  @Override
+  public int fillBlock(Block block, int limit) {
+    if (inputBlock != block) {
+      return blockSize;
     }
     synchronized (this) {
       while (inputPosition >= this.inputPosition) {
@@ -46,12 +51,12 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
   }
 
   @Override
-  public ByteBlock open() {
+  public Block open() {
     return inputBlock;
   }
 
   @Override
-  public void close(ByteBlock block) {
+  public void close(Block block) {
     // TODO Auto-generated method stub
 
   }
