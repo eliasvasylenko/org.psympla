@@ -21,13 +21,13 @@ public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
     this.buffer = scanner.buffer() == null
         ? null
         : scanner.buffer().duplicate().limit(scanner.buffer().position());
-    block.open();
+    block.openWindow();
   }
 
   @Override
   public void close() {
     if (block != null) {
-      block.close();
+      block.closeWindow();
       block = null;
       buffer = null;
     }
@@ -46,7 +46,7 @@ public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
 
   @Override
   public Stream<Byte> streamInterval(long fromPosition, long toPosition) {
-    return LongStream.range(fromPosition, toPosition).mapToObj(i -> retainedBlock.get(i));
+    return LongStream.range(fromPosition, toPosition).mapToObj(i -> block.get(i));
   }
 
   @Override

@@ -8,38 +8,40 @@ public class Block {
   private final long startPosition;
   private ByteBuffer buffer;
 
-  private AtomicInteger referenceCount;
+  private final AtomicInteger totalCount;
   private volatile Block next;
 
   public Block(BlockFeeder feeder) {
     this.feeder = feeder;
     this.startPosition = 0;
-    this.referenceCount = new AtomicInteger(0);
+    this.totalCount = new AtomicInteger(0);
   }
 
   Block(BlockFeeder feeder, long startPosition) {
     this.feeder = feeder;
     this.startPosition = startPosition;
-    this.referenceCount = new AtomicInteger(1);
+    this.totalCount = new AtomicInteger(1);
   }
 
-  public long startPosition() {
+  long startPosition() {
     return startPosition;
   }
 
-  public int bufferLimit() {
+  int bufferLimit() {
     return buffer != null ? buffer.position() : 0;
   }
 
   void open() {
-    referenceCount.incrementAndGet();
+    totalCount.incrementAndGet();
   }
 
   void close() {
-    if (referenceCount.decrementAndGet() == 0) {
+    if (totalCount.decrementAndGet() == 0) {
       feeder.close(this);
       if (next != null) {
         next.close();
+      } else {
+        feeder.close();
       }
     }
   }
@@ -52,8 +54,21 @@ public class Block {
 
   void allocateBuffer() {
     if (buffer == null) {
-      if (referenceCount.get() == 1) {
+      if (scannerCount.get() == 1) {
         feeder.allocateBlock(this);
+        /*
+         * TODO instead of synchronize, use locks
+         * 
+         * 
+         * 
+         * TODO is there any value in the scannerCount == 1 fast-path? We can avoid a
+         * synchronize in the case that we're doing the reading on the calling thread,
+         * but that's a slow way to do it anyway. Assuming reading is being done on
+         * another thread / fiber and we just have to wait for it, do we save time this
+         * way? no probably not. Let's assume we're doing it on another thread/fiber and
+         * single-threaded mode is done by using a single threaded executor with fibers.
+         * single-threaded mode is done by using a single threaded executor with fibers.
+         */
       } else {
         synchronized (this) {
           feeder.allocateBlock(this);
@@ -67,7 +82,7 @@ public class Block {
       return buffer.position();
     }
 
-    if (referenceCount.get() == 1) {
+    if (scannerCount.get() == 1) {
       return feeder.fillBlock(this, limit);
     } else {
       synchronized (this) {

@@ -15,4 +15,6 @@ public interface BlockFeeder {
    * @param block
    */
   public void close(Block block);
+
+  public void close();
 }

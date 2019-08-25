@@ -28,7 +28,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private BlockScanner(Block inputBlock, ByteBuffer buffer) {
     this.block = inputBlock;
     this.buffer = buffer;
-    inputBlock.open();
+    inputBlock.openScanner();
   }
 
   public ByteBuffer buffer() {
@@ -42,7 +42,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   @Override
   public void close() {
     if (block != null) {
-      block.close();
+      block.closeScanner();
       block = null;
       buffer = null;
     }
@@ -149,7 +149,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private void completeRead() {
     int bufferPosition = buffer.position();
     if (bufferPosition == buffer.capacity()) {
-      block = block.next();
+      block = block.nextScanner();
       buffer = block.getReadBuffer();
     }
   }
