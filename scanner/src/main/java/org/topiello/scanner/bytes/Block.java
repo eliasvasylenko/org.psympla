@@ -1,6 +1,7 @@
 package org.topiello.scanner.bytes;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Block {
@@ -8,6 +9,7 @@ public class Block {
   private final long startPosition;
   private ByteBuffer buffer;
 
+  private final CountDownLatch bufferAllocationLatch = new CountDownLatch(1);
   private final AtomicInteger totalCount;
   private volatile Block next;
 
@@ -54,26 +56,12 @@ public class Block {
 
   void allocateBuffer() {
     if (buffer == null) {
-      if (scannerCount.get() == 1) {
-        feeder.allocateBlock(this);
-        /*
-         * TODO instead of synchronize, use locks
-         * 
-         * 
-         * 
-         * TODO is there any value in the scannerCount == 1 fast-path? We can avoid a
-         * synchronize in the case that we're doing the reading on the calling thread,
-         * but that's a slow way to do it anyway. Assuming reading is being done on
-         * another thread / fiber and we just have to wait for it, do we save time this
-         * way? no probably not. Let's assume we're doing it on another thread/fiber and
-         * single-threaded mode is done by using a single threaded executor with fibers.
-         * single-threaded mode is done by using a single threaded executor with fibers.
-         */
-      } else {
-        synchronized (this) {
-          feeder.allocateBlock(this);
-        }
+      try {
+        bufferAllocationLatch.await();
+      } catch (InterruptedException e) {
+        throw new ScannerInterruptedException(e);
       }
+      feeder.allocateBlock(this);
     }
   }
 
@@ -81,14 +69,12 @@ public class Block {
     if (buffer.position() >= limit) {
       return buffer.position();
     }
-
-    if (scannerCount.get() == 1) {
-      return feeder.fillBlock(this, limit);
-    } else {
-      synchronized (this) {
-        return feeder.fillBlock(this, limit);
-      }
+    try {
+      bufferAllocationLatch.await();
+    } catch (InterruptedException e) {
+      throw new ScannerInterruptedException(e);
     }
+    return feeder.fillBlock(this, limit);
   }
 
   ByteBuffer getReadBuffer() {
