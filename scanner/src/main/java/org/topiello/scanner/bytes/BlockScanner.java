@@ -13,7 +13,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private Block block;
   private ByteBuffer buffer;
 
-  public BlockScanner(BlockFeeder feeder) {
+  public BlockScanner(BlockAllocator feeder) {
     this(feeder.open());
   }
 
@@ -28,7 +28,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private BlockScanner(Block inputBlock, ByteBuffer buffer) {
     this.block = inputBlock;
     this.buffer = buffer;
-    inputBlock.openScanner();
+    inputBlock.open();
   }
 
   public ByteBuffer buffer() {
@@ -42,7 +42,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   @Override
   public void close() {
     if (block != null) {
-      block.closeScanner();
+      block.close();
       block = null;
       buffer = null;
     }
@@ -149,7 +149,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private void completeRead() {
     int bufferPosition = buffer.position();
     if (bufferPosition == buffer.capacity()) {
-      block = block.nextScanner();
+      block = block.next();
       buffer = block.getReadBuffer();
     }
   }

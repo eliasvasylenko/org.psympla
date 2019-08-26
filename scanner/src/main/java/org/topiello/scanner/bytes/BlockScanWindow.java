@@ -21,13 +21,13 @@ public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
     this.buffer = scanner.buffer() == null
         ? null
         : scanner.buffer().duplicate().limit(scanner.buffer().position());
-    block.openWindow();
+    block.open();
   }
 
   @Override
   public void close() {
     if (block != null) {
-      block.closeWindow();
+      block.close();
       block = null;
       buffer = null;
     }

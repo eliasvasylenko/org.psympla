@@ -1,31 +1,29 @@
 package org.topiello.scanner.bytes;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Block {
-  private final BlockFeeder feeder;
+  private final BlockAllocator feeder;
   private final long startPosition;
   private ByteBuffer buffer;
 
-  private final CountDownLatch bufferAllocationLatch = new CountDownLatch(1);
   private final AtomicInteger totalCount;
   private volatile Block next;
 
-  public Block(BlockFeeder feeder) {
+  public Block(BlockAllocator feeder) {
     this.feeder = feeder;
     this.startPosition = 0;
     this.totalCount = new AtomicInteger(0);
   }
 
-  Block(BlockFeeder feeder, long startPosition) {
+  private Block(BlockAllocator feeder, long startPosition) {
     this.feeder = feeder;
     this.startPosition = startPosition;
     this.totalCount = new AtomicInteger(1);
   }
 
-  long startPosition() {
+  public long startPosition() {
     return startPosition;
   }
 
@@ -39,7 +37,7 @@ public class Block {
 
   void close() {
     if (totalCount.decrementAndGet() == 0) {
-      feeder.close(this);
+      feeder.release(this);
       if (next != null) {
         next.close();
       } else {
@@ -56,25 +54,15 @@ public class Block {
 
   void allocateBuffer() {
     if (buffer == null) {
-      try {
-        bufferAllocationLatch.await();
-      } catch (InterruptedException e) {
-        throw new ScannerInterruptedException(e);
-      }
-      feeder.allocateBlock(this);
+      feeder.awaitAllocation(this);
     }
   }
 
   int readyBuffer(int limit) {
-    if (buffer.position() >= limit) {
-      return buffer.position();
+    if (buffer.position() < limit) {
+      feeder.awaitData(this, limit);
     }
-    try {
-      bufferAllocationLatch.await();
-    } catch (InterruptedException e) {
-      throw new ScannerInterruptedException(e);
-    }
-    return feeder.fillBlock(this, limit);
+    return buffer.position();
   }
 
   ByteBuffer getReadBuffer() {

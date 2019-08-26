@@ -2,20 +2,17 @@ package org.topiello.scanner.bytes.channel;
 
 import java.nio.channels.ByteChannel;
 
-import org.topiello.scanner.bytes.BlockFeeder;
+import org.topiello.scanner.bytes.BlockAllocator;
+import org.topiello.scanner.bytes.concurrent.ConcurrentBlockAllocator;
 import org.topiello.scanner.bytes.Block;
 
-public class ByteChannelBlockFeeder implements BlockFeeder {
+public class ByteChannelBlockFeeder extends ConcurrentBlockAllocator {
   public static final int DEFAULT_BLOCK_SIZE = 512;
 
   private final ByteChannel byteChannel;
   private final int blockSize;
 
-  private volatile long inputPosition;
-  private Block inputBlock;
-  private Block nextBlock;
-
-  public ByteChannelBlockFeeder(ByteChannel byteChannel, int blockSize) {
+  public ByteChannelBlockFeeder(ReadableBytes bytes, int blockSize) {
     this.byteChannel = byteChannel;
     this.blockSize = blockSize;
     this.inputBlock = new Block(this);
@@ -26,14 +23,14 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
   }
 
   @Override
-  public void allocateBlock(Block nextBlock) {
+  public void awaitAllocation(Block block) {
     if (this.nextBlock == nextBlock) {
       nextBlock.allocateBuffer(buffer);
     }
   }
 
   @Override
-  public int fillBlock(Block block, int limit) {
+  public int awaitData(Block block, int limit) {
     if (inputBlock != block) {
       return blockSize;
     }
@@ -56,7 +53,7 @@ public class ByteChannelBlockFeeder implements BlockFeeder {
   }
 
   @Override
-  public void close(Block block) {
+  public void release(Block block) {
     // TODO Auto-generated method stub
 
   }
