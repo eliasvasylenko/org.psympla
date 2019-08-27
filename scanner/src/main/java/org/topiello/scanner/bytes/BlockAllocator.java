@@ -3,15 +3,15 @@ package org.topiello.scanner.bytes;
 public interface BlockAllocator {
   /**
    * @param block
-   *          if the given block does not belong to this receiver, the behaviour
-   *          is undefined
+   *          if the given block does not belong to this receiver, the behavior is
+   *          undefined
    */
   public void awaitAllocation(Block block);
 
   /**
    * @param block
-   *          if the given block does not belong to this receiver, the behaviour
-   *          is undefined
+   *          if the given block does not belong to this receiver, the behavior is
+   *          undefined
    */
   public void awaitData(Block block, int limit);
 

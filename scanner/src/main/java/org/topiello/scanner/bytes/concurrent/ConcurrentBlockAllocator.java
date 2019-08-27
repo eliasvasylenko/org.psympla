@@ -19,14 +19,13 @@ public abstract class ConcurrentBlockAllocator implements BlockAllocator {
   }
 
   @Override
-  public int awaitData(Block block, int limit) {
+  public void awaitData(Block block, int limit) {
     try {
       bufferAllocationLatch.await();
     } catch (InterruptedException e) {
       throw new ScannerInterruptedException(e);
     }
     // TODO Auto-generated method stub
-    return 0;
   }
 
   @Override

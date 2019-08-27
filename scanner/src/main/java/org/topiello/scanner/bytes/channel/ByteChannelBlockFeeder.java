@@ -1,60 +1,40 @@
 package org.topiello.scanner.bytes.channel;
 
-import java.nio.channels.ByteChannel;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
-import org.topiello.scanner.bytes.BlockAllocator;
-import org.topiello.scanner.bytes.concurrent.ConcurrentBlockAllocator;
 import org.topiello.scanner.bytes.Block;
+import org.topiello.scanner.bytes.BlockAllocator;
+import org.topiello.scanner.bytes.BlockFeeder;
 
-public class ByteChannelBlockFeeder extends ConcurrentBlockAllocator {
+public class ByteChannelBlockFeeder implements BlockFeeder {
   public static final int DEFAULT_BLOCK_SIZE = 512;
 
-  private final ByteChannel byteChannel;
+  private final ReadableBytes bytes;
   private final int blockSize;
 
   public ByteChannelBlockFeeder(ReadableBytes bytes, int blockSize) {
-    this.byteChannel = byteChannel;
+    this.bytes = bytes;
     this.blockSize = blockSize;
-    this.inputBlock = new Block(this);
   }
 
-  public ByteChannelBlockFeeder(ByteChannel byteChannel) {
-    this(byteChannel, DEFAULT_BLOCK_SIZE);
-  }
-
-  @Override
-  public void awaitAllocation(Block block) {
-    if (this.nextBlock == nextBlock) {
-      nextBlock.allocateBuffer(buffer);
-    }
+  public ByteChannelBlockFeeder(ReadableBytes bytes) {
+    this(bytes, DEFAULT_BLOCK_SIZE);
   }
 
   @Override
-  public int awaitData(Block block, int limit) {
-    if (inputBlock != block) {
-      return blockSize;
-    }
-    synchronized (this) {
-      while (inputPosition >= this.inputPosition) {
-        try {
-          wait();
-        } catch (Exception e) {
-          throw new RuntimeException(e);
+  public void feed(BlockAllocator allocator, Block firstBlock) throws IOException {
+    var byteChannel = bytes.openChannel();
+    var block = firstBlock;
+    do {
+      var buffer = ByteBuffer.allocate(blockSize);
+      var nextBlock = block.allocateBuffer(buffer);
+      do {
+        if (byteChannel.read(buffer) < 0) {
+          return;
         }
-      }
-    }
-    // TODO Auto-generated method stub
-    return this.inputPosition;
-  }
-
-  @Override
-  public Block open() {
-    return inputBlock;
-  }
-
-  @Override
-  public void release(Block block) {
-    // TODO Auto-generated method stub
-
+      } while (buffer.hasRemaining());
+      block = nextBlock;
+    } while (block != null);
   }
 }
