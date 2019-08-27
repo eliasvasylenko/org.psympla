@@ -3,10 +3,10 @@ package org.topiello.scanner.bytes.concurrent;
 import java.nio.ByteBuffer;
 
 import org.topiello.scanner.bytes.Block;
-import org.topiello.scanner.bytes.BlockAllocator;
+import org.topiello.scanner.bytes.BlockContext;
 import org.topiello.scanner.bytes.ScannerInterruptedException;
 
-public abstract class ConcurrentBlockAllocator implements BlockAllocator {
+public abstract class ConcurrentBlockAllocator implements BlockContext {
   private volatile ConcurrentBlock inputBlock;
 
   public ConcurrentBlockAllocator() {

@@ -13,22 +13,17 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private Block block;
   private ByteBuffer buffer;
 
-  public BlockScanner(BlockAllocator feeder) {
-    this(feeder.open());
-  }
-
-  private BlockScanner(Block block) {
-    this(block, block.getReadBuffer());
+  public BlockScanner(BlockContext allocator) {
+    this.block = new Block(allocator);
+    this.buffer = block.getReadBuffer();
+    this.block.open();
+    allocator.open(block);
   }
 
   private BlockScanner(BlockScanner scanner) {
-    this(scanner.block, scanner.buffer == null ? null : scanner.buffer.duplicate());
-  }
-
-  private BlockScanner(Block inputBlock, ByteBuffer buffer) {
-    this.block = inputBlock;
-    this.buffer = buffer;
-    inputBlock.open();
+    this.block = scanner.block;
+    this.buffer = scanner.buffer == null ? null : scanner.buffer.duplicate();
+    this.block.open();
   }
 
   public ByteBuffer buffer() {

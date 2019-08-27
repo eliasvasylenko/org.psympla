@@ -4,23 +4,23 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Block {
-  private final BlockAllocator feeder;
+  private final BlockContext context;
   private final long startPosition;
   private ByteBuffer buffer;
 
-  private final AtomicInteger totalCount;
+  private final AtomicInteger referenceCount;
   private volatile Block next;
 
-  public Block(BlockAllocator feeder) {
-    this.feeder = feeder;
+  Block(BlockContext context) {
+    this.context = context;
     this.startPosition = 0;
-    this.totalCount = new AtomicInteger(0);
+    this.referenceCount = new AtomicInteger(0);
   }
 
-  private Block(BlockAllocator feeder, long startPosition) {
-    this.feeder = feeder;
+  private Block(BlockContext context, long startPosition) {
+    this.context = context;
     this.startPosition = startPosition;
-    this.totalCount = new AtomicInteger(1);
+    this.referenceCount = new AtomicInteger(1);
   }
 
   public long startPosition() {
@@ -32,16 +32,16 @@ public class Block {
   }
 
   void open() {
-    totalCount.incrementAndGet();
+    referenceCount.incrementAndGet();
   }
 
   void close() {
-    if (totalCount.decrementAndGet() == 0) {
-      feeder.release(this);
+    if (referenceCount.decrementAndGet() <= 0) {
+      context.release(this);
       if (next != null) {
         next.close();
       } else {
-        feeder.close();
+        context.close();
       }
     }
   }
@@ -54,13 +54,13 @@ public class Block {
 
   void allocateBuffer() {
     if (buffer == null) {
-      feeder.awaitAllocation(this);
+      context.awaitAllocation(this);
     }
   }
 
   int readyBuffer(int limit) {
     if (buffer.position() < limit) {
-      feeder.awaitData(this, limit);
+      context.awaitData(this, limit);
     }
     return buffer.position();
   }
@@ -71,7 +71,7 @@ public class Block {
 
   public Block allocateBuffer(ByteBuffer buffer) {
     this.buffer = buffer.asReadOnlyBuffer();
-    this.next = new Block(feeder, startPosition + buffer.capacity());
+    this.next = new Block(context, startPosition + buffer.capacity());
     return next;
   }
 }
