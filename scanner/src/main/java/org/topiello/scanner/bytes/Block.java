@@ -15,6 +15,7 @@ public class Block {
     this.context = context;
     this.startPosition = 0;
     this.referenceCount = new AtomicInteger(0);
+    context.open(this);
   }
 
   private Block(BlockContext context, long startPosition) {
@@ -27,8 +28,8 @@ public class Block {
     return startPosition;
   }
 
-  int bufferLimit() {
-    return buffer != null ? buffer.position() : 0;
+  public ByteBuffer getByteBuffer() {
+    return buffer;
   }
 
   void open() {

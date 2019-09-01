@@ -6,6 +6,8 @@ public interface ScanWindow<C, T> extends AutoCloseable {
   @Override
   void close();
 
+  ScanWindow<C, T> branch();
+
   Scanner<C, T> scanner();
 
   /**
@@ -20,15 +22,7 @@ public interface ScanWindow<C, T> extends AutoCloseable {
     return scanner().inputPosition() - retainedPosition();
   }
 
-  Stream<C> streamInterval(long fromPosition, long toPosition);
-
-  default Stream<C> streamOffsetInterval(long fromOffset, long toOffset) {
-    return streamInterval(retainedPosition() + fromOffset, retainedPosition() + toOffset);
-  }
-
-  default Stream<C> stream() {
-    return streamInterval(retainedPosition(), scanner().inputPosition());
-  }
+  Stream<C> stream();
 
   /**
    * Take everything in the interval from the mark position to the given position

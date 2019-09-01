@@ -1,10 +1,10 @@
 package org.topiello.scanner.bytes;
 
 import java.nio.ByteBuffer;
-import java.util.stream.LongStream;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.topiello.scanner.Cursor;
 import org.topiello.scanner.InputPositionOutOfBoundsException;
 import org.topiello.scanner.ScanWindow;
 import org.topiello.scanner.Scanner;
@@ -22,6 +22,23 @@ public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
         ? null
         : scanner.buffer().duplicate().limit(scanner.buffer().position());
     block.open();
+  }
+
+  BlockScanWindow(BlockScanWindow scanWindow) {
+    this.scanner = scanWindow.scanner;
+    this.block = scanWindow.block;
+    this.buffer = scanWindow.buffer == null ? null : scanWindow.buffer.duplicate();
+    block.open();
+  }
+
+  @Override
+  public ScanWindow<Byte, ByteBuffer> branch() {
+    return new BlockScanWindow(this);
+  }
+
+  @Override
+  public Scanner<Byte, ByteBuffer> scanner() {
+    return scanner;
   }
 
   @Override
@@ -44,58 +61,80 @@ public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
     }
   }
 
-  @Override
-  public Stream<Byte> streamInterval(long fromPosition, long toPosition) {
-    return LongStream.range(fromPosition, toPosition).mapToObj(i -> block.get(i));
+  private int getDelta(long position) {
+    int delta = (int) (position - retainedPosition());
+    if (delta < 0 || position > scanner().inputPosition()) {
+      throw new InputPositionOutOfBoundsException(position);
+    }
+    return delta;
   }
 
   @Override
-  public Scanner<Byte, ByteBuffer> scanner() {
-    return scanner;
+  public Stream<Byte> stream() {
+    return Stream.<Optional<Stream<Byte>>>generate(() -> {
+      if (buffer == null) {
+        buffer = block.getReadBuffer();
+      } else if (buffer.position() == buffer.capacity()) {
+        block = block.next();
+        buffer = block.getReadBuffer();
+      } else {
+        buffer.limit(block.getByteBuffer().position());
+      }
+      if (buffer.hasRemaining()) {
+        return Optional.of(Stream.generate(buffer::get).limit(buffer.remaining()));
+      } else {
+        return Optional.empty();
+      }
+    })
+        .takeWhile(o -> o.isPresent())
+        .flatMap(Optional::stream)
+        .flatMap(Function.identity())
+        .sequential();
   }
-
-  /*
-   * TODO this should be much simpler to implement than the equivalent "advanceTo"
-   * in the scanner, because it does not need to be synchronized with advancing of
-   * the scanner. Rather than blocking to wait for availability it just fails if
-   * not enough is available, so we don't have to propogate any requests up to the
-   * feeder.
-   */
 
   @Override
   public void discardTo(long position) {
-    var delta = (int) (position - retainedPosition());
-    if (delta < 0) {
-      throw new InputPositionOutOfBoundsException(position);
+    var delta = getDelta(position);
+
+    if (buffer == null) {
+      buffer = block.getReadBuffer();
+    } else {
+      buffer.limit(block.getByteBuffer().position());
     }
 
-    while (prepareRead()) {
-      delta = delta - buffer.remaining();
-      if (delta < 0) {
-        buffer.position(buffer.limit() + delta);
-        completeRead();
-        return peek();
-      }
-      buffer.position(buffer.limit());
-      completeRead();
+    while (delta > buffer.capacity()) {
+      delta -= buffer.capacity();
+      block = block.next();
+      buffer = block.getReadBuffer();
     }
 
-    return new Cursor<>();
+    buffer.position(delta);
   }
 
   @Override
   public ByteBuffer takeTo(long position) {
-    if (position > blockScanner.inputPosition()) {
-      throw new IndexOutOfBoundsException(Long.toString(position));
+    var delta = getDelta(position);
+
+    if (buffer == null) {
+      buffer = block.getReadBuffer();
+    } else {
+      buffer.limit(block.getByteBuffer().position());
     }
-    int size = (int) (position - retainedPosition());
-    if (size < 0) {
-      throw new IndexOutOfBoundsException(Long.toString(position));
+
+    ByteBuffer destination = ByteBuffer.allocate(delta);
+
+    while (delta > buffer.capacity()) {
+      destination.put(buffer);
+      delta -= buffer.capacity();
+      block = block.next();
+      buffer = block.getReadBuffer();
     }
-    ByteBuffer destination = ByteBuffer.allocate(size);
-    while (position >= retainedBlock.endPosition()) {
-      retainedBlock.close();
-      retainedBlock = retainedBlock.next();
-    }
+
+    int limit = buffer.limit();
+    buffer.limit(destination.remaining());
+    destination.put(buffer);
+    buffer.limit(limit);
+
+    return destination;
   }
 }

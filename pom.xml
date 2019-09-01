@@ -134,6 +134,9 @@
 
 	<dependencyManagement>
 		<dependencies>
+
+			<!-- Workspace -->
+
 			<dependency>
 				<groupId>org.topiello</groupId>
 				<artifactId>contextfree-grammar</artifactId>
@@ -184,6 +187,8 @@
 				<artifactId>text</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+			
+			<!-- Eclipse GLSP -->
 
 			<dependency>
 				<groupId>com.eclipsesource.glsp</groupId>
@@ -205,6 +210,8 @@
 				<artifactId>glsp-graph</artifactId>
 				<version>1.2.0-SNAPSHOT</version>
 			</dependency>
+			
+			<!-- OSGi -->
 
 			<dependency>
 				<groupId>org.osgi</groupId>
@@ -277,6 +284,63 @@
 				<artifactId>org.osgi.util.converter</artifactId>
 				<version>1.0.0</version>
 				<scope>provided</scope>
+			</dependency>
+
+			<!-- Testing -->
+
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>5.4.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>5.4.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-params</artifactId>
+				<version>5.4.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-commons</artifactId>
+				<version>1.4.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-launcher</artifactId>
+				<version>1.4.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-engine</artifactId>
+				<version>1.4.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>2.23.4</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-junit-jupiter</artifactId>
+				<version>2.23.4</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>java-hamcrest</artifactId>
+				<version>2.0.0.0</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -17,13 +17,22 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
     this.block = new Block(allocator);
     this.buffer = block.getReadBuffer();
     this.block.open();
-    allocator.open(block);
   }
 
   private BlockScanner(BlockScanner scanner) {
     this.block = scanner.block;
     this.buffer = scanner.buffer == null ? null : scanner.buffer.duplicate();
     this.block.open();
+  }
+
+  @Override
+  public Scanner<Byte, ByteBuffer> branch() {
+    return new BlockScanner(this);
+  }
+
+  @Override
+  public ScanWindow<Byte, ByteBuffer> openWindow() {
+    return new BlockScanWindow(this);
   }
 
   public ByteBuffer buffer() {
@@ -122,7 +131,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
         return true;
       }
       block.readyBuffer(buffer.position());
-      buffer.limit(block.bufferLimit());
+      buffer.limit(block.getByteBuffer().position());
 
     } else if (block != null) {
       block.allocateBuffer();
@@ -147,15 +156,5 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
       block = block.next();
       buffer = block.getReadBuffer();
     }
-  }
-
-  @Override
-  public Scanner<Byte, ByteBuffer> branch() {
-    return new BlockScanner(this);
-  }
-
-  @Override
-  public ScanWindow<Byte, ByteBuffer> openWindow() {
-    return new BlockScanWindow(this);
   }
 }
