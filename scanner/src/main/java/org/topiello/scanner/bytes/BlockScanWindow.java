@@ -21,14 +21,14 @@ public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
     this.buffer = scanner.buffer() == null
         ? null
         : scanner.buffer().duplicate().limit(scanner.buffer().position());
-    block.open();
+    block.acquire();
   }
 
   BlockScanWindow(BlockScanWindow scanWindow) {
     this.scanner = scanWindow.scanner;
     this.block = scanWindow.block;
     this.buffer = scanWindow.buffer == null ? null : scanWindow.buffer.duplicate();
-    block.open();
+    block.acquire();
   }
 
   @Override
@@ -44,7 +44,7 @@ public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
   @Override
   public void close() {
     if (block != null) {
-      block.close();
+      block.release();
       block = null;
       buffer = null;
     }

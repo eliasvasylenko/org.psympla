@@ -31,24 +31,9 @@ public interface Scanner<C, T> {
    * @return the cursor at the first input position which doesn't match the
    *         predicate, which may be the end of input
    */
-  default Cursor<C> advanceWhile(Predicate<C> condition) {
-    var cursor = peek();
-    while (!cursor.isEndOfInput() && cursor.characterMatches(condition)) {
-      cursor = advance();
-    }
-    return cursor;
-  }
+  Cursor<C> advanceWhile(Predicate<C> condition);
 
-  default Cursor<C> advanceTo(long inputPosition) {
-    if (inputPosition < inputPosition()) {
-      throw new IndexOutOfBoundsException(Long.toString(inputPosition));
-    }
-    var cursor = peek();
-    for (long i = inputPosition(); i < inputPosition; i++) {
-      cursor = advance();
-    }
-    return cursor;
-  }
+  Cursor<C> advanceTo(long inputPosition);
 
   Scanner<C, T> branch();
 

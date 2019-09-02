@@ -16,13 +16,13 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   public BlockScanner(BlockContext allocator) {
     this.block = new Block(allocator);
     this.buffer = block.getReadBuffer();
-    this.block.open();
+    this.block.acquire();
   }
 
   private BlockScanner(BlockScanner scanner) {
     this.block = scanner.block;
     this.buffer = scanner.buffer == null ? null : scanner.buffer.duplicate();
-    this.block.open();
+    this.block.acquire();
   }
 
   @Override
@@ -46,7 +46,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   @Override
   public void close() {
     if (block != null) {
-      block.close();
+      block.release();
       block = null;
       buffer = null;
     }

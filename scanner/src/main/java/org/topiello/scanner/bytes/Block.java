@@ -3,6 +3,8 @@ package org.topiello.scanner.bytes;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.topiello.scanner.bytes.concurrent.ScannerFailedException;
+
 public class Block {
   private final BlockContext context;
   private final long startPosition;
@@ -32,15 +34,19 @@ public class Block {
     return buffer;
   }
 
-  void open() {
+  void acquire() {
     referenceCount.incrementAndGet();
   }
 
-  void close() {
-    if (referenceCount.decrementAndGet() <= 0) {
+  void release() {
+    int references = referenceCount.decrementAndGet();
+    switch (references) {
+    case -1:
+      throw new ScannerFailedException("Attempt to release block with no references");
+    case 0:
       context.release(this);
       if (next != null) {
-        next.close();
+        next.release();
       } else {
         context.close();
       }
@@ -48,8 +54,11 @@ public class Block {
   }
 
   Block next() {
-    next.open();
-    close();
+    if (next == null) {
+      throw new ScannerFailedException("Next block is not available");
+    }
+    next.acquire();
+    release();
     return next;
   }
 
