@@ -1,6 +1,6 @@
 package org.topiello.scanner.bytes.channel;
 
-import org.topiello.scanner.bytes.concurrent.ScannerFailedException;
+import org.topiello.scanner.ScannerFailedException;
 
 public class NonBlockingChannelException extends ScannerFailedException {
   private static final long serialVersionUID = 1L;

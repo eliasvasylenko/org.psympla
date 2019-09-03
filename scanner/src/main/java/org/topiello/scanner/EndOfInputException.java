@@ -1,6 +1,6 @@
 package org.topiello.scanner;
 
-public class EndOfInputException extends InputPositionOutOfBoundsException {
+public class EndOfInputException extends ScannerPositionOutOfBoundsException {
   private static final long serialVersionUID = 1L;
 
   public EndOfInputException(long inputPosition) {

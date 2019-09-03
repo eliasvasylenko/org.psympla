@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.function.Predicate;
 
 import org.topiello.scanner.Cursor;
-import org.topiello.scanner.InputPositionOutOfBoundsException;
+import org.topiello.scanner.ScannerPositionOutOfBoundsException;
 import org.topiello.scanner.ScanWindow;
 import org.topiello.scanner.Scanner;
 import org.topiello.scanner.ScannerClosedException;
@@ -108,7 +108,7 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   public Cursor<Byte> advanceTo(long position) {
     var delta = (int) (position - inputPosition());
     if (delta < 0) {
-      throw new InputPositionOutOfBoundsException(position);
+      throw new ScannerPositionOutOfBoundsException(position);
     }
 
     while (prepareRead()) {
@@ -130,12 +130,12 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
       if (buffer.hasRemaining()) {
         return true;
       }
-      block.readyBuffer(buffer.position());
+      block.awaitData(buffer.position());
       buffer.limit(block.getByteBuffer().position());
 
     } else if (block != null) {
-      block.allocateBuffer();
-      block.readyBuffer(0);
+      block.awaitAllocation();
+      block.awaitData(0);
       buffer = block.getReadBuffer();
 
     } else {

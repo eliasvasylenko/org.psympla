@@ -7,8 +7,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.topiello.scanner.ScannerFailedException;
+import org.topiello.scanner.ScannerInterruptedException;
 import org.topiello.scanner.bytes.Block;
-import org.topiello.scanner.bytes.ScannerInterruptedException;
 
 // TODO value / inline type with valhalla
 public final class ConcurrentBlock {

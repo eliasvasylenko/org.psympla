@@ -3,9 +3,9 @@ package org.topiello.scanner.bytes.channel;
 import java.io.IOException;
 import java.nio.channels.ReadableByteChannel;
 
+import org.topiello.scanner.ScannerFailedException;
 import org.topiello.scanner.bytes.Block;
 import org.topiello.scanner.bytes.concurrent.ConcurrentBlockContext;
-import org.topiello.scanner.bytes.concurrent.ScannerFailedException;
 
 public class ByteChannelBlockContext extends ConcurrentBlockContext {
   private final ByteBufferCache bufferCache;

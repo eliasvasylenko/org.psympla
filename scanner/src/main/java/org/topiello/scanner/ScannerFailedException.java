@@ -1,4 +1,4 @@
-package org.topiello.scanner.bytes.concurrent;
+package org.topiello.scanner;
 
 public class ScannerFailedException extends RuntimeException {
   private static final long serialVersionUID = 1L;
@@ -14,4 +14,6 @@ public class ScannerFailedException extends RuntimeException {
   public ScannerFailedException(Throwable cause) {
     super(cause);
   }
+
+  protected ScannerFailedException() {}
 }

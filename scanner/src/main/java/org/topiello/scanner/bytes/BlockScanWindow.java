@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.topiello.scanner.InputPositionOutOfBoundsException;
+import org.topiello.scanner.ScannerPositionOutOfBoundsException;
 import org.topiello.scanner.ScanWindow;
 import org.topiello.scanner.Scanner;
 import org.topiello.scanner.ScannerClosedException;
@@ -64,7 +64,7 @@ public class BlockScanWindow implements ScanWindow<Byte, ByteBuffer> {
   private int getDelta(long position) {
     int delta = (int) (position - retainedPosition());
     if (delta < 0 || position > scanner().inputPosition()) {
-      throw new InputPositionOutOfBoundsException(position);
+      throw new ScannerPositionOutOfBoundsException(position);
     }
     return delta;
   }
