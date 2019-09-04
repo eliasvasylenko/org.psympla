@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 import static org.mockito.internal.verification.VerificationModeFactory.calls;
 
 import java.nio.ByteBuffer;
-import java.nio.ReadOnlyBufferException;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -27,6 +26,11 @@ public class BlockTests {
 
   @Mock
   Runnable marker;
+
+  @Mock
+  ByteBuffer buffer;
+  @Mock
+  ByteBuffer readOnlyBuffer;
 
   /*
    * TODO many of these tests use byte buffers directly rather than mocking them.
@@ -100,7 +104,7 @@ public class BlockTests {
     var block = new Block(context);
     block.acquire();
 
-    block.allocateBuffer(ByteBuffer.allocate(1));
+    block.allocateBuffer(buffer);
     block.next();
 
     var inOrder = Mockito.inOrder(context);
@@ -114,7 +118,7 @@ public class BlockTests {
     var block = new Block(context);
     block.acquire();
 
-    block.allocateBuffer(ByteBuffer.allocate(1));
+    block.allocateBuffer(buffer);
     block.next();
 
     var inOrder = Mockito.inOrder(context);
@@ -147,14 +151,13 @@ public class BlockTests {
 
   @Test
   void whenWeGetTheBuffer_givenTheBlockIsAllocated_shouldReturnReadOnlyBuffer() {
-    var buffer = ByteBuffer.allocate(1);
+    Mockito.when(buffer.asReadOnlyBuffer()).thenReturn(readOnlyBuffer);
 
     var block = new Block(context);
     block.acquire();
     block.allocateBuffer(buffer);
 
-    var readOnlyBuffer = block.getByteBuffer();
-    assertThrows(ReadOnlyBufferException.class, () -> readOnlyBuffer.put((byte) 1));
+    assertEquals(this.readOnlyBuffer, block.getByteBuffer());
 
     var inOrder = Mockito.inOrder(context);
     inOrder.verify(context).open(block);
@@ -172,9 +175,11 @@ public class BlockTests {
   void whenWeGetStartPositionOfSecondBlock_givenTheInitialBlockIsAllocated_shouldGetBufferCapacity() {
     int capacity = 123;
 
+    Mockito.when(buffer.capacity()).thenReturn(capacity);
+
     var block = new Block(context);
     block.acquire();
-    block.allocateBuffer(ByteBuffer.allocate(capacity));
+    block.allocateBuffer(buffer);
     var nextBlock = block.next();
 
     assertEquals(capacity, nextBlock.startPosition());
@@ -234,9 +239,11 @@ public class BlockTests {
 
   @Test
   void whenAwaitAllocation_givenBufferIsAllocated_shouldDoNothing() {
+    Mockito.when(buffer.asReadOnlyBuffer()).thenReturn(readOnlyBuffer);
+
     var block = new Block(context);
     block.acquire();
-    block.allocateBuffer(ByteBuffer.allocate(1));
+    block.allocateBuffer(buffer);
     block.awaitAllocation();
 
     var inOrder = Mockito.inOrder(context);
@@ -246,23 +253,33 @@ public class BlockTests {
 
   @Test
   void whenAwaitDataAtPosition_givenBufferIsAtGivenPosition_shouldCallAwaitDataOnContext() {
+    int position = 5;
+
+    Mockito.when(buffer.asReadOnlyBuffer()).thenReturn(readOnlyBuffer);
+    Mockito.when(readOnlyBuffer.position()).thenReturn(position);
+
     var block = new Block(context);
     block.acquire();
-    block.allocateBuffer(ByteBuffer.allocate(10).position(5));
-    block.awaitData(5);
+    block.allocateBuffer(buffer);
+    block.awaitData(position);
 
     var inOrder = Mockito.inOrder(context);
     inOrder.verify(context).open(block);
-    inOrder.verify(context).awaitData(block, 5);
+    inOrder.verify(context).awaitData(block, position);
     inOrder.verifyNoMoreInteractions();
   }
 
   @Test
   void whenAwaitDataAtPosition_givenBufferIsAfterGivenPosition_shouldDoNothing() {
+    int position = 5;
+
+    Mockito.when(buffer.asReadOnlyBuffer()).thenReturn(readOnlyBuffer);
+    Mockito.when(readOnlyBuffer.position()).thenReturn(position);
+
     var block = new Block(context);
     block.acquire();
-    block.allocateBuffer(ByteBuffer.allocate(10).position(5));
-    block.awaitData(4);
+    block.allocateBuffer(buffer);
+    block.awaitData(position - 1);
 
     var inOrder = Mockito.inOrder(context);
     inOrder.verify(context).open(block);

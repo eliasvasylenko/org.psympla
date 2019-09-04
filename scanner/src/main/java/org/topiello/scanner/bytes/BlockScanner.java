@@ -47,9 +47,13 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
     return block;
   }
 
+  public boolean isOpen() {
+    return block != null;
+  }
+
   @Override
   public void close() {
-    if (block != null) {
+    if (isOpen()) {
       block.release();
       block = null;
       buffer = null;
@@ -58,10 +62,12 @@ public class BlockScanner implements Scanner<Byte, ByteBuffer> {
 
   @Override
   public long inputPosition() {
-    if (block == null) {
+    if (!isOpen()) {
       throw new ScannerClosedException();
+
     } else if (buffer == null) {
       return block.startPosition();
+
     } else {
       return block.startPosition() + buffer.position();
     }
