@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.topiello.scanner.ScannerClosedException;
 import org.topiello.scanner.ScannerFailedException;
 
-public class Block {
+public final class Block {
   private final BlockContext context;
   private final long startPosition;
   private ByteBuffer buffer;
@@ -72,7 +72,7 @@ public class Block {
   }
 
   int awaitData(int limit) {
-    if (buffer.position() < limit) {
+    if (buffer.position() <= limit) {
       context.awaitData(this, limit);
     }
     return buffer.position();

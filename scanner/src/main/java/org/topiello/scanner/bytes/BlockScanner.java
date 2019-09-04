@@ -4,17 +4,21 @@ import java.nio.ByteBuffer;
 import java.util.function.Predicate;
 
 import org.topiello.scanner.Cursor;
-import org.topiello.scanner.ScannerPositionOutOfBoundsException;
 import org.topiello.scanner.ScanWindow;
 import org.topiello.scanner.Scanner;
 import org.topiello.scanner.ScannerClosedException;
+import org.topiello.scanner.ScannerPositionOutOfBoundsException;
 
 public class BlockScanner implements Scanner<Byte, ByteBuffer> {
   private Block block;
   private ByteBuffer buffer;
 
-  public BlockScanner(BlockContext allocator) {
-    this.block = new Block(allocator);
+  public BlockScanner(BlockContext context) {
+    this(new Block(context));
+  }
+
+  protected BlockScanner(Block block) {
+    this.block = block;
     this.buffer = block.getReadBuffer();
     this.block.acquire();
   }

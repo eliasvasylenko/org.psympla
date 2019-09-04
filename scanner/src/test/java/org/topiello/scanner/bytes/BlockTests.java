@@ -1,14 +1,13 @@
 package org.topiello.scanner.bytes;
 
-import static java.util.stream.IntStream.range;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
-import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.calls;
 
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicTest;
@@ -29,9 +28,24 @@ public class BlockTests {
   @Mock
   Runnable marker;
 
+  /*
+   * TODO many of these tests use byte buffers directly rather than mocking them.
+   * Now that mockito-inline is on the classpath to deal with this it should be
+   * tried again.
+   */
+
+  @Test
+  void whenABlockIsConstructed_shouldCallOpenOnGivenContext() {
+    var block = new Block(context);
+
+    var inOrder = Mockito.inOrder(context);
+    inOrder.verify(context).open(block);
+    inOrder.verifyNoMoreInteractions();
+  }
+
   @TestFactory
-  Stream<DynamicTest> shouldCallReleaseOnContext_whenReleaseCountReachesAcquireCount_givenThereAreNoSubsequentBlocks() {
-    return range(1, 10).mapToObj(i -> dynamicTest("Count of " + i, () -> {
+  Stream<DynamicTest> whenReleaseCountReachesAcquireCount_givenThereAreNoSubsequentBlocks_shouldCallReleaseOnContext() {
+    return IntStream.range(1, 10).mapToObj(i -> dynamicTest("Count of " + i, () -> {
       var block = new Block(context);
 
       for (int j = 0; j < i; j++) {
@@ -56,14 +70,14 @@ public class BlockTests {
   }
 
   @Test
-  void shouldThrowException_whenReleaseCalledOnBlock_givenAcquireHasNotBeenCalled() {
+  void whenReleaseCalledOnBlock_givenAcquireHasNotBeenCalled_shouldThrowException() {
     var block = new Block(context);
 
     assertThrows(ScannerClosedException.class, block::release);
   }
 
   @Test
-  void shouldCallCloseOnContext_whenInitialBlockIsReleased_givenThereAreNoSubsequentBlocks() {
+  void whenInitialBlockIsReleased_givenThereAreNoSubsequentBlocks_shouldCallCloseOnContext() {
     marker.run();
     var block = new Block(context);
     block.acquire();
@@ -82,7 +96,7 @@ public class BlockTests {
   }
 
   @Test
-  void shouldNotCallCloseOnContext_whenInitialBlockIsReleased_givenThereIsANextBlock() {
+  void whenInitialBlockIsReleased_givenThereIsANextBlock_shouldNotCallCloseOnContext() {
     var block = new Block(context);
     block.acquire();
 
@@ -96,7 +110,7 @@ public class BlockTests {
   }
 
   @Test
-  void shouldReleaseInitialBlock_whenWeGetTheNextBlock_givenTheInitialBlockIsAllocated() {
+  void whenWeGetTheNextBlock_givenTheInitialBlockIsAllocated_shouldReleaseInitialBlock() {
     var block = new Block(context);
     block.acquire();
 
@@ -110,7 +124,7 @@ public class BlockTests {
   }
 
   @Test
-  void shouldThrow_whenWeGetTheNextBlock_givenTheInitialBlockIsNotAllocated() {
+  void whenWeGetTheNextBlock_givenTheInitialBlockIsNotAllocated_shouldThrow() {
     var block = new Block(context);
     block.acquire();
     assertThrows(ScannerFailedException.class, block::next);
@@ -121,7 +135,7 @@ public class BlockTests {
   }
 
   @Test
-  void shouldReturnNull_whenWeGetTheBuffer_givenTheBlockIsNotAllocated() {
+  void whenWeGetTheBuffer_givenTheBlockIsNotAllocated_shouldReturnNull() {
     var block = new Block(context);
     block.acquire();
     assertEquals(null, block.getByteBuffer());
@@ -132,7 +146,7 @@ public class BlockTests {
   }
 
   @Test
-  void shouldReturnReadOnlyBuffer_whenWeGetTheBuffer_givenTheBlockIsAllocated() {
+  void whenWeGetTheBuffer_givenTheBlockIsAllocated_shouldReturnReadOnlyBuffer() {
     var buffer = ByteBuffer.allocate(1);
 
     var block = new Block(context);
@@ -148,14 +162,14 @@ public class BlockTests {
   }
 
   @Test
-  void shouldReturnZero_whenWeGetStartPositionOfInitialBlock() {
+  void whenWeGetStartPositionOfInitialBlock_shouldReturnZero() {
     var block = new Block(context);
 
     assertEquals(0, block.startPosition());
   }
 
   @Test
-  void shouldGetBufferCapacity_whenWeGetStartPositionOfSecondBlock_givenTheInitialBlockIsAllocated() {
+  void whenWeGetStartPositionOfSecondBlock_givenTheInitialBlockIsAllocated_shouldGetBufferCapacity() {
     int capacity = 123;
 
     var block = new Block(context);
@@ -172,7 +186,7 @@ public class BlockTests {
   }
 
   @Test
-  void shouldDuplicateAndFlipAllocatedBuffer_whenWeGetReadBuffer_givenBufferIsAllocate() {
+  void whenWeGetReadBuffer_givenBufferIsAllocate_shouldDuplicateAndFlipAllocatedBuffer() {
     int capacity = 10;
     byte value = 123;
 
@@ -194,7 +208,7 @@ public class BlockTests {
   }
 
   @Test
-  void shouldReturnNull_whenWeGetReadBuffer_givenBufferIsNotAllocated() {
+  void whenWeGetReadBuffer_givenBufferIsNotAllocated_shouldReturnNull() {
     var block = new Block(context);
     block.acquire();
 
@@ -207,7 +221,7 @@ public class BlockTests {
   }
 
   @Test
-  void shouldCallAwaitOnContext_whenAwaitAllocation_givenBufferIsNotAllocated() {
+  void whenAwaitAllocation_givenBufferIsNotAllocated_shouldCallAwaitAllocationOnContext() {
     var block = new Block(context);
     block.acquire();
     block.awaitAllocation();
@@ -219,11 +233,36 @@ public class BlockTests {
   }
 
   @Test
-  void shouldDoNothing_whenAwaitAllocation_givenBufferIsAllocated() {
+  void whenAwaitAllocation_givenBufferIsAllocated_shouldDoNothing() {
     var block = new Block(context);
     block.acquire();
     block.allocateBuffer(ByteBuffer.allocate(1));
     block.awaitAllocation();
+
+    var inOrder = Mockito.inOrder(context);
+    inOrder.verify(context).open(block);
+    inOrder.verifyNoMoreInteractions();
+  }
+
+  @Test
+  void whenAwaitDataAtPosition_givenBufferIsAtGivenPosition_shouldCallAwaitDataOnContext() {
+    var block = new Block(context);
+    block.acquire();
+    block.allocateBuffer(ByteBuffer.allocate(10).position(5));
+    block.awaitData(5);
+
+    var inOrder = Mockito.inOrder(context);
+    inOrder.verify(context).open(block);
+    inOrder.verify(context).awaitData(block, 5);
+    inOrder.verifyNoMoreInteractions();
+  }
+
+  @Test
+  void whenAwaitDataAtPosition_givenBufferIsAfterGivenPosition_shouldDoNothing() {
+    var block = new Block(context);
+    block.acquire();
+    block.allocateBuffer(ByteBuffer.allocate(10).position(5));
+    block.awaitData(4);
 
     var inOrder = Mockito.inOrder(context);
     inOrder.verify(context).open(block);
