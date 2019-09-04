@@ -31,12 +31,10 @@ public class BlockTests {
   ByteBuffer buffer;
   @Mock
   ByteBuffer readOnlyBuffer;
-
-  /*
-   * TODO many of these tests use byte buffers directly rather than mocking them.
-   * Now that mockito-inline is on the classpath to deal with this it should be
-   * tried again.
-   */
+  @Mock
+  ByteBuffer duplicatedBuffer;
+  @Mock
+  ByteBuffer flipperBuffer;
 
   @Test
   void whenABlockIsConstructed_shouldCallOpenOnGivenContext() {
@@ -192,20 +190,15 @@ public class BlockTests {
 
   @Test
   void whenWeGetReadBuffer_givenBufferIsAllocate_shouldDuplicateAndFlipAllocatedBuffer() {
-    int capacity = 10;
-    byte value = 123;
-
-    var writeBuffer = ByteBuffer.allocate(capacity);
-    writeBuffer.put(value);
+    Mockito.when(buffer.asReadOnlyBuffer()).thenReturn(readOnlyBuffer);
+    Mockito.when(readOnlyBuffer.duplicate()).thenReturn(duplicatedBuffer);
+    Mockito.when(duplicatedBuffer.flip()).thenReturn(flipperBuffer);
 
     var block = new Block(context);
     block.acquire();
-    block.allocateBuffer(writeBuffer);
+    block.allocateBuffer(buffer);
 
-    var readBuffer = block.getReadBuffer();
-    byte readValue = readBuffer.get();
-
-    assertEquals(value, readValue);
+    assertEquals(flipperBuffer, block.getReadBuffer());
 
     var inOrder = Mockito.inOrder(context);
     inOrder.verify(context).open(block);

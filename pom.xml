@@ -89,6 +89,7 @@
 		<module>grammar</module>
 		<module>language</module>
 		<module>lexicon</module>
+		<module>lexer</module>
 		<module>parser</module>
 		<module>scanner</module>
 		<module>semantics</module>
@@ -170,6 +171,11 @@
 			<dependency>
 				<groupId>org.topiello</groupId>
 				<artifactId>lexicon</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.topiello</groupId>
+				<artifactId>lexer</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
