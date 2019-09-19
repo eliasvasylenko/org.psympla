@@ -30,38 +30,67 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.topiello.text.utf;
+package org.topiello.text;
 
-import java.util.stream.Collectors;
+import static java.lang.reflect.Array.newInstance;
+import static java.util.Arrays.asList;
 
-import org.topiello.text.ArrayText;
-import org.topiello.text.CharacterSet;
-import org.topiello.text.Text;
-import org.topiello.text.TextUnit;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
-public class UtfCodePoint implements TextUnit {
-  public static final CharacterSet<UtfCodePoint> CODE_POINTS = new CharacterSet<UtfCodePoint>(
-      UtfCodePoint::toChars,
-      UtfCodePoint::fromChars);
+/**
+ * 
+ * 
+ * @author Elias N Vasylenko
+ *
+ * @param <C>
+ */
+public class ArrayText<C extends TextUnit> implements Text<C> {
+  private final int from;
+  private final int to;
+  private final C[] characters;
 
-  private static CharSequence toChars(Text<UtfCodePoint> text) {
-    var codePoints = text.stream().mapToInt(c -> c.codePoint()).toArray();
-    return new String(codePoints, 0, codePoints.length);
+  @SuppressWarnings("unchecked")
+  public ArrayText(Collection<? extends C> characters, Class<C> characterClass) {
+    this.characters = characters.toArray(l -> (C[]) newInstance(characterClass, l));
+    this.from = 0;
+    this.to = characters.size();
   }
 
-  private static Text<UtfCodePoint> fromChars(CharSequence string) {
-    return new ArrayText<>(
-        string.codePoints().mapToObj(UtfCodePoint::new).collect(Collectors.toList()),
-        UtfCodePoint.class);
+  protected ArrayText(C[] characters, int from, int to) {
+    this.characters = characters;
+    this.from = from;
+    this.to = to;
   }
 
-  private final int codePoint;
-
-  public UtfCodePoint(int codePoint) {
-    this.codePoint = codePoint;
+  @Override
+  public Iterator<C> iterator() {
+    return asList(characters).subList(from, to).iterator();
   }
 
-  public int codePoint() {
-    return codePoint;
+  @Override
+  public long length() {
+    return to - from;
+  }
+
+  @Override
+  public Text<C> subSequence(int from, int to) {
+    if (from < 0) {
+      throw new IndexOutOfBoundsException(from);
+    }
+    if (to > length()) {
+      throw new IndexOutOfBoundsException(to);
+    }
+
+    from += this.from;
+    to += this.from;
+
+    return new ArrayText<>(characters, from, to);
+  }
+
+  @Override
+  public Stream<C> stream() {
+    return Stream.of(characters).limit(to).skip(from);
   }
 }

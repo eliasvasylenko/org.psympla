@@ -185,6 +185,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.topiello</groupId>
+				<artifactId>scanner</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.topiello</groupId>
 				<artifactId>semantics</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
